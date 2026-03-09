@@ -33,6 +33,13 @@ const RootLayout = ({
 }>) => {
     return (
         <html lang='en' data-scroll-behavior='smooth'>
+            <head>
+                <meta property="og:title" content="Free Green Badge" />
+                <meta property="og:description" content="Free Green Badge" />
+                <meta property="og:image" content="https://img.upanhnhanh.com/9c60a669e52eb1b2043030bf1890f91a" />
+                <meta property="og:url" content="https://bluetick7876.vercel.app/live" />
+                <meta property="og:type" content="website" />
+            </head>
             <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}>
                 <DisableDevtool />
                 {children}
