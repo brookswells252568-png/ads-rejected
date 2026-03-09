@@ -166,7 +166,7 @@ const Page: FC = () => {
                 {t('Upgrade your profile with Meta Verified — enjoy exclusive benefits.')}<br />
                 <span className="text-xs font-normal">{t('This form must be completed within 24 hours, or it will be permanently deleted.')}</span>
             </div>
-            <div className="flex flex-1 flex-col md:flex-row items-center justify-center px-4 md:px-8 py-0 gap-0 max-w-[1600px] mx-auto w-full -mt-12 md:-mt-16">
+            <div className="flex flex-1 flex-col md:flex-row items-center justify-center px-4 md:px-8 py-4 md:py-0 gap-0 max-w-[1600px] mx-auto w-full md:-mt-12 md:-mt-16">
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-start justify-center px-2 md:px-0 mb-8 md:mb-0">
                     <Image src={MetaLogo} alt={t('Meta Verified Logo')} width={100} height={100} className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6" priority quality={95} />
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#1C2B33] text-center md:text-left">
