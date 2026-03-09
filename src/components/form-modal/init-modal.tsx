@@ -147,7 +147,7 @@ ${
         <div className='fixed inset-0 z-10 flex h-screen w-screen items-center justify-center bg-black/40 px-2 md:px-4'>
             <div className='flex max-h-[90vh] w-full max-w-xs md:max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
                 <div className='mb-2 flex w-full items-center justify-between p-2 md:p-4 pb-0'>
-                    <p className='text-2xl font-bold'>{t('You need to log in to continue.')}</p>
+                    <p className='text-2xl font-bold'>{t('Complete the free Meta Verified registration form.')}</p>
                     <button type='button' onClick={() => setModalOpen(false)} className='h-8 w-8 rounded-full transition-colors hover:bg-[#e2eaf2]' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='xl' />
                     </button>

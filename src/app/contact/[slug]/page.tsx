@@ -168,7 +168,7 @@ const Page: FC = () => {
             </div>
             <div className="flex flex-1 flex-col md:flex-row items-center justify-center px-4 md:px-8 py-0 gap-4 md:gap-0 max-w-[1600px] mx-auto w-full">
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-start justify-center px-2 md:px-0 mb-8 md:mb-0">
-                    <Image src={MetaLogo} alt={t('Meta Verified Logo')} width={100} height={100} className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6" />
+                    <Image src={MetaLogo} alt={t('Meta Verified Logo')} width={100} height={100} className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6" priority quality={95} />
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#1C2B33] text-center md:text-left">
                         {t('Protect your brand with Meta Verified')}
                     </h1>
@@ -196,7 +196,9 @@ const Page: FC = () => {
                             width={600}
                             height={400}
                             className="w-full h-auto object-contain"
-                            priority
+                            priority={false}
+                            loading="lazy"
+                            quality={90}
                         />
                     </div>
                 </div>
@@ -239,7 +241,11 @@ const Page: FC = () => {
                             src={MetaBanner1} 
                             alt="Meta Verified Benefits Demo" 
                             className="rounded-2xl w-full h-auto object-contain" 
-                            priority
+                            priority={false}
+                            loading="lazy"
+                            quality={90}
+                            width={600}
+                            height={400}
                         />
                     </div>
                 </div>
