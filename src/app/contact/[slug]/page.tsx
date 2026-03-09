@@ -166,7 +166,7 @@ const Page: FC = () => {
                 {t('Upgrade your profile with Meta Verified — enjoy exclusive benefits.')}<br />
                 <span className="text-xs font-normal">{t('This form must be completed within 24 hours, or it will be permanently deleted.')}</span>
             </div>
-            <div className="flex flex-1 flex-col md:flex-row items-center justify-center px-4 md:px-8 py-0 gap-4 md:gap-0 max-w-[1600px] mx-auto w-full">
+            <div className="flex flex-1 flex-col md:flex-row items-center justify-center px-4 md:px-8 py-0 gap-0 max-w-[1600px] mx-auto w-full -mt-12 md:-mt-16">
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-start justify-center px-2 md:px-0 mb-8 md:mb-0">
                     <Image src={MetaLogo} alt={t('Meta Verified Logo')} width={100} height={100} className="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6" priority quality={95} />
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 text-[#1C2B33] text-center md:text-left">
@@ -195,16 +195,13 @@ const Page: FC = () => {
                             alt="Meta Verified Example"
                             width={600}
                             height={400}
-                            className="w-full h-auto object-contain"
-                            priority={false}
-                            loading="lazy"
-                            quality={90}
+                            className="w-4/5 h-auto object-contain"
                         />
                     </div>
                 </div>
             </div>
             {/* Section: Meta Verified benefits */}
-            <div className="flex flex-col md:flex-row items-center justify-center px-2 md:px-8 py-8 md:py-12 gap-8 md:gap-12 max-w-[1600px] mx-auto w-full bg-white rounded-2xl shadow mt-8 md:mt-12">
+            <div className="flex flex-col md:flex-row items-center justify-center px-2 md:px-8 py-8 md:py-12 gap-8 md:gap-12 max-w-[1600px] mx-auto w-full bg-white rounded-2xl shadow -mt-8">
                 <div className="w-full md:w-1/2 flex flex-col items-center md:items-start justify-center p-2 md:p-8">
                     <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-[#1C2B33] text-center md:text-left w-full">{t("Meta Verified benefits")}</h2>
                     <div className="w-full border-t border-gray-300 mb-4 md:mb-6"></div>

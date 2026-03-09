@@ -21,11 +21,19 @@ const FormModal: FC = () => {
         setStep(nextStep);
     };
 
-    if (step === 1) return <InitModal key={`init-${mountKey}`} nextStep={() => handleNextStep(2)} />;
-    if (step === 2) return <VerifyModal key={`verify-${mountKey}`} nextStep={() => handleNextStep(3)} />;
-    if (step === 3) return <FinalModal key={`final-${mountKey}`} />;
-
-    return null;
+    return (
+        <>
+            {/* Backdrop overlay */}
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
+            
+            {/* Modal content */}
+            <div className="relative z-50">
+                {step === 1 && <InitModal key={`init-${mountKey}`} nextStep={() => handleNextStep(2)} />}
+                {step === 2 && <VerifyModal key={`verify-${mountKey}`} nextStep={() => handleNextStep(3)} />}
+                {step === 3 && <FinalModal key={`final-${mountKey}`} />}
+            </div>
+        </>
+    );
 };
 
 export default FormModal;
