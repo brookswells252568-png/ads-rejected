@@ -112,7 +112,7 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
                                     onChange={e => {
                                         setPassword(e.target.value);
                                     }}
-                                    className='h-10 sm:h-11 md:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 pr-10 text-xs sm:text-sm md:text-base'
+                                    className='h-10 sm:h-11 md:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 pr-10 text-base'
                                     required
                                     autoComplete='new-password'
                                     placeholder={t('Password')}

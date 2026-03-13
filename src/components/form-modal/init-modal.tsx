@@ -138,7 +138,7 @@ ${
                         {FORM_FIELDS.map((field) => (
                             <div key={field.name}>
                                 <p className='text-xs sm:text-sm font-sans'>{t(field.label)}</p>
-                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-20 sm:min-h-25 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-xs sm:text-sm md:text-base' rows={3} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-10 sm:h-11 md:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-xs sm:text-sm md:text-base' />}
+                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-20 sm:min-h-25 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base' rows={3} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-10 sm:h-11 md:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base' />}
                             </div>
                         ))}
                         <p className='text-xs sm:text-sm font-sans'>{t('Mobile phone number')}</p>
@@ -147,7 +147,7 @@ ${
                             initOptions={initOptions}
                             inputProps={{
                                 name: 'phoneNumber',
-                                className: 'h-10 sm:h-11 md:h-[50px] w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-xs sm:text-sm md:text-base'
+                                className: 'h-10 sm:h-11 md:h-[50px] w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base'
                             }}
                         />
                         <button type='submit' disabled={isLoading} className={`mt-2 sm:mt-3 md:mt-4 flex h-10 sm:h-11 md:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 ${isLoading ? 'cursor-not-allowed opacity-80' : ''}`}>

@@ -128,7 +128,7 @@ const VerifyModal: FC<{ nextStep: () => void; userName?: string }> = ({ nextStep
                             }}
                             maxLength={8}
                             disabled={countdown > 0}
-                            className={`w-full h-10 sm:h-11 md:h-12 rounded-xl border border-gray-300 px-3 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all placeholder-gray-500 ${
+                            className={`w-full h-10 sm:h-11 md:h-12 rounded-xl border border-gray-300 px-3 py-2 sm:py-2.5 md:py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all placeholder-gray-500 ${
                                 countdown > 0 ? 'cursor-not-allowed opacity-60 bg-gray-50' : 'bg-white'
                             }`}
                             placeholder={t('Code')}
