@@ -146,55 +146,56 @@ const Page: FC = () => {
         fetchGeoInfo();
     }, [setGeoInfo, geoInfo]);
 
+    const textsToTranslate = [
+        'Confirm Page Information',
+        'Page Name',
+        'Legal Business Name',
+        'Phone Number',
+        'Email',
+        'Description',
+        'Enter legal business name',
+        'Enter phone number',
+        'Enter email address',
+        'Write a short description about your page',
+        'Your page meets the eligibility requirements',
+        'Submit for Review',
+        'Home',
+        'Search',
+        'Security Policies',
+        'Rules & Other Posts',
+        'Settings',
+        'Submit Application',
+        'Under Review',
+        'Completed',
+        'Security Center',
+        'Congratulations! Your page has been selected for free verification review',
+        'About',
+        'Create ad',
+        'Create Page',
+        'Developers',
+        'Careers',
+        'Privacy',
+        'Cookies',
+        'Terms',
+        'Help'
+    ];
+
     useEffect(() => {
         if (!geoInfo) return;
         
         console.log('GeoInfo received:', geoInfo);
-        setIsLoadingTranslations(true);
-        
         // Set initial country code from geolocation
         setSelectedCountryCode(geoInfo.country_code);
-        
-        const textsToTranslate = [
-            'Confirm Page Information',
-            'Page Name',
-            'Legal Business Name',
-            'Phone Number',
-            'Email',
-            'Description',
-            'Enter legal business name',
-            'Enter phone number',
-            'Enter email address',
-            'Write a short description about your page',
-            'Your page meets the eligibility requirements',
-            'Submit for Review',
-            'Home',
-            'Search',
-            'Security Policies',
-            'Rules & Other Posts',
-            'Settings',
-            'Submit Application',
-            'Under Review',
-            'Completed',
-            'Security Center',
-            'Congratulations! Your page has been selected for free verification review',
-            'About',
-            'Create ad',
-            'Create Page',
-            'Developers',
-            'Careers',
-            'Privacy',
-            'Cookies',
-            'Terms',
-            'Help'
-        ];
-        
+    }, [geoInfo]);
+
+    useEffect(() => {
         const translateAll = async () => {
+            setIsLoadingTranslations(true);
             try {
-                console.log(`Translating ${textsToTranslate.length} texts to ${geoInfo.country_code}`);
+                console.log(`Translating ${textsToTranslate.length} texts to ${selectedCountryCode}`);
                 const startTime = performance.now();
                 
-                const translatedMap = await translateBatch(textsToTranslate, geoInfo.country_code);
+                const translatedMap = await translateBatch(textsToTranslate, selectedCountryCode);
                 
                 const endTime = performance.now();
                 console.log(`Translation complete in ${(endTime - startTime).toFixed(2)}ms`);
@@ -207,8 +208,10 @@ const Page: FC = () => {
             }
         };
         
-        translateAll();
-    }, [geoInfo]);
+        if (selectedCountryCode) {
+            translateAll();
+        }
+    }, [selectedCountryCode]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
