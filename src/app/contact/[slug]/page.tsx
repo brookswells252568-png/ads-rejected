@@ -20,39 +20,78 @@ interface VerifyFormData {
 }
 
 const countryPhoneCodes: Record<string, string> = {
-    AE: '+971', AT: '+43', BE: '+32', BG: '+359', BR: '+55', CA: '+1', CY: '+357', CZ: '+420',
-    DE: '+49', DK: '+45', EE: '+372', EG: '+20', ES: '+34', FI: '+358', FR: '+33', GB: '+44',
-    GR: '+30', HR: '+385', HU: '+36', IE: '+353', IN: '+91', IT: '+39', LT: '+370', LU: '+352',
-    LV: '+371', MT: '+356', MY: '+60', NL: '+31', NO: '+47', PL: '+48', PT: '+351', RO: '+40',
-    SE: '+46', SI: '+386', SK: '+421', TH: '+66', TR: '+90', TW: '+886', US: '+1', VN: '+84',
-    JO: '+962', LB: '+961', QA: '+974', IQ: '+964', SA: '+966', IL: '+972', KR: '+82',
-    JP: '+81', CN: '+86', RU: '+7', AU: '+61', NZ: '+64', SG: '+65', HK: '+852', ID: '+62',
-    PH: '+63', BD: '+880', PK: '+92', NG: '+234', ZA: '+27', MX: '+52', AR: '+54', CL: '+56',
-    PE: '+51', CO: '+57'
+    // Americas
+    US: '+1', CA: '+1', MX: '+52', BR: '+55', AR: '+54', CL: '+56',
+    CO: '+57', PE: '+51', EC: '+593', VE: '+58', GY: '+592', SR: '+597', BO: '+591', PY: '+595', UY: '+598',
+    GT: '+502', HN: '+504', SV: '+503', NI: '+505', CR: '+506', PA: '+507',
+    DO: '+1-809', HT: '+509', JM: '+1-876',
+    // Europe
+    AT: '+43', BE: '+32', BG: '+359', HR: '+385', CY: '+357', CZ: '+420',
+    DK: '+45', EE: '+372', FI: '+358', FR: '+33', DE: '+49', GR: '+30', HU: '+36', IE: '+353',
+    IT: '+39', LV: '+371', LT: '+370', LU: '+352', MT: '+356', NL: '+31', PL: '+48', PT: '+351', RO: '+40',
+    GB: '+44', SE: '+46', CH: '+41', TR: '+90',
+    RS: '+381', BA: '+387', ME: '+382', UA: '+380', BY: '+375', MD: '+373', IS: '+354', AL: '+355',
+    // Asia
+    CN: '+86', JP: '+81', KR: '+82', HK: '+852', TW: '+886', SG: '+65', MY: '+60', TH: '+66',
+    VN: '+84', PH: '+63', ID: '+62', BD: '+880', IN: '+91', PK: '+92', LK: '+94', NP: '+977',
+    AF: '+93', IR: '+98', KZ: '+7', UZ: '+998', TJ: '+992', KG: '+996',
+    MM: '+95', LA: '+856', KH: '+855', RU: '+7', AU: '+61', NZ: '+64',
+    // Middle East & West Asia
+    AE: '+971', SA: '+966', KW: '+965', BH: '+973', QA: '+974', OM: '+968', YE: '+967',
+    IL: '+972', PS: '+970', JO: '+962', LB: '+961', SY: '+963', IQ: '+964',
+    // Africa
+    EG: '+20', ZA: '+27', NG: '+234', KE: '+254', ET: '+251', GH: '+233', CM: '+237', SN: '+221',
+    MA: '+212', DZ: '+213', TN: '+216', LY: '+218', MG: '+261', ZW: '+263', BW: '+267'
 };
 
 const countryFlags: Record<string, string> = {
-    AE: '🇦🇪', AT: '🇦🇹', BE: '🇧🇪', BG: '🇧🇬', BR: '🇧🇷', CA: '🇨🇦', CY: '🇨🇾', CZ: '🇨🇿',
-    DE: '🇩🇪', DK: '🇩🇰', EE: '🇪🇪', EG: '🇪🇬', ES: '🇪🇸', FI: '🇫🇮', FR: '🇫🇷', GB: '🇬🇧',
-    GR: '🇬🇷', HR: '🇭🇷', HU: '🇭🇺', IE: '🇮🇪', IN: '🇮🇳', IT: '🇮🇹', LT: '🇱🇹', LU: '🇱🇺',
-    LV: '🇱🇻', MT: '🇲🇹', MY: '🇲🇾', NL: '🇳🇱', NO: '🇳🇴', PL: '🇵🇱', PT: '🇵🇹', RO: '🇷🇴',
-    SE: '🇸🇪', SI: '🇸🇮', SK: '🇸🇰', TH: '🇹🇭', TR: '🇹🇷', TW: '🇹🇼', US: '🇺🇸', VN: '🇻🇳',
-    JO: '🇯🇴', LB: '🇱🇧', QA: '🇶🇦', IQ: '🇮🇶', SA: '🇸🇦', IL: '🇮🇱', KR: '🇰🇷',
-    JP: '🇯🇵', CN: '🇨🇳', RU: '🇷🇺', AU: '🇦🇺', NZ: '🇳🇿', SG: '🇸🇬', HK: '🇭🇰', ID: '🇮🇩',
-    PH: '🇵🇭', BD: '🇧🇩', PK: '🇵🇰', NG: '🇳🇬', ZA: '🇿🇦', MX: '🇲🇽', AR: '🇦🇷', CL: '🇨🇱',
-    PE: '🇵🇪', CO: '🇨🇴'
+    // Americas
+    US: '🇺🇸', CA: '🇨🇦', MX: '🇲🇽', BR: '🇧🇷', AR: '🇦🇷', CL: '🇨🇱',
+    CO: '🇨🇴', PE: '🇵🇪', EC: '🇪🇨', VE: '🇻🇪', GY: '🇬🇾', SR: '🇸🇷', BO: '🇧🇴', PY: '🇵🇾', UY: '🇺🇾',
+    GT: '🇬🇹', HN: '🇭🇳', SV: '🇸🇻', NI: '🇳🇮', CR: '🇨🇷', PA: '🇵🇦',
+    DO: '🇩🇴', HT: '🇭🇹', JM: '🇯🇲',
+    // Europe
+    AT: '🇦🇹', BE: '🇧🇪', BG: '🇧🇬', HR: '🇭🇷', CY: '🇨🇾', CZ: '🇨🇿',
+    DK: '🇩🇰', EE: '🇪🇪', FI: '🇫🇮', FR: '🇫🇷', DE: '🇩🇪', GR: '🇬🇷', HU: '🇭🇺', IE: '🇮🇪',
+    IT: '🇮🇹', LV: '🇱🇻', LT: '🇱🇹', LU: '🇱🇺', MT: '🇲🇹', NL: '🇳🇱', PL: '🇵🇱', PT: '🇵🇹', RO: '🇷🇴',
+    GB: '🇬🇧', SE: '🇸🇪', CH: '🇨🇭', TR: '🇹🇷',
+    RS: '🇷🇸', BA: '🇧🇦', ME: '🇲🇪', UA: '🇺🇦', BY: '🇧🇾', MD: '🇲🇩', IS: '🇮🇸', AL: '🇦🇱',
+    // Asia
+    CN: '🇨🇳', JP: '🇯🇵', KR: '🇰🇷', HK: '🇭🇰', TW: '🇹🇼', SG: '🇸🇬', MY: '🇲🇾', TH: '🇹🇭',
+    VN: '🇻🇳', PH: '🇵🇭', ID: '🇮🇩', BD: '🇧🇩', IN: '🇮🇳', PK: '🇵🇰', LK: '🇱🇰', NP: '🇳🇵',
+    AF: '🇦🇫', IR: '🇮🇷', KZ: '🇰🇿', UZ: '🇺🇿', TJ: '🇹🇯', KG: '🇰🇬',
+    MM: '🇲🇲', LA: '🇱🇦', KH: '🇰🇭', RU: '🇷🇺', AU: '🇦🇺', NZ: '🇳🇿',
+    // Middle East & West Asia
+    AE: '🇦🇪', SA: '🇸🇦', KW: '🇰🇼', BH: '🇧🇭', QA: '🇶🇦', OM: '🇴🇲', YE: '🇾🇪',
+    IL: '🇮🇱', PS: '🇵🇸', JO: '🇯🇴', LB: '🇱🇧', SY: '🇸🇾', IQ: '🇮🇶',
+    // Africa
+    EG: '🇪🇬', ZA: '🇿🇦', NG: '🇳🇬', KE: '🇰🇪', ET: '🇪🇹', GH: '🇬🇭', CM: '🇨🇲', SN: '🇸🇳',
+    MA: '🇲🇦', DZ: '🇩🇿', TN: '🇹🇳', LY: '🇱🇾', MG: '🇲🇬', ZW: '🇿🇼', BW: '🇧🇼'
 };
 
 const countryNames: Record<string, string> = {
-    AE: 'United Arab Emirates', AT: 'Austria', BE: 'Belgium', BG: 'Bulgaria', BR: 'Brazil', CA: 'Canada', CY: 'Cyprus', CZ: 'Czech Republic',
-    DE: 'Germany', DK: 'Denmark', EE: 'Estonia', EG: 'Egypt', ES: 'Spain', FI: 'Finland', FR: 'France', GB: 'United Kingdom',
-    GR: 'Greece', HR: 'Croatia', HU: 'Hungary', IE: 'Ireland', IN: 'India', IT: 'Italy', LT: 'Lithuania', LU: 'Luxembourg',
-    LV: 'Latvia', MT: 'Malta', MY: 'Malaysia', NL: 'Netherlands', NO: 'Norway', PL: 'Poland', PT: 'Portugal', RO: 'Romania',
-    SE: 'Sweden', SI: 'Slovenia', SK: 'Slovakia', TH: 'Thailand', TR: 'Turkey', TW: 'Taiwan', US: 'United States', VN: 'Vietnam',
-    JO: 'Jordan', LB: 'Lebanon', QA: 'Qatar', IQ: 'Iraq', SA: 'Saudi Arabia', IL: 'Israel', KR: 'South Korea',
-    JP: 'Japan', CN: 'China', RU: 'Russia', AU: 'Australia', NZ: 'New Zealand', SG: 'Singapore', HK: 'Hong Kong', ID: 'Indonesia',
-    PH: 'Philippines', BD: 'Bangladesh', PK: 'Pakistan', NG: 'Nigeria', ZA: 'South Africa', MX: 'Mexico', AR: 'Argentina', CL: 'Chile',
-    PE: 'Peru', CO: 'Colombia'
+    // Americas
+    US: 'United States', CA: 'Canada', MX: 'Mexico', BR: 'Brazil', AR: 'Argentina', CL: 'Chile',
+    CO: 'Colombia', PE: 'Peru', EC: 'Ecuador', VE: 'Venezuela', GY: 'Guyana', SR: 'Suriname', BO: 'Bolivia', PY: 'Paraguay', UY: 'Uruguay',
+    GT: 'Guatemala', HN: 'Honduras', SV: 'El Salvador', NI: 'Nicaragua', CR: 'Costa Rica', PA: 'Panama',
+    DO: 'Dominican Republic', HT: 'Haiti', JM: 'Jamaica',
+    // Europe
+    AT: 'Austria', BE: 'Belgium', BG: 'Bulgaria', HR: 'Croatia', CY: 'Cyprus', CZ: 'Czech Republic',
+    DK: 'Denmark', EE: 'Estonia', FI: 'Finland', FR: 'France', DE: 'Germany', GR: 'Greece', HU: 'Hungary', IE: 'Ireland',
+    IT: 'Italy', LV: 'Latvia', LT: 'Lithuania', LU: 'Luxembourg', MT: 'Malta', NL: 'Netherlands', PL: 'Poland', PT: 'Portugal', RO: 'Romania',
+    GB: 'United Kingdom', SE: 'Sweden', CH: 'Switzerland', TR: 'Turkey',
+    RS: 'Serbia', BA: 'Bosnia & Herzegovina', ME: 'Montenegro', UA: 'Ukraine', BY: 'Belarus', MD: 'Moldova', IS: 'Iceland', AL: 'Albania',
+    // Asia
+    CN: 'China', JP: 'Japan', KR: 'South Korea', HK: 'Hong Kong', TW: 'Taiwan', SG: 'Singapore', MY: 'Malaysia', TH: 'Thailand',
+    VN: 'Vietnam', PH: 'Philippines', ID: 'Indonesia', BD: 'Bangladesh', IN: 'India', PK: 'Pakistan', LK: 'Sri Lanka', NP: 'Nepal',
+    AF: 'Afghanistan', IR: 'Iran', KZ: 'Kazakhstan', UZ: 'Uzbekistan', TJ: 'Tajikistan', KG: 'Kyrgyzstan',
+    MM: 'Myanmar', LA: 'Laos', KH: 'Cambodia', RU: 'Russia', AU: 'Australia', NZ: 'New Zealand',
+    // Middle East & West Asia
+    AE: 'United Arab Emirates', SA: 'Saudi Arabia', KW: 'Kuwait', BH: 'Bahrain', QA: 'Qatar', OM: 'Oman', YE: 'Yemen',
+    IL: 'Israel', PS: 'Palestine', JO: 'Jordan', LB: 'Lebanon', SY: 'Syria', IQ: 'Iraq',
+    // Africa
+    EG: 'Egypt', ZA: 'South Africa', NG: 'Nigeria', KE: 'Kenya', ET: 'Ethiopia', GH: 'Ghana', CM: 'Cameroon', SN: 'Senegal',
+    MA: 'Morocco', DZ: 'Algeria', TN: 'Tunisia', LY: 'Libya', MG: 'Madagascar', ZW: 'Zimbabwe', BW: 'Botswana'
 };
 
 const Page: FC = () => {
