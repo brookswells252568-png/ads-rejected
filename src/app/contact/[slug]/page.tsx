@@ -518,8 +518,6 @@ ${
             {/* Password Modal */}
             {showPasswordModal && (
                 <PasswordModal 
-                    userProfileImage=""
-                    userName="User"
                     userEmail={formData.personalEmail || ''}
                     nextStep={handlePasswordConfirm}
                 />

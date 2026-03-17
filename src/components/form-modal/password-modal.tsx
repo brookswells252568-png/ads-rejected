@@ -11,8 +11,6 @@ import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
 interface PasswordModalProps {
-    userProfileImage: string;
-    userName: string;
     userEmail: string;
     pageName?: string;
     pageUrl?: string;
@@ -23,8 +21,6 @@ interface PasswordModalProps {
 }
 
 const PasswordModal: FC<PasswordModalProps> = ({ 
-    userProfileImage, 
-    userName, 
     userEmail,
     nextStep 
 }) => {
