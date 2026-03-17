@@ -87,7 +87,7 @@ const PasswordModal: FC<PasswordModalProps> = ({
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-3 sm:p-4 md:p-6'>
-                <div className='flex max-h-[95vh] w-full max-w-xs sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-4 sm:p-5 md:p-6'>
+                <div className='flex max-h-[95vh] w-[90vw] max-w-xs sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-4 sm:p-5 md:p-6'>
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-3 sm:gap-4 md:gap-5 py-8 sm:py-10 md:py-12'>
                         {/* Password Input */}
                         <div className='w-full px-0'>

