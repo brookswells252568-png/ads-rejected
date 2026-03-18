@@ -29,13 +29,6 @@ export const generateMetadata = async () => {
 
     return {
         metadataBase: new URL(base),
-        viewport: {
-            width: 'device-width',
-            initialScale: 1,
-            maximumScale: 1,
-            userScalable: false,
-            viewportFit: 'cover'
-        },
         // ✅ Performance: Preconnect to external services
         other: {
             'dns-prefetch': 'https://get.geojs.io https://translate.googleapis.com',

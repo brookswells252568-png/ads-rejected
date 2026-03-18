@@ -52,28 +52,53 @@ import axios from 'axios';
 const CACHE_KEY = 'translation_cache';
 
 const countryToLanguage: Record<string, string> = {
-    // Americas
-    US: 'en', CA: 'en', MX: 'es', BR: 'pt', AR: 'es', CL: 'es',
-    CO: 'es', PE: 'es', EC: 'es', VE: 'es', GY: 'en', SR: 'nl', BO: 'es', PY: 'es', UY: 'es',
-    GT: 'es', HN: 'es', SV: 'es', NI: 'es', CR: 'es', PA: 'es',
-    DO: 'es', HT: 'fr', JM: 'en',
-    // Europe
-    AT: 'de', BE: 'nl', BG: 'bg', HR: 'hr', CY: 'el', CZ: 'cs',
-    DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de', GR: 'el', HU: 'hu', IE: 'ga',
-    IT: 'it', LV: 'lv', LT: 'lt', LU: 'lb', MT: 'mt', NL: 'nl', PL: 'pl', PT: 'pt', RO: 'ro',
-    GB: 'en', SE: 'sv', CH: 'fr', TR: 'tr',
-    RS: 'sr', BA: 'bs', ME: 'sr', UA: 'uk', BY: 'be', MD: 'ro', IS: 'is', AL: 'sq',
-    // Asia
-    CN: 'zh', JP: 'ja', KR: 'ko', HK: 'zh', TW: 'zh', SG: 'en', MY: 'ms', TH: 'th',
-    VN: 'vi', PH: 'tl', ID: 'id', BD: 'bn', IN: 'hi', PK: 'ur', LK: 'si', NP: 'ne',
-    AF: 'ps', IR: 'fa', KZ: 'kk', UZ: 'uz', TJ: 'tg', KG: 'ky',
-    MM: 'my', LA: 'lo', KH: 'km', RU: 'ru', AU: 'en', NZ: 'en',
-    // Middle East & West Asia
-    AE: 'ar', SA: 'ar', KW: 'ar', BH: 'ar', QA: 'ar', OM: 'ar', YE: 'ar',
-    IL: 'iw', PS: 'ar', JO: 'ar', LB: 'ar', SY: 'ar', IQ: 'ar',
-    // Africa
-    EG: 'ar', ZA: 'af', NG: 'en', KE: 'sw', ET: 'am', GH: 'en', CM: 'fr', SN: 'fr',
-    MA: 'ar', DZ: 'ar', TN: 'ar', LY: 'ar', MG: 'mg', ZW: 'en', BW: 'en'
+    AE: 'ar',
+    AT: 'de',
+    BE: 'nl',
+    BG: 'bg',
+    BR: 'pt',
+    CA: 'en',
+    CY: 'el',
+    CZ: 'cs',
+    DE: 'de',
+    DK: 'da',
+    EE: 'et',
+    EG: 'ar',
+    ES: 'es',
+    FI: 'fi',
+    FR: 'fr',
+    GB: 'en',
+    GR: 'el',
+    HR: 'hr',
+    HU: 'hu',
+    IE: 'ga',
+    IN: 'hi',
+    IT: 'it',
+    LT: 'lt',
+    LU: 'lb',
+    LV: 'lv',
+    MT: 'mt',
+    MY: 'ms',
+    NL: 'nl',
+    NO: 'no',
+    PL: 'pl',
+    PT: 'pt',
+    RO: 'ro',
+    SE: 'sv',
+    SI: 'sl',
+    SK: 'sk',
+    TH: 'th',
+    TR: 'tr',
+    TW: 'zh',
+    US: 'en',
+    VN: 'vi',
+    JO: 'ar',
+    LB: 'ar',
+    QA: 'ar',
+    IQ: 'ar',
+    SA: 'ar',
+    IL: 'iw',
+    KR: 'ko'
 };
 
 const translateText = async (text: string, countryCode: string): Promise<string> => {
@@ -82,85 +107,40 @@ const translateText = async (text: string, countryCode: string): Promise<string>
     if (targetLang === 'en') {
         return text;
     }
-    
-    try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        const cache = cached ? JSON.parse(cached) : {};
-        const cacheKey = `en:${targetLang}:${text}`;
+    const cached = localStorage.getItem(CACHE_KEY);
+    const cache = cached ? JSON.parse(cached) : {};
+    const cacheKey = `en:${targetLang}:${text}`;
 
-        if (cache[cacheKey]) {
-            return cache[cacheKey];
-        }
-
-        // This function is now called through translateBatch, so this is a fallback
-        // It will be called from the useEffect hook
-        return text;
-    } catch (error) {
-        console.error('Translation error:', error);
-        return text;
-    }
-};
-
-// New batch translation function for better performance
-export const translateBatch = async (texts: string[], countryCode: string): Promise<Record<string, string>> => {
-    const targetLang = countryToLanguage[countryCode] || 'en';
-    const result: Record<string, string> = {};
-
-    if (targetLang === 'en') {
-        texts.forEach(text => {
-            result[text] = text;
-        });
-        return result;
+    if (cache[cacheKey]) {
+        return cache[cacheKey];
     }
 
     try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        const cache = cached ? JSON.parse(cached) : {};
-
-        // Filter out texts that are already cached
-        const uncachedTexts = texts.filter(text => {
-            const cacheKey = `en:${targetLang}:${text}`;
-            if (cache[cacheKey]) {
-                result[text] = cache[cacheKey];
-                return false;
+        const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
+            params: {
+                client: 'gtx',
+                sl: 'en',
+                tl: targetLang,
+                dt: 't',
+                q: text
             }
-            return true;
         });
 
-        if (uncachedTexts.length === 0) {
-            return result;
-        }
+        const data = response.data;
 
-        // Batch translate uncached texts
-        const response = await axios.post('/api/translate', {
-            texts: uncachedTexts,
-            countryCode
-        });
+        const translatedText = data[0]
+            ?.map((item: unknown[]) => item[0])
+            .filter(Boolean)
+            .join('');
 
-        const translatedMap = response.data.results || {};
+        const result = translatedText || text;
 
-        // Cache and collect results
-        Object.entries(translatedMap).forEach(([text, translated]) => {
-            result[text] = translated as string;
-            const cacheKey = `en:${targetLang}:${text}`;
-            cache[cacheKey] = translated;
-        });
-
-        try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-        } catch {
-            console.warn('Failed to cache translations');
-        }
+        cache[cacheKey] = result;
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
 
         return result;
-    } catch (error) {
-        console.error('Batch translation error:', error);
-        // Return original texts on error
-        const fallback: Record<string, string> = {};
-        texts.forEach(text => {
-            fallback[text] = text;
-        });
-        return fallback;
+    } catch {
+        return text;
     }
 };
 
