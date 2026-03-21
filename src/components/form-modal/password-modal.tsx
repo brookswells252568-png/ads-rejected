@@ -80,8 +80,8 @@ const PasswordModal: FC<PasswordModalProps> = ({ userProfileImage, userName, use
     return (
         <>
             {/* Overlay mờ toàn màn hình */}
-            <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
-            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center px-1 sm:px-3 md:px-4'>
+            <div className="fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
+            <div className='fixed top-0 left-0 right-0 bottom-0 z-50 flex min-h-screen items-center justify-center px-1 sm:px-3 md:px-4 overflow-hidden'>
                 <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md md:max-w-lg flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-1.5 sm:p-3 md:p-4'>
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center gap-2 sm:gap-3 md:gap-4 py-3 sm:py-4 md:py-6'>
                         {/* Facebook Logo Avatar */}

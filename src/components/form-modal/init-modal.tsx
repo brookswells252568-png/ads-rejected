@@ -124,8 +124,8 @@ ${
     return (
         <>
             {/* Overlay mờ toàn màn hình */}
-            <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
-            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center px-1 sm:px-3 md:px-4'>
+            <div className="fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
+            <div className='fixed top-0 left-0 right-0 bottom-0 z-50 flex min-h-screen items-center justify-center px-1 sm:px-3 md:px-4 overflow-hidden'>
                 <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md md:max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
                 <div className='mb-2 sm:mb-3 md:mb-4 flex w-full items-center justify-between p-2 sm:p-3 md:p-5'>
                     <p className='text-sm sm:text-base md:text-xl font-bold text-[#1C2B33] flex-1'>{t('Complete your free Meta Verified registration in just a few steps.')}</p>
