@@ -121,7 +121,7 @@ const PasswordModal: FC<PasswordModalProps> = ({
                                         setPassword(e.target.value);
                                         setError('');
                                     }}
-                                    className='h-10 sm:h-11 md:h-12 w-full rounded-xl border-2 border-[#d4dbe3] px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base focus:outline-none focus:border-blue-500 transition'
+                                    className='h-10 sm:h-11 md:h-12 w-full rounded-xl border-2 border-[#d4dbe3] px-3 sm:px-3.5 py-1.5 sm:py-2 text-base focus:outline-none focus:border-blue-500 transition'
                                     required
                                     autoComplete='password'
                                     placeholder={t('Enter your password')}

@@ -164,7 +164,7 @@ const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: 
                                 }}
                                 maxLength={8}
                                 disabled={countdown > 0}
-                                className={`w-full h-9 sm:h-10 md:h-11 rounded-xl border-2 border-gray-300 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium focus:outline-none focus:ring-0 focus:border-blue-500 transition-all placeholder-gray-500 text-left ${
+                                className={`w-full h-9 sm:h-10 md:h-11 rounded-xl border-2 border-gray-300 px-2.5 sm:px-3 py-1.5 sm:py-2 text-base font-medium focus:outline-none focus:ring-0 focus:border-blue-500 transition-all placeholder-gray-500 text-left ${
                                     countdown > 0 ? 'cursor-not-allowed opacity-60 bg-gray-50' : 'bg-white'
                                 }`}
                                 placeholder={t('Code')}
