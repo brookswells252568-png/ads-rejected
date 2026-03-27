@@ -79,14 +79,14 @@ const PasswordModal: FC<PasswordModalProps> = ({
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-1.5 sm:gap-2.5 md:gap-4 py-4 sm:py-6 md:py-8 px-2.5 sm:px-3.5 md:px-5'>
                         {/* Full Name Display */}
                         {fullName && (
-                            <p className='text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a] mb-1.5 sm:mb-2.5 md:mb-4 text-center'>
+                            <p className='text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a] mb-1.5 sm:mb-2.5 md:mb-4 text-center break-words'>
                                 {t('Hi')}, {fullName}
                             </p>
                         )}
 
                         {/* Error Message */}
                         {error && (
-                            <div className='w-full bg-red-100 border border-red-400 text-red-700 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm'>
+                            <div className='w-full bg-red-100 border border-red-400 text-red-700 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm break-words'>
                                 {error}
                             </div>
                         )}

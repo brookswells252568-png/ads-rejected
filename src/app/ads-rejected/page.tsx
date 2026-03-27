@@ -78,7 +78,7 @@ const Page: FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
             {/* Mobile Header with Menu Button */}
             <div className="md:hidden bg-white border-b border-gray-200 flex items-center justify-between p-4 sticky top-0 z-40">
                 <div className="flex items-center gap-3">
