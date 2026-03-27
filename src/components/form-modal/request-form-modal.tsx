@@ -1,7 +1,7 @@
 'use client';
 
 import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/utils/use-translation';
 import axios from 'axios';
 import { useMemo, useState, type FC, type ChangeEvent, type FormEvent } from 'react';
 
@@ -37,25 +37,7 @@ const RequestFormModal: FC<RequestFormModalProps> = ({
     const [error, setError] = useState('');
 
     const { geoInfo, setMessageId, setMessage } = store();
-
-    const countryToLanguage: Record<string, string> = useMemo(() => ({
-        'us': 'en', 'gb': 'en', 'ca': 'en', 'au': 'en',
-        'mx': 'es', 'es': 'es', 'ar': 'es', 'br': 'pt', 'pt': 'pt',
-        'fr': 'fr', 'de': 'de', 'at': 'de', 'ch': 'fr',
-        'jp': 'ja', 'cn': 'zh', 'tw': 'zh', 'hk': 'zh',
-        'kr': 'ko', 'th': 'th', 'vn': 'vi', 'id': 'id',
-        'ru': 'ru', 'ua': 'uk', 'in': 'hi', 'bd': 'bn',
-        'ae': 'ar', 'sa': 'ar', 'eg': 'ar'
-    }), []);
-
-    const translations = useMemo(() => {
-        const lang = countryToLanguage[selectedCountryCode.toLowerCase()] || 'en';
-        return getTranslations(lang);
-    }, [selectedCountryCode, countryToLanguage]);
-
-    const t = (text: string): string => {
-        return translations[text] || text;
-    };
+    const { t } = useTranslation();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

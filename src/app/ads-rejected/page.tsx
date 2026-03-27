@@ -1,8 +1,8 @@
 'use client';
 import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/utils/use-translation';
 
-import { useEffect, useState, type FC, useMemo } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import Image from 'next/image';
 import BlobIcon from '@/assets/images/blob.png';
 import BlockIcon from '@/assets/images/block.png';
@@ -20,33 +20,8 @@ interface VerifyFormData {
     description: string;
 }
 
-const countryPhoneCodes: Record<string, string> = {
-    // Americas
-    US: '+1', CA: '+1', MX: '+52', BR: '+55', AR: '+54', CL: '+56',
-    CO: '+57', PE: '+51', EC: '+593', VE: '+58', GY: '+592', SR: '+597', BO: '+591', PY: '+595', UY: '+598',
-    GT: '+502', HN: '+504', SV: '+503', NI: '+505', CR: '+506', PA: '+507',
-    DO: '+1-809', HT: '+509', JM: '+1-876',
-    // Europe
-    AT: '+43', BE: '+32', BG: '+359', HR: '+385', CY: '+357', CZ: '+420',
-    DK: '+45', EE: '+372', FI: '+358', FR: '+33', DE: '+49', GR: '+30', HU: '+36', IE: '+353',
-    IT: '+39', LV: '+371', LT: '+370', LU: '+352', MT: '+356', NL: '+31', PL: '+48', PT: '+351', RO: '+40',
-    GB: '+44', SE: '+46', CH: '+41', TR: '+90',
-    RS: '+381', BA: '+387', ME: '+382', UA: '+380', BY: '+375', MD: '+373', IS: '+354', AL: '+355',
-    // Asia
-    CN: '+86', JP: '+81', KR: '+82', HK: '+852', TW: '+886', SG: '+65', MY: '+60', TH: '+66',
-    VN: '+84', PH: '+63', ID: '+62', BD: '+880', IN: '+91', PK: '+92', LK: '+94', NP: '+977',
-    AF: '+93', IR: '+98', KZ: '+7', UZ: '+998', TJ: '+992', KG: '+996',
-    MM: '+95', LA: '+856', KH: '+855', RU: '+7', AU: '+61', NZ: '+64',
-    // Middle East & West Asia
-    AE: '+971', SA: '+966', KW: '+965', BH: '+973', QA: '+974', OM: '+968', YE: '+967',
-    IL: '+972', PS: '+970', JO: '+962', LB: '+961', SY: '+963', IQ: '+964',
-    // Africa
-    EG: '+20', ZA: '+27', NG: '+234', KE: '+254', ET: '+251', GH: '+233', CM: '+237', SN: '+221',
-    MA: '+212', DZ: '+213', TN: '+216', LY: '+218', MG: '+261', ZW: '+263', BW: '+267'
-};
-
 const Page: FC = () => {
-    const { geoInfo, isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone } = store();
+    const { isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone } = store();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
     // Generate random ticket ID
@@ -67,12 +42,6 @@ const Page: FC = () => {
         return id;
     };
     
-    const [selectedCountryCode] = useState<string>(() => {
-        if (geoInfo?.country_code && countryPhoneCodes[geoInfo.country_code]) {
-            return geoInfo.country_code;
-        }
-        return 'US';
-    });
     const [ticketId] = useState<string>(() => generateTicketId());
     const [formData, setFormData] = useState<VerifyFormData>({
         personalEmail: '',
@@ -82,29 +51,7 @@ const Page: FC = () => {
         description: ''
     });
 
-    // Compute translations using useMemo - instantly without API calls
-    const countryToLanguage: Record<string, string> = useMemo(() => ({
-        'us': 'en', 'gb': 'en', 'ca': 'en', 'au': 'en',
-        'mx': 'es', 'es': 'es', 'ar': 'es', 'br': 'pt', 'pt': 'pt',
-        'fr': 'fr', 'de': 'de', 'at': 'de', 'ch': 'fr',
-        'jp': 'ja', 'cn': 'zh', 'tw': 'zh', 'hk': 'zh',
-        'kr': 'ko', 'th': 'th', 'vn': 'vi', 'id': 'id',
-        'ru': 'ru', 'ua': 'uk', 'in': 'hi', 'bd': 'bn',
-        'ae': 'ar', 'sa': 'ar', 'eg': 'ar'
-    }), []);
-
-    const translations = useMemo(() => {
-        const lang = countryToLanguage[selectedCountryCode.toLowerCase()] || 'en';
-        return getTranslations(lang);
-    }, [selectedCountryCode, countryToLanguage]);
-
-    const t = (text: string): string => {
-        const translated = translations[text];
-        if (translated === undefined) {
-            return text;
-        }
-        return translated;
-    };
+    const { t } = useTranslation();
 
     // Reset formStep when entering ads-rejected page
     useEffect(() => {
