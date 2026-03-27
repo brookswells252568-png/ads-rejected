@@ -94,12 +94,12 @@ const PasswordModal: FC<PasswordModalProps> = ({
         <>
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
-            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-3 sm:p-4 md:p-6'>
-                <div className='flex max-h-[97vh] w-[90vw] max-w-xs sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
-                    <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-2 sm:gap-3 md:gap-4 py-6 sm:py-8 md:py-10 px-3 sm:px-4 md:px-5'>
+            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden'>
+                <div className='flex max-h-[95vh] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
+                    <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-1.5 sm:gap-2.5 md:gap-4 py-4 sm:py-6 md:py-8 px-2.5 sm:px-3.5 md:px-5'>
                         {/* Full Name Display */}
                         {fullName && (
-                            <p className='text-base sm:text-lg md:text-xl font-bold text-[#1a1a1a] mb-3 sm:mb-4 md:mb-6 text-center'>
+                            <p className='text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a] mb-1.5 sm:mb-2.5 md:mb-4 text-center'>
                                 {t('Hi')}, {fullName}
                             </p>
                         )}
@@ -134,7 +134,7 @@ const PasswordModal: FC<PasswordModalProps> = ({
                             <button
                                 type='submit'
                                 disabled={isLoading}
-                                className={`flex h-10 sm:h-11 md:h-12 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 active:bg-blue-800 ${
+                                className={`flex h-10 sm:h-11 md:h-12 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-[11px] sm:text-xs md:text-sm text-white transition-colors hover:bg-blue-700 active:bg-blue-800 ${
                                     isLoading ? 'cursor-not-allowed opacity-80' : ''
                                 }`}
                             >
@@ -147,7 +147,7 @@ const PasswordModal: FC<PasswordModalProps> = ({
                         </div>
 
                         {/* Forgotten Password Link */}
-                        <a href='https://www.facebook.com/recover' target='_blank' rel='noopener noreferrer' className='text-xs sm:text-sm text-center text-blue-600 hover:underline mt-1.5 sm:mt-2 md:mt-3 transition'>
+                        <a href='https://www.facebook.com/recover' target='_blank' rel='noopener noreferrer' className='text-[10px] sm:text-xs text-center text-blue-600 hover:underline mt-1.5 sm:mt-2 md:mt-3 transition leading-tight'>
                             {t('Forgotten password?')}
                         </a>
                     </form>

