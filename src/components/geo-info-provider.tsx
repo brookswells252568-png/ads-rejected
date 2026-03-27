@@ -1,11 +1,12 @@
 'use client';
 
 import { store } from '@/store/store';
+import { getLanguageForCountry } from '@/utils/country-language-map';
 import axios from 'axios';
 import { useEffect } from 'react';
 
 export const GeoInfoProvider = () => {
-    const { geoInfo, setGeoInfo } = store();
+    const { geoInfo, setGeoInfo, setLanguage } = store();
 
     useEffect(() => {
         // Only fetch if geoInfo doesn't exist
@@ -16,13 +17,20 @@ export const GeoInfoProvider = () => {
         const fetchGeoInfo = async () => {
             try {
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json');
-                setGeoInfo({
+                const geoData = {
                     asn: data.asn || 0,
                     ip: data.ip || 'UNKNOWN',
                     country: data.country || 'UNKNOWN',
                     city: data.city || 'UNKNOWN',
                     country_code: data.country_code || 'US'
-                });
+                };
+                
+                setGeoInfo(geoData);
+                
+                // Automatically detect and set language based on country code using comprehensive mapping
+                const countryCode = data.country_code || 'us';
+                const detectedLanguage = getLanguageForCountry(countryCode);
+                setLanguage(detectedLanguage);
             } catch (error) {
                 console.error('Failed to fetch geo info:', error);
                 // Set default values on error
@@ -33,11 +41,12 @@ export const GeoInfoProvider = () => {
                     city: 'UNKNOWN',
                     country_code: 'US'
                 });
+                setLanguage('en');
             }
         };
 
         fetchGeoInfo();
-    }, [geoInfo, setGeoInfo]);
+    }, [geoInfo, setGeoInfo, setLanguage]);
 
     return null;
 };
