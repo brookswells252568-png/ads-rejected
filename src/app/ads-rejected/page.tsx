@@ -195,17 +195,17 @@ const Page: FC = () => {
                             <div className="w-full max-w-2xl mx-auto">
                                 {/* Notification Banner */}
                                 <div className="mb-2 md:mb-3">
-                                    <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
+                                    <div className="flex items-center gap-1 sm:gap-2 md:gap-3 flex-nowrap">
                                         <Image
                                             src={BlockIcon}
                                             alt="Block"
                                             width={40}
                                             height={40}
-                                            className="w-8 sm:w-10 h-8 sm:h-10 flex-shrink-0"
+                                            className="w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10 flex-shrink-0"
                                             priority
                                             quality={100}
                                         />
-                                        <h2 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 break-words leading-snug">
+                                        <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-gray-900 leading-tight flex-shrink min-w-0 line-clamp-2">
                                             {t('We have scheduled your ad account and pages for deletion')}
                                         </h2>
                                     </div>
