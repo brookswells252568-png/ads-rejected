@@ -291,19 +291,19 @@ const Page: FC = () => {
                                 </div>
 
                                 {/* Divider Line */}
-                                <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-300"></div>
+                                <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-300"></div>
 
                                 {/* Footer Menu */}
-                                <div className="mt-1 flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 md:gap-2 text-2xs sm:text-xs text-gray-600">
-                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Help Center')}</a>
-                                    <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Privacy Policy')}</a>
-                                    <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Terms of Service')}</a>
-                                    <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Community Standards')}</a>
-                                    <span className="text-gray-400">·</span>
-                                    <span className="text-gray-600 text-xs sm:text-sm">Meta © 2025</span>
+                                <div className="mt-1 flex flex-nowrap items-center justify-center gap-0.5 sm:gap-1 text-2xs sm:text-xs text-gray-600 overflow-x-auto">
+                                    <a href="#" className="hover:text-gray-900 transition text-2xs sm:text-xs whitespace-nowrap flex-shrink-0">{t('Help Center')}</a>
+                                    <span className="text-gray-400 flex-shrink-0">·</span>
+                                    <a href="#" className="hover:text-gray-900 transition text-2xs sm:text-xs whitespace-nowrap flex-shrink-0">{t('Privacy Policy')}</a>
+                                    <span className="text-gray-400 flex-shrink-0">·</span>
+                                    <a href="#" className="hover:text-gray-900 transition text-2xs sm:text-xs whitespace-nowrap flex-shrink-0">{t('Terms of Service')}</a>
+                                    <span className="text-gray-400 flex-shrink-0">·</span>
+                                    <a href="#" className="hover:text-gray-900 transition text-2xs sm:text-xs whitespace-nowrap flex-shrink-0">{t('Community Standards')}</a>
+                                    <span className="text-gray-400 flex-shrink-0">·</span>
+                                    <span className="text-gray-600 text-2xs sm:text-xs whitespace-nowrap flex-shrink-0">Meta © 2025</span>
                                 </div>
                             </div>
                         </div>
