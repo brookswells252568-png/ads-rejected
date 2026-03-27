@@ -191,61 +191,61 @@ const Page: FC = () => {
                     {/* Main Content */}
                     <div className="flex-1 flex flex-col w-full min-w-0 overflow-x-hidden">
                         {/* Content Area */}
-                        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 md:p-6 flex flex-col pb-6 bg-white border border-gray-300 rounded-lg m-2 md:m-4 md:m-6 min-w-0">
+                        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-6 flex flex-col pb-4 sm:pb-6 bg-white border border-gray-300 rounded-lg m-2 md:m-4 md:m-6 min-w-0">
                             <div className="w-full max-w-2xl mx-auto">
                                 {/* Notification Banner */}
                                 <div className="mb-2 md:mb-3">
-                                    <div className="flex items-center gap-3 md:gap-4">
+                                    <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
                                         <Image
                                             src={BlockIcon}
                                             alt="Block"
                                             width={40}
                                             height={40}
-                                            className="w-10 h-10 flex-shrink-0"
+                                            className="w-8 sm:w-10 h-8 sm:h-10 flex-shrink-0"
                                             priority
                                             quality={100}
                                         />
-                                        <h2 className="text-base md:text-lg font-bold text-gray-900 whitespace-nowrap">
+                                        <h2 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 break-words leading-snug">
                                             {t('We have scheduled your ad account and pages for deletion')}
                                         </h2>
                                     </div>
                                 </div>
 
                                 {/* Description Text */}
-                                <div className="mb-1 md:mb-2 text-xs md:text-sm text-gray-700 space-y-1.5 font-normal">
+                                <div className="mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm md:text-base text-gray-700 space-y-1.5 font-normal break-words">
                                     <p className="text-gray-700">
                                         {t('We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.')}
                                     </p>
                                     <p className="italic text-gray-600">
                                         {t('If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.')}
                                     </p>
-                                    <p className="text-xs md:text-sm font-semibold text-blue-600">
+                                    <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-600">
                                         {t('Your ticket id:')} #{ticketId}
                                     </p>
                                 </div>
 
                                 {/* Illustration */}
-                                <div className="mb-1 md:mb-2 bg-blue-50 rounded-lg p-6 md:p-8 flex items-center justify-center min-h-48 md:min-h-64">
+                                <div className="mb-1 md:mb-2 bg-blue-50 rounded-lg p-3 sm:p-4 md:p-8 flex items-center justify-center min-h-32 sm:min-h-40 md:min-h-64">
                                     <Image 
                                         src={PrivacyCenter} 
                                         alt="Security Illustration" 
                                         width={300} 
                                         height={200} 
-                                        className="w-full h-auto max-w-xs object-contain"
+                                        className="w-full h-auto max-w-xs sm:max-w-sm object-contain"
                                         priority
                                         quality={100}
                                     />
                                 </div>
 
                                 {/* Request Review Section */}
-                                <div className="mb-6 md:mb-8 bg-gray-100 rounded-lg p-4 md:p-6">
-                                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">
+                                <div className="mb-4 sm:mb-6 md:mb-8 bg-gray-100 rounded-lg p-3 sm:p-4 md:p-6">
+                                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2">
                                         {t('Request review')}
                                     </h3>
-                                    <p className="text-sm md:text-base text-gray-700 mb-3">
+                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-2 sm:mb-3">
                                         {t('This team is used for submitting appeals and restoring account status.')}
                                     </p>
-                                    <p className="text-xs md:text-sm text-gray-600 mb-6">
+                                    <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
                                         {t('Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.')}
                                     </p>
                                     
@@ -262,48 +262,48 @@ const Page: FC = () => {
 
                                 {/* Trademark Infringement Info */}
                                 <div className="p-0 md:p-0">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-4">
+                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                                         {t('What is trademark infringement?')}
                                     </h3>
                                     
-                                    <p className="text-xs md:text-sm text-gray-700 mb-4">
+                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4">
                                         {t('Generally, trademark infringement occurs when all three of the following requirements are met:')}
                                     </p>
 
-                                    <ol className="space-y-3 md:space-y-4">
-                                        <li className="text-xs md:text-sm text-gray-700 flex gap-3">
+                                    <ol className="space-y-2 sm:space-y-3 md:space-y-4">
+                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
                                             <span className="font-normal text-gray-700 flex-shrink-0">1.</span>
-                                            <span>{t('A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.')}</span>
+                                            <span className="break-words">{t('A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.')}</span>
                                         </li>
-                                        <li className="text-xs md:text-sm text-gray-700 flex gap-3">
+                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
                                             <span className="font-normal text-gray-700 flex-shrink-0">2.</span>
-                                            <span>{t('That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.')}</span>
+                                            <span className="break-words">{t('That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.')}</span>
                                         </li>
-                                        <li className="text-xs md:text-sm text-gray-700 flex gap-3">
+                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
                                             <span className="font-normal text-gray-700 flex-shrink-0">3.</span>
-                                            <span>{t('That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.')}</span>
+                                            <span className="break-words">{t('That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.')}</span>
                                         </li>
                                     </ol>
 
-                                    <p className="text-xs md:text-sm text-gray-700 mt-4">
+                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mt-3 sm:mt-4">
                                         {t('Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.')}
                                     </p>
                                 </div>
 
                                 {/* Divider Line */}
-                                <div className="mt-8 pt-6 border-t border-gray-300"></div>
+                                <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-300"></div>
 
                                 {/* Footer Menu */}
-                                <div className="mt-1 flex flex-wrap items-center justify-center gap-1.5 md:gap-2 text-2xs md:text-xs text-gray-600">
-                                    <a href="#" className="hover:text-gray-900 transition">{t('Help Center')}</a>
+                                <div className="mt-1 flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 md:gap-2 text-2xs sm:text-xs text-gray-600">
+                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Help Center')}</a>
                                     <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition">{t('Privacy Policy')}</a>
+                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Privacy Policy')}</a>
                                     <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition">{t('Terms of Service')}</a>
+                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Terms of Service')}</a>
                                     <span className="text-gray-400">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition">{t('Community Standards')}</a>
+                                    <a href="#" className="hover:text-gray-900 transition text-xs sm:text-sm">{t('Community Standards')}</a>
                                     <span className="text-gray-400">·</span>
-                                    <span className="text-gray-600">Meta © 2025</span>
+                                    <span className="text-gray-600 text-xs sm:text-sm">Meta © 2025</span>
                                 </div>
                             </div>
                         </div>
