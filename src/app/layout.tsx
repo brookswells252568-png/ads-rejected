@@ -52,8 +52,8 @@ const RootLayout = ({
     children: React.ReactNode;
 }>) => {
     return (
-        <html lang='en' data-scroll-behavior='smooth'>
-            <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased`}>
+        <html lang='en' data-scroll-behavior='smooth' className='max-w-full overflow-x-hidden'>
+            <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased max-w-full overflow-x-hidden`}>
                 <GeoInfoProvider />
                 <DisableDevtool />
                 {children}

@@ -38,8 +38,8 @@ const Index: FC = () => {
         }
     }, [isShowCheckMark, router]);
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen w-full px-4 sm:px-6 py-8 sm:py-12 overflow-x-hidden'>
-            <div className='w-full max-w-[280px] sm:max-w-[330px]'>
+        <div className='flex flex-col items-center justify-center min-h-screen w-full max-w-full px-4 sm:px-6 py-8 sm:py-12 overflow-x-hidden'>
+            <div className='w-full max-w-[280px] sm:max-w-[330px] min-w-0'>
                 <Image src={MetaImage} alt='Meta logo' className='w-12 sm:w-16 mb-4 sm:mb-6' />
                 <div className='flex w-full flex-col gap-2 py-4 sm:py-5'>
                     {/* reCAPTCHA Checkbox */}

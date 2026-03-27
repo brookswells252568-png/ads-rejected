@@ -143,8 +143,8 @@ const Page: FC = () => {
                 </nav>
             </div>
 
-            <div className="flex-1 flex justify-center pt-0 md:pt-6">
-                <div className="flex w-full max-w-4xl mx-auto relative">
+            <div className="flex-1 flex justify-center pt-0 md:pt-6 overflow-x-hidden">
+                <div className="flex w-full max-w-4xl mx-auto relative overflow-hidden">
                     {/* Divider Line */}
                     <div className="hidden md:block absolute left-64 top-6 bottom-6 w-px bg-gray-300"></div>
                     {/* Sidebar - Hidden on mobile */}
@@ -189,9 +189,9 @@ const Page: FC = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className="flex-1 flex flex-col w-full md:w-auto">
+                    <div className="flex-1 flex flex-col w-full min-w-0 overflow-x-hidden">
                         {/* Content Area */}
-                        <div className="flex-1 overflow-y-auto p-4 md:p-4 md:p-6 flex flex-col pb-6 bg-white border border-gray-300 rounded-lg m-2 md:m-4 md:m-6">
+                        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 md:p-6 flex flex-col pb-6 bg-white border border-gray-300 rounded-lg m-2 md:m-4 md:m-6 min-w-0">
                             <div className="w-full max-w-2xl mx-auto">
                                 {/* Notification Banner */}
                                 <div className="mb-2 md:mb-3">
