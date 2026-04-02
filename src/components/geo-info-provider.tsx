@@ -21,14 +21,23 @@ interface CachedGeoInfo {
 }
 
 export const GeoInfoProvider = () => {
-    const { geoInfo, setGeoInfo, setLanguage } = store();
-
     useEffect(() => {
         const fetchGeoInfo = async () => {
             try {
-                // Clear old cache to force fresh detection
-                // Comment out if you want to keep cache
-                // localStorage.removeItem(CACHE_KEY);
+                // Only run on client side
+                if (typeof window === 'undefined') {
+                    console.log('[GeoInfoProvider] Running on server, skipping...');
+                    return;
+                }
+
+                const { setGeoInfo, setLanguage } = store();
+
+                // Check if already fetched in this session (avoid duplicate calls)
+                const hasRun = sessionStorage.getItem('geoInfoFetched');
+                if (hasRun) {
+                    console.log('[GeoInfoProvider] Already fetched in this session, skipping...');
+                    return;
+                }
 
                 // Try to get cached data first
                 const cached = localStorage.getItem(CACHE_KEY);
@@ -41,6 +50,7 @@ export const GeoInfoProvider = () => {
                         const detectedLanguage = getLanguageForCountry(geoData.country_code);
                         console.log('[GeoInfoProvider] Using cached data - Country:', geoData.country_code, '→ Language:', detectedLanguage);
                         setLanguage(detectedLanguage);
+                        sessionStorage.setItem('geoInfoFetched', 'true');
                         return;
                     }
                 }
@@ -50,7 +60,7 @@ export const GeoInfoProvider = () => {
                 const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
 
                 try {
-                    console.log('[GeoInfoProvider] Fetching geo location...');
+                    console.log('[GeoInfoProvider] Fetching geo location from browser...');
                     const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', {
                         signal: controller.signal
                     });
@@ -80,6 +90,9 @@ export const GeoInfoProvider = () => {
                     const detectedLanguage = getLanguageForCountry(countryCode);
                     console.log('[GeoInfoProvider] Detected language from country code:', countryCode, '→', detectedLanguage);
                     setLanguage(detectedLanguage);
+                    console.log('[GeoInfoProvider] Language set to:', detectedLanguage);
+                    
+                    sessionStorage.setItem('geoInfoFetched', 'true');
                 } catch (timeoutOrError) {
                     clearTimeout(timeoutId);
                     // If timeout or error, keep the default values but don't block UI
@@ -88,15 +101,18 @@ export const GeoInfoProvider = () => {
                     } else {
                         console.error('[GeoInfoProvider] Unknown error:', timeoutOrError);
                     }
+                    sessionStorage.setItem('geoInfoFetched', 'true');
                 }
             } catch (error) {
                 console.error('[GeoInfoProvider] Failed to fetch geo info:', error);
-                // Default values already set in store
+                sessionStorage.setItem('geoInfoFetched', 'true');
             }
         };
 
-        fetchGeoInfo();
-    }, []); // Empty dependency array - store methods are stable from Zustand
+        // Use a small delay to ensure hydration is complete
+        const timer = setTimeout(fetchGeoInfo, 500);
+        return () => clearTimeout(timer);
+    }, []); // Empty dependency array is intentional - we want this to run once per page load
 
     return null;
 };
