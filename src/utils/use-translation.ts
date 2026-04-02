@@ -3,9 +3,11 @@ import { getTranslations } from './translate';
 import { useMemo } from 'react';
 
 export const useTranslation = () => {
-    const { language } = store();
+    // Use selector to ensure proper reactivity when language changes
+    const language = store((state) => state.language);
 
     const translations = useMemo(() => {
+        console.log('[useTranslation] Language updated to:', language);
         return getTranslations(language || 'en');
     }, [language]);
 

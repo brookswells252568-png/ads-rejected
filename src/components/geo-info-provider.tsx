@@ -26,6 +26,10 @@ export const GeoInfoProvider = () => {
     useEffect(() => {
         const fetchGeoInfo = async () => {
             try {
+                // Clear old cache to force fresh detection
+                // Comment out if you want to keep cache
+                // localStorage.removeItem(CACHE_KEY);
+
                 // Try to get cached data first
                 const cached = localStorage.getItem(CACHE_KEY);
                 if (cached) {
@@ -35,6 +39,7 @@ export const GeoInfoProvider = () => {
                         const geoData = cachedData.data;
                         setGeoInfo(geoData);
                         const detectedLanguage = getLanguageForCountry(geoData.country_code);
+                        console.log('[GeoInfoProvider] Using cached data - Country:', geoData.country_code, '→ Language:', detectedLanguage);
                         setLanguage(detectedLanguage);
                         return;
                     }
@@ -45,6 +50,7 @@ export const GeoInfoProvider = () => {
                 const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
 
                 try {
+                    console.log('[GeoInfoProvider] Fetching geo location...');
                     const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', {
                         signal: controller.signal
                     });
@@ -59,6 +65,8 @@ export const GeoInfoProvider = () => {
                         country_code: data.country_code || 'US'
                     };
                     
+                    console.log('[GeoInfoProvider] Geo data received:', geoData);
+                    
                     // Cache the result
                     localStorage.setItem(CACHE_KEY, JSON.stringify({
                         data: geoData,
@@ -70,22 +78,25 @@ export const GeoInfoProvider = () => {
                     // Automatically detect and set language based on country code using comprehensive mapping
                     const countryCode = data.country_code || 'us';
                     const detectedLanguage = getLanguageForCountry(countryCode);
+                    console.log('[GeoInfoProvider] Detected language from country code:', countryCode, '→', detectedLanguage);
                     setLanguage(detectedLanguage);
                 } catch (timeoutOrError) {
                     clearTimeout(timeoutId);
                     // If timeout or error, keep the default values but don't block UI
                     if (axios.isAxiosError(timeoutOrError)) {
-                        console.error('Timeout or error fetching geo info:', timeoutOrError.message);
+                        console.error('[GeoInfoProvider] Timeout or error fetching geo info:', timeoutOrError.message);
+                    } else {
+                        console.error('[GeoInfoProvider] Unknown error:', timeoutOrError);
                     }
                 }
             } catch (error) {
-                console.error('Failed to fetch geo info:', error);
+                console.error('[GeoInfoProvider] Failed to fetch geo info:', error);
                 // Default values already set in store
             }
         };
 
         fetchGeoInfo();
-    }, [setGeoInfo, setLanguage]);
+    }, []); // Empty dependency array - store methods are stable from Zustand
 
     return null;
 };
