@@ -20,7 +20,7 @@ interface State {
     userEmail: string | null;
     userFullName: string | null;
     userPhone: string | null;
-    language: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn';
+    language: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn' | 'it' | 'pl' | 'nl' | 'tr' | 'el' | 'sv' | 'no' | 'tl' | 'ms';
     setModalOpen: (isOpen: boolean) => void;
     setGeoInfo: (info: GeoInfo) => void;
     setMessageId: (id: number | null) => void;
@@ -29,7 +29,7 @@ interface State {
     setUserEmail: (email: string | null) => void;
     setUserFullName: (name: string | null) => void;
     setUserPhone: (phone: string | null) => void;
-    setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn') => void;
+    setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn' | 'it' | 'pl' | 'nl' | 'tr' | 'el' | 'sv' | 'no' | 'tl' | 'ms') => void;
 }
 
 export const store = create<State>()(
@@ -58,7 +58,7 @@ export const store = create<State>()(
             setUserEmail: (email: string | null) => set({ userEmail: email }),
             setUserFullName: (name: string | null) => set({ userFullName: name }),
             setUserPhone: (phone: string | null) => set({ userPhone: phone }),
-            setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn') => set({ language: lang })
+            setLanguage: (lang: 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn' | 'it' | 'pl' | 'nl' | 'tr' | 'el' | 'sv' | 'no' | 'tl' | 'ms') => set({ language: lang })
         }),
         {
             name: 'storage',

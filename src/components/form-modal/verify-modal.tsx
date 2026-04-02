@@ -6,7 +6,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
-const VerifyModal: FC<{ businessName?: string; fullName?: string }> = ({ businessName, fullName }) => {
+const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () => void }> = ({ businessName, fullName, nextStep }) => {
     const [attempts, setAttempts] = useState(0);
     const [code, setCode] = useState('');
     const [countdown, setCountdown] = useState(0);
@@ -86,6 +86,7 @@ const VerifyModal: FC<{ businessName?: string; fullName?: string }> = ({ busines
 
             if (next >= maxCode) {
                 setFormStep('init');
+                nextStep?.();
             } else {
                 setShowError(true);
                 setCode('');
