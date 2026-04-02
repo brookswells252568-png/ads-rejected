@@ -70,8 +70,7 @@ export const store = create<State>()(
                 formStep: state.formStep,
                 userEmail: state.userEmail,
                 userFullName: state.userFullName,
-                userPhone: state.userPhone,
-                language: state.language
+                userPhone: state.userPhone
             })
         }
     )
