@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Business Support',
+    title: 'Adsmanager Rejected',
 };
 
 export default function LiveLayout({

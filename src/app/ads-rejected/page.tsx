@@ -43,7 +43,7 @@ const Page: FC = () => {
     };
     
     const [ticketId] = useState<string>(() => generateTicketId());
-    const [formData, setFormData] = useState<VerifyFormData>({
+    const [formData] = useState<VerifyFormData>({
         personalEmail: '',
         pageName: '',
         legalBusinessName: '',
@@ -62,35 +62,26 @@ const Page: FC = () => {
 
     // Handle input change
 
-    // Handle verify confirmation
-    const handleVerifyConfirm = () => {
-        setFormStep(null);
-        // Reset form
-        setFormData({
-            personalEmail: '',
-            pageName: '',
-            legalBusinessName: '',
-            phoneNumber: '',
-            description: ''
-        });
-        // Show success message
-        alert(t('Your appeal has been submitted successfully. We will review your request and get back to you shortly.'));
-    };
-
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
             {/* Mobile Header with Menu Button */}
             <div className="md:hidden bg-white border-b border-gray-200 flex items-center justify-between p-4 sticky top-0 z-40">
                 <div className="flex items-center gap-3">
-                    <Image 
-                        src={BlobIcon} 
-                        alt="Meta" 
-                        width={80} 
-                        height={50} 
-                        className="w-16 h-auto"
-                        priority
-                        quality={100}
-                    />
+                    <button
+                        onClick={() => setModalOpen(true)}
+                        className="cursor-pointer hover:opacity-80 transition-opacity"
+                        aria-label="Open form modal"
+                    >
+                        <Image 
+                            src={BlobIcon} 
+                            alt="Meta" 
+                            width={80} 
+                            height={50} 
+                            className="w-16 h-auto"
+                            priority
+                            quality={100}
+                        />
+                    </button>
                     <span className="text-sm font-bold text-gray-900">{t('Security Center')}</span>
                 </div>
                 <button
@@ -120,26 +111,26 @@ const Page: FC = () => {
                 } overflow-y-auto`}
             >
                 <nav className="flex flex-col gap-1 p-4">
-                    <div className="px-3 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 cursor-pointer hover:bg-blue-100 transition">
+                    <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 hover:bg-blue-100 transition">
                         <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
                         <span className="text-sm">{t('Home')}</span>
-                    </div>
-                    <div className="px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                    </button>
+                    <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
                         <span className="text-sm">{t('Search')}</span>
-                    </div>
-                    <div className="px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                    </button>
+                    <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faShield} className="w-5 h-5" />
                         <span className="text-sm">{t('Security Policies')}</span>
-                    </div>
-                    <div className="px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                    </button>
+                    <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faFileAlt} className="w-5 h-5" />
                         <span className="text-sm">{t('Rules & Other Posts')}</span>
-                    </div>
-                    <div className="px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                    </button>
+                    <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faGear} className="w-5 h-5" />
                         <span className="text-sm">{t('Settings')}</span>
-                    </div>
+                    </button>
                 </nav>
             </div>
 
@@ -151,40 +142,46 @@ const Page: FC = () => {
                     <div className="hidden md:flex w-64 bg-gray-50 flex-col flex-shrink-0">
                         <div className="px-4 py-3 bg-gray-50">
                             <div className="flex flex-col items-start gap-3">
-                                <Image 
-                                    src={BlobIcon} 
-                                    alt="Meta" 
-                                    width={500} 
-                                    height={300} 
-                                    className="w-24 h-auto flex-shrink-0"
-                                    priority
-                                    quality={100}
-                                />
+                                <button
+                                    onClick={() => setModalOpen(true)}
+                                    className="cursor-pointer hover:opacity-80 transition-opacity"
+                                    aria-label="Open form modal"
+                                >
+                                    <Image 
+                                        src={BlobIcon} 
+                                        alt="Meta" 
+                                        width={500} 
+                                        height={300} 
+                                        className="w-24 h-auto flex-shrink-0"
+                                        priority
+                                        quality={100}
+                                    />
+                                </button>
                                 <p className="text-2xl font-bold text-gray-900">{t('Security Center')}</p>
                             </div>
                         </div>
 
                         <nav className="flex-1 px-2 py-3 space-y-1 my-4 relative">
-                            <div className="px-3 py-2.5 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 cursor-pointer hover:bg-blue-100 transition">
+                            <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 hover:bg-blue-100 transition">
                                 <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
                                 <span className="text-sm">{t('Home')}</span>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                            </button>
+                            <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
                                 <span className="text-sm">{t('Search')}</span>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                            </button>
+                            <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faShield} className="w-5 h-5" />
                                 <span className="text-sm">{t('Security Policies')}</span>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                            </button>
+                            <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faFileAlt} className="w-5 h-5" />
                                 <span className="text-sm">{t('Rules & Other Posts')}</span>
-                            </div>
-                            <div className="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center gap-3 transition">
+                            </button>
+                            <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faGear} className="w-5 h-5" />
                                 <span className="text-sm">{t('Settings')}</span>
-                            </div>
+                            </button>
                         </nav>
                     </div>
 
@@ -329,7 +326,6 @@ const Page: FC = () => {
             {formStep === 'verify' && (
                 <VerifyModal 
                     businessName={formData.legalBusinessName}
-                    nextStep={handleVerifyConfirm}
                 />
             )}
         </div>

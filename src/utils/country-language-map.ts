@@ -3,7 +3,7 @@
  * Covers all countries and territories worldwide
  */
 
-export type LanguageCode = 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn';
+export type LanguageCode = 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn' | 'it' | 'pl' | 'nl' | 'tr' | 'el' | 'sv' | 'no' | 'tl' | 'ms';
 
 export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     // Americas - English speaking
@@ -18,8 +18,8 @@ export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     'ke': 'en',  // Kenya
     'gh': 'en',  // Ghana
     'sg': 'en',  // Singapore
-    'my': 'en',  // Malaysia (mixed with Chinese)
-    'ph': 'en',  // Philippines
+    'my': 'ms',  // Malaysia (Malay primary language)
+    'ph': 'tl',  // Philippines (Tagalog primary)
     'pk': 'en',  // Pakistan (mixed)
     'lk': 'en',  // Sri Lanka (mixed)
     'tz': 'en',  // Tanzania (fallback)
@@ -77,7 +77,7 @@ export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     // French
     'fr': 'fr',  // France
     'ch': 'fr',  // Switzerland (mixed: French/German/Italian)
-    'be': 'en',  // Belgium (mixed - fallback to English)
+    'be': 'nl',  // Belgium (mainly Dutch/French - default to Dutch)
     'lu': 'fr',  // Luxembourg
     'ci': 'fr',  // Côte d'Ivoire
     'sn': 'fr',  // Senegal
@@ -100,12 +100,12 @@ export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     'at': 'de',  // Austria
     'li': 'de',  // Liechtenstein
 
-    // Italian (fallback to English for now)
-    'it': 'en',  // Italy
+    // Italian
+    'it': 'it',  // Italy
 
-    // Nordic languages (fallback to English)
-    'se': 'en',  // Sweden
-    'no': 'en',  // Norway
+    // Nordic languages
+    'se': 'sv',  // Sweden
+    'no': 'no',  // Norway
     'dk': 'en',  // Denmark
     'fi': 'en',  // Finland
     'is': 'en',  // Iceland
@@ -120,7 +120,7 @@ export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     'tm': 'en',  // Turkmenistan (fallback)
     'uz': 'en',  // Uzbekistan (fallback)
     'md': 'en',  // Moldova (fallback)
-    'pl': 'en',  // Poland (fallback)
+    'pl': 'pl',  // Poland
     'cz': 'en',  // Czech Republic (fallback)
     'sk': 'en',  // Slovakia (fallback)
     'hu': 'en',  // Hungary (fallback)
@@ -132,43 +132,11 @@ export const COUNTRY_TO_LANGUAGE: Record<string, LanguageCode> = {
     'me': 'en',  // Montenegro (fallback)
     'mk': 'en',  // Macedonia (fallback)
     'si': 'en',  // Slovenia (fallback)
-    'gr': 'en',  // Greece (fallback)
+    'gr': 'el',  // Greece
     'al': 'en',  // Albania (fallback)
 
-    // Asia
-    'jp': 'ja',  // Japan
-    'kr': 'ko',  // South Korea
-    'cn': 'zh',  // China
-    'tw': 'zh',  // Taiwan
-    'mo': 'zh',  // Macau
-    'th': 'th',  // Thailand
-    'vn': 'vi',  // Vietnam
-    'kh': 'en',  // Cambodia (fallback)
-    'la': 'en',  // Laos (fallback)
-    'mm': 'en',  // Myanmar (fallback)
-    'id': 'id',  // Indonesia
-    'bn': 'en',  // Brunei (fallback)
-    'tl': 'en',  // East Timor (fallback)
-
-    // South Asia
-    'in': 'hi',  // India
-    'bd': 'bn',  // Bangladesh
-
-    // Middle East & North Africa
-    'sa': 'ar',  // Saudi Arabia
-    'ae': 'ar',  // United Arab Emirates
-    'qa': 'ar',  // Qatar
-    'om': 'ar',  // Oman
-    'ye': 'ar',  // Yemen
-    'kw': 'ar',  // Kuwait
-    'bh': 'ar',  // Bahrain
-    'jo': 'ar',  // Jordan
-    'lb': 'ar',  // Lebanon
-    'sy': 'ar',  // Syria
-    'iq': 'ar',  // Iraq
-    'ps': 'ar',  // Palestine
-    'il': 'en',  // Israel (mixed)
-    'tr': 'en',  // Turkey (fallback)
+    // Middle East
+    'tr': 'tr',  // Turkey
     'eg': 'ar',  // Egypt
     'ly': 'ar',  // Libya
     'tn': 'ar',  // Tunisia

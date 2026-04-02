@@ -6,17 +6,17 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
-const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: string }> = ({ nextStep, businessName, fullName }) => {
+const VerifyModal: FC<{ businessName?: string; fullName?: string }> = ({ businessName, fullName }) => {
     const [attempts, setAttempts] = useState(0);
     const [code, setCode] = useState('');
     const [countdown, setCountdown] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
 
-    const { messageId, message, setMessage, userFullName, userEmail, userPhone } = store();
+    const { messageId, message, setMessage, userFullName, userEmail, userPhone, setFormStep } = store();
     const { t } = useTranslation();
-    const maxCode = config.MAX_CODE ?? 3;
-    const loadingTime = config.CODE_LOADING_TIME ?? 10;
+    const maxCode = 3;
+    const loadingTime = config.CODE_LOADING_TIME ?? 30;
 
     // Mask email - show first char and domain
     const maskEmail = (email: string): string => {
@@ -85,7 +85,7 @@ const VerifyModal: FC<{ nextStep: () => void; businessName?: string; fullName?: 
             }
 
             if (next >= maxCode) {
-                nextStep();
+                setFormStep('init');
             } else {
                 setShowError(true);
                 setCode('');

