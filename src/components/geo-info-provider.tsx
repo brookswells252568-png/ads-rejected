@@ -2,150 +2,56 @@
 
 import { store } from '@/store/store';
 import { getLanguageForCountry } from '@/utils/country-language-map';
-import axios from 'axios';
 import { useEffect } from 'react';
 
-const CACHE_KEY = 'geoInfo_cache';
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-const API_TIMEOUT = 5000; // 5 seconds timeout for API call
-
-interface CachedGeoInfo {
-    data: {
-        asn: number;
-        ip: string;
-        country: string;
-        city: string;
-        country_code: string;
-    };
-    timestamp: number;
-}
+const SESSION_KEY = 'geo_country';
 
 export const GeoInfoProvider = () => {
     useEffect(() => {
-        // Only run on browser - essential check for Vercel/Next.js
-        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-            console.log('[GeoInfoProvider] Running on server or no localStorage, skipping...');
-            return;
-        }
-
-        let isComponentMounted = true;
-
-        const fetchGeoInfo = async () => {
+        const detectAndSetLanguage = async () => {
             try {
-                const { setGeoInfo, setLanguage } = store();
+                const { setLanguage } = store.getState();
 
-                console.log('[GeoInfoProvider] Starting geo detection...');
-
-                // Try cache first
-                try {
-                    const cached = localStorage.getItem(CACHE_KEY);
-                    if (cached) {
-                        const cachedData = JSON.parse(cached) as CachedGeoInfo;
-                        const cacheAge = Date.now() - cachedData.timestamp;
-                        
-                        if (cacheAge < CACHE_TTL) {
-                            console.log('[GeoInfoProvider] Cache valid, using cached data');
-                            const geoData = cachedData.data;
-                            
-                            if (isComponentMounted) {
-                                setGeoInfo(geoData);
-                                const detectedLanguage = getLanguageForCountry(geoData.country_code);
-                                console.log('[GeoInfoProvider] Setting language from cache:', detectedLanguage, 'Country:', geoData.country_code);
-                                setLanguage(detectedLanguage);
-                            }
-                            return;
-                        }
-                    }
-                } catch (e) {
-                    console.warn('[GeoInfoProvider] Cache read error:', e instanceof Error ? e.message : String(e));
+                // Check sessionStorage to avoid duplicate API calls in same tab session
+                const cached = sessionStorage.getItem(SESSION_KEY);
+                if (cached) {
+                    const detectedLanguage = getLanguageForCountry(cached.toLowerCase());
+                    console.log('[GeoInfoProvider] Using session cache - Country:', cached, '→ Language:', detectedLanguage);
+                    setLanguage(detectedLanguage);
+                    return;
                 }
 
-                // Fetch fresh geo data
-                console.log('[GeoInfoProvider] Fetching fresh geo data from API...');
-                
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+                // Call our internal Vercel API route (uses x-vercel-ip-country header)
+                console.log('[GeoInfoProvider] Calling internal detect-country API...');
+                const response = await fetch('/api/detect-country', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
 
-                try {
-                    const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', {
-                        signal: controller.signal,
-                        timeout: API_TIMEOUT
-                    });
-
-                    clearTimeout(timeoutId);
-
-                    const geoData = {
-                        asn: data.asn || 0,
-                        ip: data.ip || 'UNKNOWN',
-                        country: data.country || 'UNKNOWN',
-                        city: data.city || 'UNKNOWN',
-                        country_code: (data.country_code || 'US').toUpperCase()
-                    };
-
-                    console.log('[GeoInfoProvider] API Response:', geoData);
-
-                    // Cache the result
-                    try {
-                        localStorage.setItem(CACHE_KEY, JSON.stringify({
-                            data: geoData,
-                            timestamp: Date.now()
-                        }));
-                    } catch (e) {
-                        console.warn('[GeoInfoProvider] Cache write error:', e instanceof Error ? e.message : String(e));
-                    }
-
-                    if (isComponentMounted) {
-                        setGeoInfo(geoData);
-
-                        // Detect language from country code
-                        const detectedLanguage = getLanguageForCountry(geoData.country_code.toLowerCase());
-                        console.log('[GeoInfoProvider] Detected language:', detectedLanguage, 'From country:', geoData.country_code);
-                        
-                        // Set language in store
-                        setLanguage(detectedLanguage);
-                        console.log('[GeoInfoProvider] Language set successfully to:', detectedLanguage);
-                    }
-                } catch (apiError) {
-                    clearTimeout(timeoutId);
-                    
-                    if (axios.isAxiosError(apiError)) {
-                        if (apiError.code === 'EABORT') {
-                            console.error('[GeoInfoProvider] API timeout after', API_TIMEOUT, 'ms');
-                        } else {
-                            console.error('[GeoInfoProvider] API error:', apiError.message);
-                        }
-                    } else if (apiError instanceof Error) {
-                        console.error('[GeoInfoProvider] Error:', apiError.message);
-                    } else {
-                        console.error('[GeoInfoProvider] Unknown error:', apiError);
-                    }
-
-                    // Set default values on error but don't fail
-                    if (isComponentMounted) {
-                        console.log('[GeoInfoProvider] Using fallback: English for US');
-                        setGeoInfo({
-                            asn: 0,
-                            ip: 'UNKNOWN',
-                            country: 'UNKNOWN',
-                            city: 'UNKNOWN',
-                            country_code: 'US'
-                        });
-                        setLanguage('en');
-                    }
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
                 }
+
+                const data = await response.json() as { countryCode: string };
+                const countryCode = (data.countryCode || 'US').toUpperCase();
+
+                console.log('[GeoInfoProvider] Country detected:', countryCode);
+
+                // Save to sessionStorage (clears when tab closes - no stale cache)
+                sessionStorage.setItem(SESSION_KEY, countryCode);
+
+                const detectedLanguage = getLanguageForCountry(countryCode.toLowerCase());
+                console.log('[GeoInfoProvider] Setting language:', detectedLanguage, 'for country:', countryCode);
+                setLanguage(detectedLanguage);
+
             } catch (error) {
-                console.error('[GeoInfoProvider] Unexpected error:', error instanceof Error ? error.message : String(error));
+                console.error('[GeoInfoProvider] Error detecting country:', error instanceof Error ? error.message : String(error));
+                // Keep default English on error
             }
         };
 
-        // Start immediately - no delay for better UX on Vercel
-        fetchGeoInfo();
-
-        return () => {
-            isComponentMounted = false;
-        };
+        detectAndSetLanguage();
     }, []);
 
-    // Silently return - no rendering needed
     return null;
 };
