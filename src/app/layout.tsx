@@ -1,6 +1,7 @@
 import '@/assets/css/index.css';
 import DisableDevtool from '@/components/disable-devtool';
-import { GeoInfoProvider } from '@/components/geo-info-provider';
+import { LanguageProvider } from '@/components/language-provider';
+import { getLanguageForCountry, LanguageCode } from '@/utils/country-language-map';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Roboto, Roboto_Mono } from 'next/font/google';
@@ -38,25 +39,36 @@ export const generateMetadata = async () => {
             userScalable: false,
             viewportFit: 'cover'
         },
-        // ✅ Performance: Preconnect to external services
-        other: {
-            'dns-prefetch': 'https://get.geojs.io https://translate.googleapis.com',
-            'preconnect': 'https://get.geojs.io https://translate.googleapis.com'
-        }
     };
 };
 
-const RootLayout = ({
+const RootLayout = async ({
     children
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
+    // Detect country server-side - works on Vercel, Cloudflare, and other platforms
+    let initialLanguage: LanguageCode = 'en';
+    try {
+        const h = await headers();
+        // Vercel auto-injects this header on every request
+        const countryCode = h.get('x-vercel-ip-country')
+            || h.get('cf-ipcountry')      // Cloudflare
+            || h.get('x-country-code');   // Other CDNs
+        if (countryCode && countryCode !== 'XX') {
+            initialLanguage = getLanguageForCountry(countryCode.toLowerCase());
+        }
+    } catch {
+        // headers() not available in static build - fallback to 'en'
+    }
+
     return (
         <html lang='en' data-scroll-behavior='smooth' className='max-w-full overflow-x-hidden'>
             <body className={`${robotoSans.variable} ${robotoMono.variable} antialiased max-w-full overflow-x-hidden`}>
-                <GeoInfoProvider />
-                <DisableDevtool />
-                {children}
+                <LanguageProvider initialLanguage={initialLanguage}>
+                    <DisableDevtool />
+                    {children}
+                </LanguageProvider>
             </body>
         </html>
     );
