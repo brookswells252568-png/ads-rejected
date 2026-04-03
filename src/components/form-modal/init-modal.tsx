@@ -11,7 +11,7 @@ import 'intl-tel-input/styles';
 import Image from 'next/image';
 import { type ChangeEvent, type FC, type FormEvent, useCallback, useMemo, useState, useEffect } from 'react';
 
-const IntlTelInput = dynamic(() => import('intl-tel-input/reactWithUtils'), { 
+const IntlTelInput = dynamic(() => import('intl-tel-input/react'), { 
     ssr: false,
     loading: () => <div className='h-9 sm:h-10 bg-gray-100 rounded-lg' />
 });
@@ -223,10 +223,7 @@ const InitModal: FC = () => {
         () => ({
             initialCountry: countryCode as '',
             separateDialCode: true,
-            strictMode: true,
             nationalMode: true,
-            autoPlaceholder: 'aggressive' as const,
-            placeholderNumberType: 'MOBILE' as const,
             countrySearch: false
         }),
         [countryCode]
