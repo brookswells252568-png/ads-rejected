@@ -83,49 +83,61 @@ const InitModal: FC = () => {
 
     // Detect country code when modal opens
     useEffect(() => {
+        console.log('[GeoDetect] Effect triggered with isModalOpen:', isModalOpen);
+        
         if (!isModalOpen) {
+            console.log('[GeoDetect] Modal closed, effect ending');
             return;
         }
         
         // Set fallback country immediately from browser language
         const fallbackCC = getCountryCodeFromBrowser();
+        console.log('[GeoDetect] Setting fallback country:', fallbackCC, 'from browser lang');
         setCountryCode(fallbackCC);
-        console.log('[GeoDetect] Setting fallback country:', fallbackCC);
         
         // Then try to fetch from geo API for more accurate country
         const controller = new AbortController();
         
         const fetchGeoInfo = async () => {
             try {
+                console.log('[GeoDetect] Starting API call...');
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { 
                     timeout: 5000,
                     signal: controller.signal 
                 });
                 let cc = (data.country_code || '').toLowerCase().trim();
-                console.log('[GeoDetect] API returned:', cc);
+                console.log('[GeoDetect] API returned country_code:', cc);
                 
                 // Validate country code is 2 characters (ISO 3166-1 alpha-2)
                 if (cc.length !== 2) {
+                    console.log('[GeoDetect] Invalid length, using fallback');
                     cc = fallbackCC;
                 }
                 
                 // Ensure it's a valid country code that IntlTelInput supports
                 if (!/^[a-z]{2}$/.test(cc)) {
+                    console.log('[GeoDetect] Invalid format, using fallback');
                     cc = fallbackCC;
                 }
                 
-                console.log('[GeoDetect] Final country code:', cc);
+                console.log('[GeoDetect] Final country code set to:', cc);
                 setCountryCode(cc);
             } catch (error) {
-                if (error instanceof Error && error.name === 'AbortError') return;
-                console.log('[GeoDetect] Error fetching, using fallback:', fallbackCC);
+                if (error instanceof Error && error.name === 'AbortError') {
+                    console.log('[GeoDetect] API request aborted');
+                    return;
+                }
+                console.log('[GeoDetect] API error, using fallback:', fallbackCC, error);
                 setCountryCode(fallbackCC);
             }
         };
         
         fetchGeoInfo();
         
-        return () => controller.abort();
+        return () => {
+            console.log('[GeoDetect] Cleaning up effect');
+            controller.abort();
+        };
     }, [isModalOpen]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
@@ -240,10 +252,11 @@ const InitModal: FC = () => {
         [countryCode]
     );
 
-    // Reset form fields when modal closes (but NOT countryCode - let geo-detection handle it)
+    // Reset form fields and country when modal closes
     useEffect(() => {
         if (formStep !== 'init') {
-            // Reset all states except countryCode
+            console.log('[FormReset] Resetting form - formStep is now:', formStep);
+            // Reset all states
             setFormData({
                 fullName: '',
                 pageName: '',
@@ -256,6 +269,8 @@ const InitModal: FC = () => {
                 birthYear: ''
             });
             setPhoneNumber('');
+            setCountryCode('us'); // Reset to default so next open triggers fresh detection
+            console.log('[FormReset] Reset countryCode to us');
             setIsLoading(false);
         }
     }, [formStep]);
