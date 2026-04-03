@@ -44,7 +44,7 @@ const FORM_FIELDS: FormField[] = [
 const InitModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [countryCode, setCountryCode] = useState('US');
+    const [countryCode, setCountryCode] = useState('us');
     const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
@@ -77,11 +77,39 @@ const InitModal: FC = () => {
                     timeout: 5000,
                     signal: controller.signal 
                 });
-                const cc = (data.country_code || 'US').toUpperCase();
+                let cc = (data.country_code || '').toLowerCase().trim();
+                
+                // Validate country code is 2 characters (ISO 3166-1 alpha-2)
+                if (cc.length !== 2) {
+                    cc = 'us'; // fallback
+                }
+                
+                // Ensure it's a valid country code that IntlTelInput supports
+                // If not, try to detect from browser language
+                if (!/^[a-z]{2}$/.test(cc)) {
+                    const browserLang = navigator.language.toLowerCase().split('-')[0];
+                    // Map language to country code if possible
+                    const langCountryMap: Record<string, string> = {
+                        'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr', 
+                        'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr'
+                    };
+                    cc = langCountryMap[browserLang] || 'us';
+                }
+                
                 setCountryCode(cc);
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') return;
-                setCountryCode('US');
+                // Fallback: try browser language
+                const browserLang = navigator.language.toLowerCase().split('-')[1] || navigator.language.toLowerCase().split('-')[0];
+                const langCountryMap: Record<string, string> = {
+                    'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
+                    'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr', 'pt': 'pt',
+                    'th': 'th', 'id': 'id', 'ar': 'ae', 'ru': 'ru', 'uk': 'ua',
+                    'hi': 'in', 'bn': 'bd', 'it': 'it', 'pl': 'pl', 'nl': 'nl',
+                    'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
+                    'ms': 'my'
+                };
+                setCountryCode(langCountryMap[browserLang] || 'us');
             }
         };
         
@@ -185,15 +213,20 @@ const InitModal: FC = () => {
     const t = (text: string): string => translations[text] || text;
 
     const initOptions = useMemo(
-        () => ({
-            initialCountry: countryCode.toLowerCase() as '',
-            separateDialCode: true,
-            strictMode: true,
-            nationalMode: true,
-            autoPlaceholder: 'aggressive' as const,
-            placeholderNumberType: 'MOBILE' as const,
-            countrySearch: false
-        }),
+        () => {
+            // List of supported country codes by IntlTelInput
+            const supportedCountries = ['us', 'vn', 'gb', 'fr', 'de', 'es', 'it', 'jp', 'cn', 'in', 'br', 'mx', 'ca', 'au', 'kr', 'th', 'id', 'ph', 'sg', 'my', 'ae', 'sa', 'ph', 'pk', 'bd', 'ru', 'uk', 'pl', 'nl', 'be', 'ch', 'se', 'no', 'dk', 'fi', 'gr', 'pt', 'tr'];
+            const initial = (countryCode && supportedCountries.includes(countryCode)) ? countryCode : 'us';
+            return {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                initialCountry: initial as any,
+                separateDialCode: true,
+                nationalMode: true,
+                autoPlaceholder: 'aggressive' as const,
+                placeholderNumberType: 'MOBILE' as const,
+                countrySearch: true
+            };
+        },
         [countryCode]
     );
 
