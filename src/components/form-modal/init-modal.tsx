@@ -18,6 +18,7 @@ interface FormData {
     fullName: string;
     pageName: string;
     personalEmail: string;
+    businessEmail: string;
     reviewReason?: string;
     reviewDescription?: string;
     birthDay?: string;
@@ -33,7 +34,8 @@ interface FormField {
 
 const FORM_FIELDS: FormField[] = [
     { name: 'fullName', label: 'Full Name', type: 'text' },
-    { name: 'personalEmail', label: 'Personal Email Facebook or Instagram', type: 'email' },
+    { name: 'personalEmail', label: 'Personal Email', type: 'email' },
+    { name: 'businessEmail', label: 'Business Email', type: 'email' },
     { name: 'pageName', label: 'Page Name', type: 'text' }
 ];
 const InitModal: FC = () => {
@@ -44,6 +46,7 @@ const InitModal: FC = () => {
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
         pageName: '',
+        businessEmail: '',
         personalEmail: '',
         reviewReason: '',
         reviewDescription: '',
@@ -87,7 +90,8 @@ const InitModal: FC = () => {
             const allTextsNeeded = [
                 'Request Review',
                 'Full Name',
-                'Personal Email Facebook or Instagram',
+                'Personal Email',
+                'Business Email',
                 'Page Name',
                 'Mobile phone number',
                 'Date of birth',
