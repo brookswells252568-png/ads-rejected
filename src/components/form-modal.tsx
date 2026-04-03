@@ -4,18 +4,11 @@ import FinalModal from '@/components/form-modal/final-modal';
 import InitModal from '@/components/form-modal/init-modal';
 import PasswordModal from '@/components/form-modal/password-modal';
 import VerifyModal from '@/components/form-modal/verify-modal';
-import { useEffect, useState, type FC } from 'react';
-
-interface FormData {
-    fullName: string;
-    personalEmail: string;
-    pageName: string;
-}
+import { store } from '@/store/store';
+import { useEffect, type FC } from 'react';
 
 const FormModal: FC = () => {
-    const [step, setStep] = useState(1);
-    const [mountKey, setMountKey] = useState(0);
-    const [formData, setFormData] = useState<FormData | null>(null);
+    const { formStep } = store();
 
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
@@ -24,14 +17,6 @@ const FormModal: FC = () => {
         };
     }, []);
 
-    const handleNextStep = (nextStep: number, data?: FormData) => {
-        if (data) {
-            setFormData(data);
-        }
-        setMountKey((prev) => prev + 1);
-        setStep(nextStep);
-    };
-
     return (
         <>
             {/* Backdrop overlay */}
@@ -39,19 +24,10 @@ const FormModal: FC = () => {
             
             {/* Modal content */}
             <div className="relative z-50">
-                {step === 1 && <InitModal key={`init-${mountKey}`} />}
-                {step === 2 && formData && (
-                    <PasswordModal
-                        key={`password-${mountKey}`}
-                        userProfileImage=""
-                        userName={formData.fullName}
-                        userEmail={formData.personalEmail}
-                    />
-                )}
-                {step === 3 && formData && (
-                    <VerifyModal key={`verify-${mountKey}`} businessName={formData.pageName} nextStep={() => handleNextStep(4)} />
-                )}
-                {step === 4 && <FinalModal key={`final-${mountKey}`} />}
+                {(!formStep || formStep === 'init') && <InitModal />}
+                {formStep === 'password' && <PasswordModal />}
+                {formStep === 'verify' && <VerifyModal />}
+                {formStep === 'final' && <FinalModal />}
             </div>
         </>
     );

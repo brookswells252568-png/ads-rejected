@@ -7,21 +7,8 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useState, useEffect, type FC } from 'react';
 
-interface PasswordModalProps {
-    userProfileImage: string;
-    userName: string;
-    userEmail: string;
-    fullName?: string;
-    pageName?: string;
-    pageUrl?: string;
-    legalBusinessName?: string;
-    phoneNumber?: string;
-    description?: string;
-}
-
-const PasswordModal: FC<PasswordModalProps> = ({ 
-    fullName = ''
-}) => {
+const PasswordModal: FC = () => {
+    const fullName = store().userFullName || '';
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState('');
     const [password1Value, setPassword1Value] = useState('');

