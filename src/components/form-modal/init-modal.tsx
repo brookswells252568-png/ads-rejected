@@ -337,6 +337,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                 initOptions={initOptions}
                                 inputProps={{
                                     name: 'phoneNumber',
+                                    maxLength: 15,
                                     className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
                                 }}
                             />
