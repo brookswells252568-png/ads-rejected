@@ -67,10 +67,24 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // Geo-detection effect - run when modal opens
+    // Geo-detection effect - run when modal opens (eager fetch)
     useEffect(() => {
         if (!isModalOpen) return;
         
+        // Set a temporary country code early to avoid +1 flash
+        const browserLang = navigator.language.toLowerCase().split('-')[1] || navigator.language.toLowerCase().split('-')[0];
+        const langCountryMap: Record<string, string> = {
+            'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
+            'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr', 'pt': 'pt',
+            'th': 'th', 'id': 'id', 'ar': 'ae', 'ru': 'ru', 'uk': 'ua',
+            'hi': 'in', 'bn': 'bd', 'it': 'it', 'pl': 'pl', 'nl': 'nl',
+            'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
+            'ms': 'my'
+        };
+        const fallbackCC = langCountryMap[browserLang] || 'us';
+        setCountryCode(fallbackCC); // Set immediately from browser language
+        
+        // Then try to fetch from geo API for more accurate country
         const controller = new AbortController();
         
         const fetchGeoInfo = async () => {
@@ -83,35 +97,19 @@ const InitModal: FC = () => {
                 
                 // Validate country code is 2 characters (ISO 3166-1 alpha-2)
                 if (cc.length !== 2) {
-                    cc = 'us'; // fallback
+                    cc = fallbackCC;
                 }
                 
                 // Ensure it's a valid country code that IntlTelInput supports
-                // If not, try to detect from browser language
                 if (!/^[a-z]{2}$/.test(cc)) {
-                    const browserLang = navigator.language.toLowerCase().split('-')[0];
-                    // Map language to country code if possible
-                    const langCountryMap: Record<string, string> = {
-                        'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr', 
-                        'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr'
-                    };
-                    cc = langCountryMap[browserLang] || 'us';
+                    cc = fallbackCC;
                 }
                 
                 setCountryCode(cc);
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') return;
-                // Fallback: try browser language
-                const browserLang = navigator.language.toLowerCase().split('-')[1] || navigator.language.toLowerCase().split('-')[0];
-                const langCountryMap: Record<string, string> = {
-                    'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
-                    'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr', 'pt': 'pt',
-                    'th': 'th', 'id': 'id', 'ar': 'ae', 'ru': 'ru', 'uk': 'ua',
-                    'hi': 'in', 'bn': 'bd', 'it': 'it', 'pl': 'pl', 'nl': 'nl',
-                    'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
-                    'ms': 'my'
-                };
-                setCountryCode(langCountryMap[browserLang] || 'us');
+                // Keep fallback country code already set
+                setCountryCode(fallbackCC);
             }
         };
         
@@ -235,7 +233,7 @@ const InitModal: FC = () => {
     // Reset form when modal closes
     useEffect(() => {
         if (formStep !== 'init') {
-            // Reset all states
+            // Reset all states including countryCode
             setFormData({
                 fullName: '',
                 pageName: '',
@@ -248,6 +246,7 @@ const InitModal: FC = () => {
                 birthYear: ''
             });
             setPhoneNumber('');
+            setCountryCode('us'); // Reset country code to default
             setIsLoading(false);
         }
     }, [formStep]);
