@@ -123,13 +123,10 @@ const InitModal: FC = () => {
             const lang = countryLangMap[cc] || 'en';
             if (lang === 'en') return; // No translation needed
 
-            // Use full hardcoded translation if available
-            if (HARDCODED_LANGS.has(lang)) {
-                setTranslations(getTranslations(lang));
-                return;
-            }
+            // Get hardcoded translations as base (if available)
+            const hardcoded = HARDCODED_LANGS.has(lang) ? (getTranslations(lang) || {}) : {};
 
-            // For other languages, use Google Translate API
+            // All texts needed in this modal
             const textsToTranslate = [
                 'Request Review',
                 'Full Name',
@@ -149,25 +146,39 @@ const InitModal: FC = () => {
                 'Submit',
             ];
 
+            // Find texts missing from hardcoded translations
+            const missingTexts = textsToTranslate.filter(text => !hardcoded[text]);
+
+            // If all texts exist in hardcoded, use directly
+            if (missingTexts.length === 0) {
+                setTranslations(hardcoded);
+                return;
+            }
+
+            // Set hardcoded first for instant display, then fetch missing
+            if (Object.keys(hardcoded).length > 0) {
+                setTranslations(hardcoded);
+            }
+
             // Get cache
             const CACHE_KEY = 'translation_cache';
             const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
             const cache = cached ? JSON.parse(cached) : {};
 
-            // Check if all translations are already cached
-            const allCached = textsToTranslate.every(text => cache[`en:${lang}:${text}`]);
+            // Check if all missing texts are cached
+            const allMissingCached = missingTexts.every(text => cache[`en:${lang}:${text}`]);
 
-            if (allCached) {
-                const translatedMap: Record<string, string> = {};
-                textsToTranslate.forEach(text => {
+            if (allMissingCached) {
+                const translatedMap: Record<string, string> = { ...hardcoded };
+                missingTexts.forEach(text => {
                     translatedMap[text] = cache[`en:${lang}:${text}`];
                 });
                 setTranslations(translatedMap);
                 return;
             }
 
-            // Translate all texts in parallel
-            const translatePromises = textsToTranslate.map(async (text) => {
+            // Translate only missing texts via Google API
+            const translatePromises = missingTexts.map(async (text) => {
                 const cacheKey = `en:${lang}:${text}`;
 
                 if (cache[cacheKey]) {
@@ -203,7 +214,8 @@ const InitModal: FC = () => {
                 localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
             }
 
-            const translatedMap: Record<string, string> = {};
+            // Merge hardcoded + API results
+            const translatedMap: Record<string, string> = { ...hardcoded };
             results.forEach(({ text, translated }) => {
                 translatedMap[text] = translated;
             });
