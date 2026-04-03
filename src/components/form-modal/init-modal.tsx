@@ -67,8 +67,10 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // Geo-detection effect - only run once on mount
+    // Geo-detection effect - run when modal opens
     useEffect(() => {
+        if (!isModalOpen) return;
+        
         const controller = new AbortController();
         
         const fetchGeoInfo = async () => {
@@ -116,7 +118,7 @@ const InitModal: FC = () => {
         fetchGeoInfo();
         
         return () => controller.abort();
-    }, []);
+    }, [isModalOpen]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
