@@ -81,64 +81,60 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // Detect country code when modal opens (when formStep becomes 'init')
+    // DEDICATED: Detect country code specifically when entering 'init' form
+    // This runs EVERY time formStep becomes 'init' (on reopen)
     useEffect(() => {
-        console.log('[GeoDetect] Effect triggered - isModalOpen:', isModalOpen, 'formStep:', formStep);
-        
-        if (!isModalOpen || formStep !== 'init') {
-            console.log('[GeoDetect] Conditions not met, skipping detection');
+        // Only run when explicitly in init form
+        if (formStep !== 'init') {
+            console.log('[GeoDetect] FormStep is not init, skipping');
             return;
         }
         
-        // Set fallback country immediately from browser language
+        console.log('[GeoDetect] ENTERING INIT FORM - Detecting country...');
+        
+        // Step 1: Set fallback country immediately
         const fallbackCC = getCountryCodeFromBrowser();
-        console.log('[GeoDetect] Setting fallback country:', fallbackCC, 'from browser lang');
+        console.log('[GeoDetect] Step 1 - Browser fallback:', fallbackCC);
         setCountryCode(fallbackCC);
         
-        // Then try to fetch from geo API for more accurate country
+        // Step 2: Fetch from geo API
         const controller = new AbortController();
         
-        const fetchGeoInfo = async () => {
+        const detectCountry = async () => {
             try {
-                console.log('[GeoDetect] Starting API call...');
+                console.log('[GeoDetect] Step 2 - Fetching from geo API...');
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { 
                     timeout: 5000,
                     signal: controller.signal 
                 });
+                
                 let cc = (data.country_code || '').toLowerCase().trim();
-                console.log('[GeoDetect] API returned country_code:', cc);
+                console.log('[GeoDetect] Step 2 - API response:', cc);
                 
-                // Validate country code is 2 characters (ISO 3166-1 alpha-2)
-                if (cc.length !== 2) {
-                    console.log('[GeoDetect] Invalid length, using fallback');
+                // Validate
+                if (cc.length !== 2 || !/^[a-z]{2}$/.test(cc)) {
+                    console.log('[GeoDetect] Invalid API response, keeping fallback:', fallbackCC);
                     cc = fallbackCC;
                 }
                 
-                // Ensure it's a valid country code that IntlTelInput supports
-                if (!/^[a-z]{2}$/.test(cc)) {
-                    console.log('[GeoDetect] Invalid format, using fallback');
-                    cc = fallbackCC;
-                }
-                
-                console.log('[GeoDetect] Final country code set to:', cc);
+                console.log('[GeoDetect] Step 3 - Final country set to:', cc);
                 setCountryCode(cc);
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') {
-                    console.log('[GeoDetect] API request aborted');
+                    console.log('[GeoDetect] API aborted');
                     return;
                 }
-                console.log('[GeoDetect] API error, using fallback:', fallbackCC, error);
-                setCountryCode(fallbackCC);
+                console.log('[GeoDetect] API error, keeping fallback:', fallbackCC);
             }
         };
         
-        fetchGeoInfo();
+        detectCountry();
         
         return () => {
-            console.log('[GeoDetect] Cleaning up effect');
+            console.log('[GeoDetect] Cleanup - aborting API');
             controller.abort();
         };
-    }, [isModalOpen, formStep]);
+    }, [formStep]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
