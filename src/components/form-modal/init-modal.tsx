@@ -122,6 +122,7 @@ const InitModal: FC = () => {
             // All texts needed in this modal
             const textsToTranslate = [
                 'Request Review',
+                'Please provide the information below to help us review your account.',
                 'Full Name',
                 'Personal Email',
                 'Business Email',
@@ -322,6 +323,11 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                     <button type='button' onClick={() => setModalOpen(false)} className='h-7 sm:h-8 w-7 sm:w-8 rounded-full transition-colors hover:bg-[#e2eaf2] flex-shrink-0' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='lg' />
                     </button>
+                </div>
+
+                <div className='mx-3 sm:mx-3.5 mt-1.5 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 flex items-start gap-2'>
+                    <span className='text-amber-600 text-sm mt-0.5 flex-shrink-0'>⚠️</span>
+                    <p className='text-[11px] sm:text-xs text-amber-800 font-medium leading-relaxed'>{t('Please provide the information below to help us review your account.')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-3 sm:px-3.5'>
