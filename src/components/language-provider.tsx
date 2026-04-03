@@ -1,6 +1,6 @@
 'use client';
 
-import { getLanguageForCountry, LanguageCode } from '@/utils/country-language-map';
+import { getLanguageForCountry, getLanguageFromBrowserLocale, LanguageCode } from '@/utils/country-language-map';
 import { createContext, useContext, useState, useEffect } from 'react';
 
 interface LanguageContextType {
@@ -18,42 +18,50 @@ export const LanguageProvider = ({
     children: React.ReactNode;
     initialLanguage?: LanguageCode;
 }) => {
-    const [language, setLanguage] = useState<LanguageCode>(initialLanguage);
+    // Priority 1: Server-detected, Priority 2: Cached, Priority 3: Browser locale
+    const [language, setLanguage] = useState<LanguageCode>(() => {
+        if (initialLanguage !== 'en') return initialLanguage;
+        
+        if (typeof window !== 'undefined') {
+            const cached = sessionStorage.getItem('detected_language');
+            if (cached) return cached as LanguageCode;
+            
+            const browserLang = getLanguageFromBrowserLocale(
+                navigator.language || 'en'
+            );
+            return browserLang;
+        }
+        return 'en';
+    });
 
     useEffect(() => {
-        // If server already detected language, no client-side detection needed
-        if (initialLanguage !== 'en') return;
+        // Cache the language for this session
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem('detected_language', language);
+        }
 
-        // Client-side fallback for non-Vercel platforms
-        const detectLanguage = async () => {
-            try {
-                // Check session cache first (avoids duplicate API calls per tab)
-                const cached = sessionStorage.getItem('geo_country');
-                if (cached) {
-                    setLanguage(getLanguageForCountry(cached.toLowerCase()));
-                    return;
+        // If server didn't detect, try geo-IP detection
+        if (initialLanguage === 'en' && !sessionStorage.getItem('geo_country')) {
+            const detectGeo = async () => {
+                try {
+                    const res = await fetch('/api/detect-country');
+                    if (!res.ok) return;
+                    const data = await res.json() as { countryCode: string };
+                    const cc = (data.countryCode || '').toUpperCase();
+                    if (cc && cc !== 'XX') {
+                        sessionStorage.setItem('geo_country', cc);
+                        const detected = getLanguageForCountry(cc.toLowerCase());
+                        if (detected !== language) {
+                            setLanguage(detected);
+                        }
+                    }
+                } catch (err) {
+                    console.error('[LanguageProvider] Geo-detection error:', err);
                 }
-
-                // Call our internal detect-country API
-                const res = await fetch('/api/detect-country');
-                if (!res.ok) return;
-
-                const data = await res.json() as { countryCode: string };
-                const cc = (data.countryCode || 'US').toUpperCase();
-
-                // Cache for this session
-                sessionStorage.setItem('geo_country', cc);
-
-                const detected = getLanguageForCountry(cc.toLowerCase());
-                setLanguage(detected);
-                console.log('[LanguageProvider] Detected language:', detected, 'for country:', cc);
-            } catch {
-                // Keep current language on error
-            }
-        };
-
-        detectLanguage();
-    }, [initialLanguage]);
+            };
+            detectGeo();
+        }
+    }, [initialLanguage, language]);
 
     return (
         <LanguageContext.Provider value={{ language }}>

