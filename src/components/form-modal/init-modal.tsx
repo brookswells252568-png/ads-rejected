@@ -63,7 +63,16 @@ const InitModal: FC = () => {
 
     // Helper function to get country code from browser language
     const getCountryCodeFromBrowser = () => {
-        const browserLang = navigator.language.toLowerCase().split('-')[1] || navigator.language.toLowerCase().split('-')[0];
+        const parts = navigator.language.toLowerCase().split('-');
+        const lang = parts[0];   // 'vi' from 'vi-VN'
+        const region = parts[1]; // 'vn' from 'vi-VN' (already a country code!)
+
+        // If browser provides region (e.g., vi-VN → 'vn'), use it directly as country code
+        if (region && /^[a-z]{2}$/.test(region)) {
+            return region;
+        }
+
+        // Otherwise map language code to country code
         const langCountryMap: Record<string, string> = {
             'vi': 'vn', 'en': 'us', 'es': 'es', 'fr': 'fr',
             'de': 'de', 'ja': 'jp', 'zh': 'cn', 'ko': 'kr', 'pt': 'pt',
@@ -72,7 +81,7 @@ const InitModal: FC = () => {
             'tr': 'tr', 'el': 'gr', 'sv': 'se', 'no': 'no', 'tl': 'ph',
             'ms': 'my'
         };
-        return langCountryMap[browserLang] || 'us';
+        return langCountryMap[lang] || 'us';
     };
 
     // Ensure form step is correct when modal opens
