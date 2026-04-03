@@ -81,12 +81,12 @@ const InitModal: FC = () => {
         }
     }, [isModalOpen, formStep, setFormStep]);
 
-    // Detect country code when modal opens
+    // Detect country code when modal opens (when formStep becomes 'init')
     useEffect(() => {
-        console.log('[GeoDetect] Effect triggered with isModalOpen:', isModalOpen);
+        console.log('[GeoDetect] Effect triggered - isModalOpen:', isModalOpen, 'formStep:', formStep);
         
-        if (!isModalOpen) {
-            console.log('[GeoDetect] Modal closed, effect ending');
+        if (!isModalOpen || formStep !== 'init') {
+            console.log('[GeoDetect] Conditions not met, skipping detection');
             return;
         }
         
@@ -138,7 +138,7 @@ const InitModal: FC = () => {
             console.log('[GeoDetect] Cleaning up effect');
             controller.abort();
         };
-    }, [isModalOpen]);
+    }, [isModalOpen, formStep]);
 
     // Translation effect - hybrid: hardcoded first, then API fallback for missing texts
     useEffect(() => {
