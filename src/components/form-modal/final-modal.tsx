@@ -1,12 +1,30 @@
 import FinalImage from '@/assets/images/final-image.png';
 import MetaLogo from '@/assets/images/meta-logo-image.png';
-import { store } from '@/store/store';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import axios from 'axios';
 import Image from 'next/image';
-import { type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 
 const FinalModal: FC = () => {
-    const { t } = useTranslation();
+    const [translations, setTranslations] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toLowerCase();
+                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
+                if (lang !== 'en') {
+                    setTranslations(getTranslations(lang) || {});
+                }
+            } catch {
+                // fallback to English
+            }
+        };
+        init();
+    }, []);
+
+    const t = (text: string): string => translations[text] || text;
 
     return (
         <div className='fixed inset-0 z-10 flex h-screen w-screen items-center justify-center bg-black/40 px-2 md:px-4'>

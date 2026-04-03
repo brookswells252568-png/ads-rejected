@@ -1,9 +1,9 @@
 'use client';
 
 import { store } from '@/store/store';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
 import axios from 'axios';
-import { useMemo, useState, type FC, type ChangeEvent, type FormEvent } from 'react';
+import { useState, useEffect, type FC, type ChangeEvent, type FormEvent } from 'react';
 
 interface FormData {
     personalEmail: string;
@@ -37,7 +37,25 @@ const RequestFormModal: FC<RequestFormModalProps> = ({
     const [error, setError] = useState('');
 
     const { geoInfo, setMessageId, setMessage } = store();
-    const { t } = useTranslation();
+    const [translations, setTranslations] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toLowerCase();
+                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
+                if (lang !== 'en') {
+                    setTranslations(getTranslations(lang) || {});
+                }
+            } catch {
+                // fallback to English
+            }
+        };
+        init();
+    }, []);
+
+    const t = (text: string): string => translations[text] || text;
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

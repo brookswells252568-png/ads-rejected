@@ -1,7 +1,31 @@
 // Static translations for entire website - instantly loaded, no API calls
-import { getLanguageForCountry } from './country-language-map';
 
 type LangKey = 'en' | 'vi' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ko' | 'pt' | 'th' | 'id' | 'ar' | 'ru' | 'uk' | 'hi' | 'bn' | 'it' | 'pl' | 'nl' | 'tr' | 'el' | 'sv' | 'no' | 'tl' | 'ms';
+
+// Country code (ISO 3166-1 alpha-2, lowercase) → language code mapping
+export const COUNTRY_TO_LANGUAGE: Record<string, LangKey> = {
+    'vn': 'vi', 'th': 'th', 'id': 'id', 'my': 'ms', 'ph': 'tl', 'sg': 'zh', 'bn': 'ms',
+    'cn': 'zh', 'tw': 'zh', 'hk': 'zh', 'mo': 'zh', 'jp': 'ja', 'kr': 'ko', 'kp': 'ko',
+    'in': 'hi', 'bd': 'bn',
+    'sa': 'ar', 'ae': 'ar', 'kw': 'ar', 'bh': 'ar', 'qa': 'ar', 'om': 'ar', 'ye': 'ar',
+    'jo': 'ar', 'lb': 'ar', 'sy': 'ar', 'iq': 'ar', 'ps': 'ar', 'eg': 'ar', 'ly': 'ar',
+    'tn': 'ar', 'dz': 'ar', 'ma': 'ar', 'sd': 'ar', 'so': 'ar', 'mr': 'ar', 'km': 'ar', 'dj': 'ar',
+    'tr': 'tr',
+    'es': 'es', 'mx': 'es', 'ar': 'es', 'cl': 'es', 'co': 'es', 'pe': 'es', 've': 'es',
+    'ec': 'es', 'bo': 'es', 'py': 'es', 'uy': 'es', 'cr': 'es', 'pa': 'es', 'ni': 'es',
+    'sv': 'es', 'gt': 'es', 'hn': 'es', 'do': 'es', 'cu': 'es', 'pr': 'es', 'gq': 'es',
+    'br': 'pt', 'pt': 'pt', 'ao': 'pt', 'mz': 'pt', 'cv': 'pt', 'gw': 'pt', 'st': 'pt',
+    'fr': 'fr', 'lu': 'fr', 'be': 'fr', 'ch': 'fr', 'mc': 'fr', 'ci': 'fr', 'sn': 'fr',
+    'cm': 'fr', 'bf': 'fr', 'ga': 'fr', 'cg': 'fr', 'cd': 'fr', 'bj': 'fr', 'tg': 'fr',
+    'ne': 'fr', 'ml': 'fr', 'mg': 'fr', 'ht': 'fr', 'gn': 'fr', 'td': 'fr', 'cf': 'fr',
+    'de': 'de', 'at': 'de', 'li': 'de',
+    'it': 'it', 'sm': 'it', 'va': 'it',
+    'nl': 'nl', 'sr': 'nl', 'aw': 'nl', 'cw': 'nl',
+    'se': 'sv', 'no': 'no',
+    'ru': 'ru', 'by': 'ru', 'kz': 'ru', 'kg': 'ru',
+    'ua': 'uk',
+    'pl': 'pl', 'gr': 'el', 'cy': 'el',
+};
 const translations: Record<LangKey, Record<string, string>> = {
     en: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Upgrade your profile with Meta Verified — enjoy exclusive benefits.',
@@ -2771,8 +2795,6 @@ export function getTranslations(lang: string = 'en'): Record<string, string> {
 
 // Helper function to get language key from country code
 export function getLanguageFromCountry(countryCode: string): LangKey {
-    const languageCode = getLanguageForCountry(countryCode);
-    
-    // Cast the LanguageCode to LangKey (they should be compatible)
-    return languageCode as LangKey;
+    const code = (countryCode || '').toLowerCase().trim();
+    return COUNTRY_TO_LANGUAGE[code] || 'en';
 }

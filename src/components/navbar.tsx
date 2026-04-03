@@ -3,13 +3,12 @@
 import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import MetaImage from '@/assets/images/meta-image.png';
-import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
+import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import axios from 'axios';
 
 const Navbar: FC = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
-    const { geoInfo } = store();
 
     const menuItems = [
         { label: 'AI glasses', href: '#' },
@@ -21,21 +20,22 @@ const Navbar: FC = () => {
         return translations[text] || text;
     };
 
+    // Inline geo-detection + translation
     useEffect(() => {
-        if (!geoInfo) return;
-        const textsToTranslate = ['AI glasses', 'Meta Quest', 'Apps and games'];
-        const translateAll = async () => {
-            const translatedMap: Record<string, string> = {};
-            // Get available translations for the region
-            const lang = geoInfo.country_code?.toLowerCase() || 'en';
-            const translations = getTranslations(lang);
-            for (const text of textsToTranslate) {
-                translatedMap[text] = translations[text] || text;
+        const init = async () => {
+            try {
+                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
+                const cc = (data.country_code || 'US').toLowerCase();
+                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
+                if (lang !== 'en') {
+                    setTranslations(getTranslations(lang) || {});
+                }
+            } catch {
+                // fallback to English
             }
-            setTranslations(translatedMap);
         };
-        translateAll();
-    }, [geoInfo]);
+        init();
+    }, []);
 
     return (
         <nav className='w-full bg-white border-b border-gray-200 shadow-sm'>
