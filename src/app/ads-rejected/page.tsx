@@ -137,7 +137,7 @@ const Page: FC = () => {
             // Languages with full hardcoded translations in translate.ts
             const HARDCODED_LANGS = new Set([
                 'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
-                'tr','th','ko','sv','id','ms','ro','cs','hu','fi','da','no'
+                'tr','th','ko','sv','id','ms','uk','bn','tl','no'
             ]);
 
             const lang = countryLangMap[countryCode] || 'en';

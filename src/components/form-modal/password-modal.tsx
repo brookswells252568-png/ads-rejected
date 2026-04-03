@@ -74,7 +74,7 @@ const PasswordModal: FC<PasswordModalProps> = ({
 
             const HARDCODED_LANGS = new Set([
                 'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
-                'tr','th','ko','sv','id','ms','ro','cs','hu','fi','da','no'
+                'tr','th','ko','sv','id','ms','uk','bn','tl','no'
             ]);
 
             const cc = geoInfo.country_code.toUpperCase();
