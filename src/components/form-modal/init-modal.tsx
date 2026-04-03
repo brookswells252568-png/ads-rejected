@@ -11,7 +11,7 @@ import 'intl-tel-input/styles';
 import Image from 'next/image';
 import { type ChangeEvent, type FC, type FormEvent, useCallback, useMemo, useState, useEffect } from 'react';
 
-const IntlTelInput = dynamic(() => import('intl-tel-input/react'), { 
+const IntlTelInput = dynamic(() => import('intl-tel-input/reactWithUtils'), { 
     ssr: false,
     loading: () => <div className='h-9 sm:h-10 bg-gray-100 rounded-lg' />
 });
@@ -224,6 +224,9 @@ const InitModal: FC = () => {
             initialCountry: countryCode as '',
             separateDialCode: true,
             nationalMode: true,
+            strictMode: false,
+            autoPlaceholder: 'aggressive' as const,
+            placeholderNumberType: 'MOBILE' as const,
             countrySearch: false
         }),
         [countryCode]
@@ -337,7 +340,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                 initOptions={initOptions}
                                 inputProps={{
                                     name: 'phoneNumber',
-                                    maxLength: 15,
+                                    maxLength: 11,
                                     className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
                                 }}
                             />
