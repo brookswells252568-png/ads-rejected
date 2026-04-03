@@ -56,15 +56,8 @@ const InitModal: FC = () => {
         birthYear: ''
     });
 
-    const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep, isModalOpen } = store();
+    const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
     const countryCode = geoInfo?.country_code?.toLowerCase() || 'us';
-
-    // Ensure form step is correct when modal opens
-    useEffect(() => {
-        if (isModalOpen && formStep !== 'init') {
-            setFormStep('init');
-        }
-    }, [isModalOpen, formStep, setFormStep]);
 
     // Translation effect
     useEffect(() => {
