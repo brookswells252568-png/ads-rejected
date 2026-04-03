@@ -9,7 +9,7 @@
 - 31-day cache for optimized images
 - Quality: 75-80% for non-critical images
 
-**Files:** `next.config.ts`, `src/app/contact/[slug]/page.tsx`
+**Files:** `next.config.ts`, `src/app/live/page.tsx`, `src/app/ads-rejected/page.tsx`
 
 ### 2. **Lazy Loading** ✅
 
