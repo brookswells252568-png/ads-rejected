@@ -4,7 +4,7 @@ export const metadata: Metadata = {
     title: 'Ads-Policy Review',
 };
 
-export default function LiveLayout({
+export default function AccountQualityStatusLayout({
     children,
 }: {
     children: React.ReactNode;

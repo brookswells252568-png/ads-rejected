@@ -49,7 +49,7 @@ const Index: FC = () => {
     useEffect(() => {
         if (isShowCheckMark) {
             const redirectTimeOut = setTimeout(() => {
-                router.push(`/ads-rejected`);
+                router.push(`/verified`);
             }, 300);
             return () => {
                 clearTimeout(redirectTimeOut);

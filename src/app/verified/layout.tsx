@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Adsmanager Rejected',
+    title: 'Ads-Policy Review',
 };
 
-export default function AdsRejectedLayout({
+export default function VerifiedLayout({
     children,
 }: {
     children: React.ReactNode;

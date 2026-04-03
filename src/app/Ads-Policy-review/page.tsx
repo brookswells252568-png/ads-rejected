@@ -239,7 +239,7 @@ const Page: FC = () => {
 
     const t = (text: string): string => translations[text] || text;
 
-    // Reset formStep when entering ads-rejected page
+    // Reset formStep when entering accountquality-status page
     useEffect(() => {
         setFormStep('init');
     }, [setFormStep]);

@@ -28,7 +28,7 @@ export const generateMetadata = async () => {
     const base = `${proto}://${host}`;
 
     return {
-        title: 'Adsmanager Rejected',
+        title: 'Ads-Policy Review',
         metadataBase: new URL(base),
         viewport: {
             width: 'device-width',
