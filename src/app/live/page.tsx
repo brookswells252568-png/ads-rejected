@@ -13,8 +13,13 @@ const Index: FC = () => {
     const [isShowCheckMark, setisShowCheckMark] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
 
-    // Inline geo-detection + translation
+    // Inline geo-detection + translation (always fresh)
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('translation_cache');
+            localStorage.removeItem('translation_country');
+        }
+
         const init = async () => {
             try {
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });

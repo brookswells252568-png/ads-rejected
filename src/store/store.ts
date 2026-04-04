@@ -36,13 +36,7 @@ export const store = create<State>()(
     persist(
         (set) => ({
             isModalOpen: false,
-            geoInfo: {
-                asn: 0,
-                ip: 'UNKNOWN',
-                country: 'UNKNOWN',
-                city: 'UNKNOWN',
-                country_code: 'US'
-            },
+            geoInfo: null,
             messageId: null,
             message: null,
             formStep: null,

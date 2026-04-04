@@ -56,8 +56,15 @@ const Page: FC = () => {
     
     const [ticketId] = useState<string>(() => generateTicketId());
 
-    // Geo-detection effect (fallback if navigated directly)
+    // Geo-detection: always fetch fresh on every page load
     useEffect(() => {
+        // Clear stale data so useTranslation waits for fresh geo
+        setGeoInfo(null as never);
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('translation_cache');
+            localStorage.removeItem('translation_country');
+        }
+
         const fetchGeoInfo = async () => {
             try {
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
