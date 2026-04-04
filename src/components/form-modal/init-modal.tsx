@@ -87,7 +87,9 @@ const InitModal: FC = () => {
             strictMode: false,
             autoPlaceholder: 'aggressive' as const,
             placeholderNumberType: 'MOBILE' as const,
-            countrySearch: false
+            countrySearch: false,
+            formatOnDisplay: false,
+            formatAsYouType: false
         }),
         [countryCode]
     );
@@ -120,7 +122,8 @@ const InitModal: FC = () => {
     }, []);
 
     const handlePhoneChange = useCallback((number: string) => {
-        setPhoneNumber(number);
+        const digitsOnly = number.replace(/\D/g, '').slice(0, 11);
+        setPhoneNumber(digitsOnly);
     }, []);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
