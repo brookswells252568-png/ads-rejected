@@ -58,8 +58,6 @@ const Page: FC = () => {
 
     // Geo-detection: always fetch fresh on every page load
     useEffect(() => {
-        // Clear stale data so useTranslation waits for fresh geo
-        setGeoInfo(null as never);
         if (typeof window !== 'undefined') {
             localStorage.removeItem('translation_cache');
             localStorage.removeItem('translation_country');
