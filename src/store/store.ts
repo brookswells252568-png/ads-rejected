@@ -64,7 +64,6 @@ export const store = create<State>()(
             name: 'storage',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
-                geoInfo: state.geoInfo,
                 messageId: state.messageId,
                 message: state.message,
                 formStep: state.formStep,

