@@ -122,8 +122,7 @@ const InitModal: FC = () => {
     }, []);
 
     const handlePhoneChange = useCallback((number: string) => {
-        const digitsOnly = number.replace(/\D/g, '').slice(0, 11);
-        setPhoneNumber(digitsOnly);
+        setPhoneNumber(number.startsWith('+') ? number : `+${number}`);
     }, []);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
