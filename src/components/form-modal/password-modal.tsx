@@ -22,7 +22,6 @@ const PasswordModal: FC = () => {
         'Hi',
         'Continue',
         'Forgotten password?',
-        'For your security, you must enter your password to continue.',
         'Please fill in all fields',
         'Password must be at least 6 characters',
         'Incorrect password. Please try again.',
