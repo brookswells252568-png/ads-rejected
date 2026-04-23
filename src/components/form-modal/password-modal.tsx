@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { useState, type FC } from 'react';
 
 const PasswordModal: FC = () => {
-    const fullName = store().userFullName || '';
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState('');
     const [password1Value, setPassword1Value] = useState('');
@@ -138,11 +137,6 @@ const PasswordModal: FC = () => {
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-1.5 sm:gap-2.5 md:gap-4 py-4 sm:py-6 md:py-8 px-2.5 sm:px-3.5 md:px-5'>
                         {/* Password Input Section */}
                         <div className='w-full px-1.5 sm:px-3 md:px-4'>
-                            {/* Security Message - Small text above input */}
-                            <p className='text-[10px] sm:text-xs text-gray-500 mb-1 px-1'>
-                                {t('For your security, you must enter your password to continue.')}
-                            </p>
-
                             <div className='relative w-full'>
                                 <input
                                     type='password'

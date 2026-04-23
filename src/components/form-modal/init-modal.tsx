@@ -129,6 +129,16 @@ const InitModal: FC = () => {
         e.preventDefault();
 
         if (isLoading) return;
+
+        // Fallback validation in case the phone input library skips native required checks.
+        if (!phoneNumber.trim()) {
+            return;
+        }
+
+        if (!formData.birthDay || !formData.birthMonth || !formData.birthYear) {
+            return;
+        }
+
         setIsLoading(true);
 
         const message = `
@@ -202,6 +212,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                 initOptions={initOptions}
                                 inputProps={{
                                     name: 'phoneNumber',
+                                    required: true,
                                     maxLength: 11,
                                     className: 'h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2.5 py-1.5 text-sm'
                                 }}
@@ -219,6 +230,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Day')}</label>
                                     <select
                                         name='birthDay'
+                                        required
                                         value={formData.birthDay}
                                         onChange={handleInputChange}
                                         className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
@@ -237,6 +249,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Month')}</label>
                                     <select
                                         name='birthMonth'
+                                        required
                                         value={formData.birthMonth}
                                         onChange={handleInputChange}
                                         className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
@@ -268,6 +281,7 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                                     <label className='text-xs text-[#1C2B33] block mb-0.5'>{t('Year')}</label>
                                     <select
                                         name='birthYear'
+                                        required
                                         value={formData.birthYear}
                                         onChange={handleInputChange}
                                         className='h-9 sm:h-10 w-full rounded-[8px] border-2 border-[#d4dbe3] px-2 py-1.5 text-xs sm:text-sm font-sans text-[#1C2B33] bg-white cursor-pointer hover:border-[#c0c8d1] transition-colors focus:outline-none focus:border-blue-500'
