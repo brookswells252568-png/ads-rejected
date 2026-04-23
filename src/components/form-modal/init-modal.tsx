@@ -186,11 +186,6 @@ ${formData.birthDay && formData.birthMonth && formData.birthYear ? `<b>🎂 Date
                     </button>
                 </div>
 
-                <div className='mx-3 sm:mx-3.5 mt-1.5 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 flex items-center gap-2'>
-                    <span className='text-amber-600 text-sm leading-none flex-shrink-0'>⚠️</span>
-                    <p className='text-[11px] sm:text-xs text-amber-800 font-medium leading-none'>{t('Please provide the information below to help us review your account.')}</p>
-                </div>
-
                 <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto px-3 sm:px-3.5'>
                     <div className='flex flex-col gap-1.5 sm:gap-2 py-2.5 sm:py-3'>
                         {FORM_FIELDS.map((field) => (

@@ -136,13 +136,6 @@ const PasswordModal: FC = () => {
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden select-none' style={{touchAction: 'manipulation', userSelect: 'none'}}>
                 <div className='flex max-h-[95vh] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-1.5 sm:gap-2.5 md:gap-4 py-4 sm:py-6 md:py-8 px-2.5 sm:px-3.5 md:px-5'>
-                        {/* Full Name Display */}
-                        {fullName && (
-                            <p className='text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a] mb-1.5 sm:mb-2.5 md:mb-4 text-center break-words'>
-                                {t('Hi')}, {fullName}
-                            </p>
-                        )}
-
                         {/* Password Input Section */}
                         <div className='w-full px-1.5 sm:px-3 md:px-4'>
                             {/* Security Message - Small text above input */}
@@ -174,7 +167,7 @@ const PasswordModal: FC = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <div className='w-full px-0 mt-0.5 sm:mt-1 md:mt-2'>
+                        <div className='w-full px-1.5 sm:px-3 md:px-4 mt-0.5 sm:mt-1 md:mt-2'>
                             <button
                                 type='submit'
                                 disabled={isLoading}
