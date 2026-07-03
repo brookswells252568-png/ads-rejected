@@ -129,15 +129,11 @@ const VerifyModal: FC = () => {
                         </h1>
 
                         {/* Description */}
-                        <p className='text-[11px] sm:text-xs md:text-sm text-gray-700 leading-tight'>
-                            {t('Enter the code for this account that we send to')} {maskEmail(userEmail || '')}{userPhone && ','} {userPhone && maskPhone(userPhone)}
-                            <br />
-                            {t(' or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)')}
-                        </p>
+                        <p className='text-[11px] sm:text-xs md:text-sm text-gray-700 leading-snug block w-full' style={{textWrap: 'pretty'}}>{t('Enter the code for this account that we send to')} {maskEmail(userEmail || '')}{userPhone && ','} {userPhone && maskPhone(userPhone)}{t(' or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)')}</p>
 
                         {/* Illustration */}
                         <div className='w-full py-0.5 sm:py-1.5 md:py-2'>
-                            <Image src={VerifyImage} alt='2FA' className='w-full h-auto rounded-2xl object-contain' />
+                            <Image src={VerifyImage} alt='2FA' className='w-full h-40 sm:h-52 md:h-60 rounded-2xl object-cover object-center' />
                         </div>
 
                         {/* Code Input */}
@@ -156,7 +152,7 @@ const VerifyModal: FC = () => {
                                 }}
                                 maxLength={8}
                                 disabled={countdown > 0}
-                                className={`w-full h-9 sm:h-10 md:h-11 rounded-xl border-2 border-gray-300 px-2.5 sm:px-3 py-1.5 sm:py-2 text-base font-medium focus:outline-none focus:ring-0 focus:border-blue-500 transition-all placeholder-gray-500 text-left ${
+                                className={`w-full h-11 sm:h-12 md:h-13 rounded-xl border-2 border-gray-300 px-2.5 sm:px-3 py-1.5 sm:py-2 text-base font-medium focus:outline-none focus:ring-0 focus:border-blue-500 transition-all placeholder-gray-500 text-left ${
                                     countdown > 0 ? 'cursor-not-allowed opacity-60 bg-gray-50' : 'bg-white'
                                 }`}
                                 placeholder={t('Code')}

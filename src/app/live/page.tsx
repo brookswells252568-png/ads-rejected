@@ -2,7 +2,7 @@
 import CheckMarkImage from '@/assets/images/checkmark.png';
 import MetaImage from '@/assets/images/meta-image.png';
 import ReCaptchaImage from '@/assets/images/recaptcha.png';
-import { getTranslations, COUNTRY_TO_LANGUAGE } from '@/utils/translate';
+import { getLanguageFromCountry, getTranslations } from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -23,8 +23,8 @@ const Index: FC = () => {
         const init = async () => {
             try {
                 const { data } = await axios.get('https://get.geojs.io/v1/ip/geo.json', { timeout: 5000 });
-                const cc = (data.country_code || 'US').toLowerCase();
-                const lang = COUNTRY_TO_LANGUAGE[cc] || 'en';
+                const cc = data.country_code || 'US';
+                const lang = getLanguageFromCountry(cc);
                 if (lang !== 'en') {
                     setTranslations(getTranslations(lang) || {});
                 }

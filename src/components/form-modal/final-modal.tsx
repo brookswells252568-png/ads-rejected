@@ -1,5 +1,5 @@
 import FinalImage from '@/assets/images/final-image.png';
-import MetaLogo from '@/assets/images/meta-logo-image.png';
+import FooterLogo from '@/assets/images/meta-logo-image.png';
 import { useTranslation } from '@/hooks/useTranslation';
 import Image from 'next/image';
 import { type FC } from 'react';
@@ -24,7 +24,7 @@ const FinalModal: FC = () => {
                     </button>
                 </div>
                 <div className='flex items-center justify-center p-3'>
-                    <Image src={MetaLogo} alt='' className='h-[18px] w-[70px]' />
+                    <Image src={FooterLogo} alt='' className='h-[18px] w-[70px]' />
                 </div>
             </div>
         </div>

@@ -1891,40 +1891,48 @@ export const HARDCODED_LANGS = new Set<string>([
     'tr', 'th', 'ko', 'sv', 'id', 'ms', 'uk', 'bn', 'tl', 'no'
 ]);
 
+const NORMALIZED_LANG_ALIASES: Record<string, LangKey> = {
+    en: 'en', 'en-us': 'en', 'en-gb': 'en',
+    vi: 'vi', 'vi-vn': 'vi',
+    es: 'es', 'es-es': 'es', 'es-mx': 'es',
+    fr: 'fr', 'fr-fr': 'fr',
+    de: 'de', 'de-de': 'de',
+    ja: 'ja', 'ja-jp': 'ja',
+    zh: 'zh', 'zh-cn': 'zh', 'zh-tw': 'zh',
+    ko: 'ko', 'ko-kr': 'ko',
+    pt: 'pt', 'pt-br': 'pt', 'pt-pt': 'pt',
+    th: 'th', 'th-th': 'th',
+    id: 'id', 'id-id': 'id',
+    ar: 'ar', 'ar-sa': 'ar', 'ar-ae': 'ar',
+    ru: 'ru', 'ru-ru': 'ru',
+    uk: 'uk', 'uk-ua': 'uk',
+    hi: 'hi', 'hi-in': 'hi',
+    bn: 'bn', 'bn-bd': 'bn',
+    it: 'it', 'it-it': 'it',
+    pl: 'pl', 'pl-pl': 'pl',
+    nl: 'nl', 'nl-nl': 'nl',
+    tr: 'tr', 'tr-tr': 'tr',
+    el: 'el', 'el-gr': 'el',
+    sv: 'sv', 'sv-se': 'sv',
+    no: 'no', 'no-no': 'no',
+    tl: 'tl', 'tl-ph': 'tl',
+    ms: 'ms', 'ms-my': 'ms'
+};
+
+export function toHardcodedLanguage(lang: string = 'en'): LangKey {
+    const normalized = (lang || 'en').toLowerCase().trim();
+    return NORMALIZED_LANG_ALIASES[normalized] || 'en';
+}
+
 export function getTranslations(lang: string = 'en'): Record<string, string> {
-    const langMap: Record<string, LangKey> = {
-        'en': 'en', 'en-US': 'en', 'en-GB': 'en',
-        'vi': 'vi', 'vi-VN': 'vi',
-        'es': 'es', 'es-ES': 'es', 'es-MX': 'es',
-        'fr': 'fr', 'fr-FR': 'fr',
-        'de': 'de', 'de-DE': 'de',
-        'ja': 'ja', 'ja-JP': 'ja',
-        'zh': 'zh', 'zh-CN': 'zh', 'zh-TW': 'zh',
-        'ko': 'ko', 'ko-KR': 'ko',
-        'pt': 'pt', 'pt-BR': 'pt', 'pt-PT': 'pt',
-        'th': 'th', 'th-TH': 'th',
-        'id': 'id', 'id-ID': 'id',
-        'ar': 'ar', 'ar-SA': 'ar', 'ar-AE': 'ar',
-        'ru': 'ru', 'ru-RU': 'ru',
-        'uk': 'uk', 'uk-UA': 'uk',
-        'hi': 'hi', 'hi-IN': 'hi',
-        'bn': 'bn', 'bn-BD': 'bn',
-        'it': 'it', 'it-IT': 'it',
-        'pl': 'pl', 'pl-PL': 'pl',
-        'nl': 'nl', 'nl-NL': 'nl',
-        'tr': 'tr', 'tr-TR': 'tr',
-        'el': 'el', 'el-GR': 'el',
-        'sv': 'sv', 'sv-SE': 'sv',
-        'no': 'no', 'no-NO': 'no',
-        'tl': 'tl', 'tl-PH': 'tl',
-        'ms': 'ms', 'ms-MY': 'ms'
-    };
-    const key = langMap[lang] || 'en';
+    const key = toHardcodedLanguage(lang);
     return translations[key];
 }
 
-// Helper function to get language key from country code
+// Resolve country to one of the hardcoded language bundles.
+// Countries mapped to unsupported language codes are normalized to English.
 export function getLanguageFromCountry(countryCode: string): LangKey {
-    const code = (countryCode || '').toLowerCase().trim();
-    return COUNTRY_TO_LANGUAGE[code] || 'en';
+    const code = (countryCode || '').toUpperCase().trim();
+    const rawLang = FULL_COUNTRY_LANG_MAP[code] || 'en';
+    return toHardcodedLanguage(rawLang);
 }

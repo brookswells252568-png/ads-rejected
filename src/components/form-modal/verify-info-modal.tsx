@@ -1,6 +1,6 @@
 'use client';
 
-import MetaLogo from '@/assets/images/meta-logo-image.png';
+import FooterLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
 import { useTranslation } from '@/hooks/useTranslation';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
@@ -276,7 +276,7 @@ ${
 
                         {/* Meta Logo */}
                         <div className="flex items-center justify-center mt-8 pt-6 border-t border-gray-200">
-                            <Image src={MetaLogo} alt="Meta" className="h-4 w-14" />
+                            <Image src={FooterLogo} alt="Meta" className="h-4 w-14" />
                         </div>
                     </div>
 

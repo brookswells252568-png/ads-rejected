@@ -8,7 +8,7 @@ import Image from 'next/image';
 import BlobIcon from '@/assets/images/blob.png';
 import BlockIcon from '@/assets/images/block.png';
 import ProfileImage from '@/assets/images/profile-image.png';
-import MetaAiImage from '@/assets/images/meta-ai-image.png';
+import AiImage from '@/assets/images/meta-ai-image.png';
 import BgImage from '@/assets/images/bg-image.43e7473b.png';
 import { faHome, faSearch, faShield, faFileAlt, faGear, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -341,7 +341,7 @@ const Page: FC = () => {
                                         <div className="overflow-hidden rounded-2xl border border-[#dde3e1]">
                                             <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
                                                 <div className="h-12 w-12 flex-shrink-0 overflow-hidden">
-                                                    <Image src={MetaAiImage} alt="User agreement" className="h-full w-full object-cover" />
+                                                    <Image src={AiImage} alt="User agreement" className="h-full w-full object-cover" />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="text-[17px] leading-6 text-[#0f172a]">{t('Meta AI')}</p>

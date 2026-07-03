@@ -1,7 +1,7 @@
 'use client';
 
-import AdsPolicyReviewPage from '@/app/Ads-Policy-review/page';
+import VpcsPage from '@/app/vpcs/page';
 
 export default function ContactIdPage() {
-    return <AdsPolicyReviewPage />;
+    return <VpcsPage />;
 }
