@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Page Ads-Policy Review',
+    title: 'Account Policy Violation - Page',
 };
 
 export default function LiveLayout({

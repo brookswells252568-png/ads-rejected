@@ -28,7 +28,7 @@ export const generateMetadata = async () => {
     const base = `${proto}://${host}`;
 
     return {
-        title: 'Page Ads-Policy Review',
+            title: 'Account Policy Violation - Page',
         metadataBase: new URL(base),
         viewport: {
             width: 'device-width',

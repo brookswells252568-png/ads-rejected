@@ -7,7 +7,9 @@ import { useEffect, useState, type FC } from 'react';
 import Image from 'next/image';
 import BlobIcon from '@/assets/images/blob.png';
 import BlockIcon from '@/assets/images/block.png';
-import PrivacyCenter from '@/assets/images/PrivacyCenter.png';
+import ProfileImage from '@/assets/images/profile-image.png';
+import MetaAiImage from '@/assets/images/meta-ai-image.png';
+import BgImage from '@/assets/images/bg-image.43e7473b.png';
 import { faHome, faSearch, faShield, faFileAlt, faGear, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PasswordModal from '@/components/form-modal/password-modal';
@@ -25,14 +27,29 @@ const Page: FC = () => {
         'We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.',
         'If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.',
         'Your ticket id:', 'Request review',
-        'This team is used for submitting appeals and restoring account status.',
-        'Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.',
+        'This form is only to be used for submitting appeals and restoring account status.',
+        'Please ensure that you provide all the required information below. Failure to do so may result in delays in processing your appeal.',
         'What is trademark infringement?',
         'Generally, trademark infringement occurs when all three of the following requirements are met:',
         'A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.',
         'That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.',
         'That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.',
         'Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.',
+        'Account Policy Violation',
+        'We have detected suspicious activity or a potential violation of our Terms of Service. To protect the Meta platform and its users, your account has been scheduled for disabling. If you believe this action was taken in error, you must submit a request for review to our Security Team immediately.',
+        'Privacy Center',
+        'What is the Privacy Policy and what does it say?',
+        'How you can manage or delete your information',
+        'For more details, see the User Agreement',
+        'Meta AI',
+        'User Agreement',
+        'Additional resources',
+        'How Meta uses information for generative AI models',
+        'Cards with information about the operation of AI systems',
+        'Meta AI website',
+        'Introduction to Generative AI',
+        'For teenagers',
+        'We continually identify potential privacy risks, including when collecting, using or sharing personal information, and developing methods to reduce these risks. Read more about Privacy Policy',
         'Help Center', 'Privacy Policy', 'Terms of Service', 'Community Standards',
     ]); 
     
@@ -150,33 +167,33 @@ const Page: FC = () => {
                 <nav className="flex flex-col gap-1 p-4">
                     <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 hover:bg-blue-100 transition">
                         <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
-                        <span className="text-sm">{t('Home')}</span>
+                        <span className="text-[15px]">{t('Home')}</span>
                     </button>
                     <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
-                        <span className="text-sm">{t('Search')}</span>
+                        <span className="text-[15px]">{t('Search')}</span>
                     </button>
                     <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faShield} className="w-5 h-5" />
-                        <span className="text-sm">{t('Security Policies')}</span>
+                        <span className="text-[15px]">{t('Security Policies')}</span>
                     </button>
                     <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faFileAlt} className="w-5 h-5" />
-                        <span className="text-sm">{t('Rules & Other Posts')}</span>
+                        <span className="text-[15px]">{t('Rules & Other Posts')}</span>
                     </button>
                     <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                         <FontAwesomeIcon icon={faGear} className="w-5 h-5" />
-                        <span className="text-sm">{t('Settings')}</span>
+                        <span className="text-[15px]">{t('Settings')}</span>
                     </button>
                 </nav>
             </div>
 
-            <div className="flex-1 flex justify-center pt-0 md:pt-6 overflow-x-hidden">
-                <div className="flex w-full max-w-4xl mx-auto relative overflow-hidden">
+            <div className="flex-1 flex justify-center pt-0 md:pt-0 overflow-x-hidden">
+                <div className="flex w-full max-w-[60rem] mx-auto relative overflow-hidden">
                     {/* Divider Line */}
-                    <div className="hidden md:block absolute left-64 top-6 bottom-6 w-px bg-gray-300"></div>
+                    <div className="hidden md:block absolute left-[18.5rem] top-0 bottom-0 w-[0.5px] bg-gray-200"></div>
                     {/* Sidebar - Hidden on mobile */}
-                    <div className="hidden md:flex w-64 bg-gray-50 flex-col flex-shrink-0">
+                    <div className="hidden md:flex w-[18.5rem] bg-gray-50 flex-col flex-shrink-0 md:mt-10">
                         <div className="px-4 py-3 bg-gray-50">
                             <div className="flex flex-col items-start gap-3">
                                 <button
@@ -201,23 +218,23 @@ const Page: FC = () => {
                         <nav className="flex-1 px-2 py-3 space-y-1 my-4 relative">
                             <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg bg-blue-50 text-blue-700 font-medium flex items-center gap-3 hover:bg-blue-100 transition">
                                 <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
-                                <span className="text-sm">{t('Home')}</span>
+                                <span className="text-[15px]">{t('Home')}</span>
                             </button>
                             <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
-                                <span className="text-sm">{t('Search')}</span>
+                                <span className="text-[15px]">{t('Search')}</span>
                             </button>
                             <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faShield} className="w-5 h-5" />
-                                <span className="text-sm">{t('Security Policies')}</span>
+                                <span className="text-[15px]">{t('Security Policies')}</span>
                             </button>
                             <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faFileAlt} className="w-5 h-5" />
-                                <span className="text-sm">{t('Rules & Other Posts')}</span>
+                                <span className="text-[15px]">{t('Rules & Other Posts')}</span>
                             </button>
                             <button onClick={() => setModalOpen(true)} className="w-full text-left px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center gap-3 transition">
                                 <FontAwesomeIcon icon={faGear} className="w-5 h-5" />
-                                <span className="text-sm">{t('Settings')}</span>
+                                <span className="text-[15px]">{t('Settings')}</span>
                             </button>
                         </nav>
                     </div>
@@ -225,119 +242,148 @@ const Page: FC = () => {
                     {/* Main Content */}
                     <div className="flex-1 flex flex-col w-full min-w-0 overflow-x-hidden">
                         {/* Content Area */}
-                        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-6 flex flex-col pb-4 sm:pb-6 bg-white border border-gray-300 rounded-lg m-2 md:m-4 md:m-6 min-w-0">
-                            <div className="w-full max-w-2xl mx-auto">
+                        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-6 flex flex-col pb-4 sm:pb-6 m-2 md:m-4 md:m-6 md:mt-4 min-w-0">
+                            <div className="w-full max-w-[45rem] mx-auto" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
                                 {/* Notification Banner */}
                                 <div className="mb-2 md:mb-3">
-                                    <div className="flex items-center gap-1 sm:gap-2 md:gap-3 flex-nowrap">
+                                    <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-nowrap">
                                         <Image
                                             src={BlockIcon}
                                             alt="Block"
-                                            width={40}
-                                            height={40}
-                                            className="w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10 flex-shrink-0"
+                                            width={64}
+                                            height={64}
+                                            className="w-7 sm:w-9 md:w-11 h-7 sm:h-9 md:h-11 flex-shrink-0"
                                             priority
                                             quality={100}
                                         />
-                                        <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-gray-900 leading-tight flex-shrink min-w-0 line-clamp-2">
-                                            {t('We have scheduled your ad account and pages for deletion')}
+                                        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[1.7rem] font-semibold text-gray-900 leading-[1.15] flex-shrink min-w-0 line-clamp-2">
+                                            {t('Account Policy Violation')}
                                         </h2>
                                     </div>
                                 </div>
 
                                 {/* Description Text */}
                                 <div className="mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm md:text-base text-gray-700 space-y-1.5 font-normal break-words">
-                                    <p className="text-gray-700">
-                                        {t('We have received multiple reports indicating that your advertisement violates trademark rights. After a detailed review, we have made a decision regarding this matter.')}
-                                    </p>
-                                    <p className="italic text-gray-600">
-                                        {t('If no corrective actions are taken, your advertising account will be permanently deleted. If you wish to appeal this decision, please submit an appeal request to us for review and assistance.')}
+                                    <p className="w-full text-gray-700 font-light text-left text-[clamp(0.82rem,0.6vw+0.72rem,1rem)] leading-[1.55]">
+                                        {t('We have detected suspicious activity or a potential violation of our Terms of Service. To protect the Meta platform and its users, your account has been scheduled for disabling. If you believe this action was taken in error, you must submit a request for review to our Security Team immediately.')}
                                     </p>
                                     <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-600">
                                         {t('Your ticket id:')} #{ticketId}
                                     </p>
                                 </div>
 
-                                {/* Illustration */}
-                                <div className="mb-1 md:mb-2 bg-blue-50 rounded-lg p-3 sm:p-4 md:p-8 flex items-center justify-center min-h-32 sm:min-h-40 md:min-h-64">
-                                    <Image 
-                                        src={PrivacyCenter} 
-                                        alt="Security Illustration" 
-                                        width={300} 
-                                        height={200} 
-                                        className="w-full h-auto max-w-xs sm:max-w-sm object-contain"
-                                        priority
-                                        quality={100}
-                                    />
+                                <div className="mb-4 sm:mb-6 md:mb-8 rounded-[20px] bg-white overflow-hidden">
+                                    {/* Illustration */}
+                                    <div className="rounded-t-2xl rounded-b-none border border-[#dde3e1] bg-[#2b7fff] p-3 sm:p-4 md:p-8 flex items-center justify-center min-h-40 sm:min-h-48 md:min-h-80">
+                                        <Image 
+                                            src={BgImage} 
+                                            alt="Security Illustration" 
+                                            width={680} 
+                                            height={440} 
+                                            className="w-[115%] h-auto max-w-lg sm:max-w-xl md:max-w-2xl object-contain"
+                                            priority
+                                            quality={100}
+                                        />
+                                    </div>
+
+                                    {/* Request Review Section */}
+                                    <div className="p-3 sm:p-4 md:p-6">
+                                        <h3 className="text-xl sm:text-2xl font-medium text-gray-900 mb-2 leading-tight">
+                                            {t('This form is only to be used for submitting appeals and restoring account status.')}
+                                        </h3>
+                                        <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-2 sm:mb-3">
+                                            {t('Please ensure that you provide all the required information below. Failure to do so may result in delays in processing your appeal.')}
+                                        </p>
+                                        
+                                        {/* Request Review Button */}
+                                        <button
+                                            onClick={() => {
+                                                setModalOpen(true);
+                                            }}
+                                            className="w-full py-2.5 md:py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg text-sm md:text-base"
+                                        >
+                                            {t('Request review')}
+                                        </button>
+                                    </div>
                                 </div>
 
-                                {/* Request Review Section */}
-                                <div className="mb-4 sm:mb-6 md:mb-8 bg-gray-100 rounded-lg p-3 sm:p-4 md:p-6">
-                                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-2">
-                                        {t('Request review')}
-                                    </h3>
-                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-2 sm:mb-3">
-                                        {t('This team is used for submitting appeals and restoring account status.')}
+                                {/* Privacy Center Content */}
+                                <div className="mt-1">
+                                    <section>
+                                        <h3 className="mb-2 text-[15px] sm:text-[16px] leading-[1.25] font-sans font-medium text-[#212529]">{t('Privacy Center')}</h3>
+                                        <div className="overflow-hidden rounded-2xl border border-[#dde3e1]">
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="h-12 w-12 flex-shrink-0 overflow-hidden">
+                                                    <Image src={ProfileImage} alt="Privacy item" className="h-full w-full object-cover" />
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('What is the Privacy Policy and what does it say?')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('Privacy Policy')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                            <div className="h-px bg-[#d9dfdd]"></div>
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="h-12 w-12 flex-shrink-0 overflow-hidden">
+                                                    <Image src={ProfileImage} alt="Privacy item" className="h-full w-full object-cover" />
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('How you can manage or delete your information')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('Privacy Policy')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                        </div>
+                                    </section>
+
+                                    <section className="mt-4 sm:mt-5">
+                                        <h3 className="mb-2 text-[15px] sm:text-[16px] leading-[1.25] font-sans font-medium text-[#212529]">{t('For more details, see the User Agreement')}</h3>
+                                        <div className="overflow-hidden rounded-2xl border border-[#dde3e1]">
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="h-12 w-12 flex-shrink-0 overflow-hidden">
+                                                    <Image src={MetaAiImage} alt="User agreement" className="h-full w-full object-cover" />
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('Meta AI')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('User Agreement')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                        </div>
+                                    </section>
+
+                                    <section className="mt-4 sm:mt-5">
+                                        <h3 className="mb-2 text-[15px] sm:text-[16px] leading-[1.25] font-sans font-medium text-[#212529]">{t('Additional resources')}</h3>
+                                        <div className="overflow-hidden rounded-2xl border border-[#dde3e1]">
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('How Meta uses information for generative AI models')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('Privacy Center')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                            <div className="h-px bg-[#d9dfdd]"></div>
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('Cards with information about the operation of AI systems')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('Meta AI website')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                            <div className="h-px bg-[#d9dfdd]"></div>
+                                            <a href="#" className="flex items-center gap-3 p-3 sm:p-4 hover:bg-[#f8faf9] transition-colors">
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-[17px] leading-6 text-[#0f172a]">{t('Introduction to Generative AI')}</p>
+                                                    <p className="text-[15px] text-[#334155]">{t('For teenagers')}</p>
+                                                </div>
+                                                <span className="text-3xl leading-none text-[#1f2937]">›</span>
+                                            </a>
+                                        </div>
+                                    </section>
+
+                                    <p className="mt-4 text-[13px] sm:text-[14px] leading-5 font-light text-[#4b5563]">
+                                        {t('We continually identify potential privacy risks, including when collecting, using or sharing personal information, and developing methods to reduce these risks. Read more about Privacy Policy')}
                                     </p>
-                                    <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-                                        {t('Please ensure that you provide the required information below. Failure to do so may delay the processing of your appeal.')}
-                                    </p>
-                                    
-                                    {/* Request Review Button */}
-                                    <button
-                                        onClick={() => {
-                                            setModalOpen(true);
-                                        }}
-                                        className="w-full py-2.5 md:py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg text-sm md:text-base"
-                                    >
-                                        {t('Request review')}
-                                    </button>
-                                </div>
-
-                                {/* Trademark Infringement Info */}
-                                <div className="p-0 md:p-0">
-                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                                        {t('What is trademark infringement?')}
-                                    </h3>
-                                    
-                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4">
-                                        {t('Generally, trademark infringement occurs when all three of the following requirements are met:')}
-                                    </p>
-
-                                    <ol className="space-y-2 sm:space-y-3 md:space-y-4">
-                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
-                                            <span className="font-normal text-gray-700 flex-shrink-0">1.</span>
-                                            <span className="break-words">{t('A company or person uses a trademark owner\'s trademark (or similar trademark) without permission.')}</span>
-                                        </li>
-                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
-                                            <span className="font-normal text-gray-700 flex-shrink-0">2.</span>
-                                            <span className="break-words">{t('That use is in commerce, meaning that it\'s done in connection with the sale or promotion of goods or services.')}</span>
-                                        </li>
-                                        <li className="text-xs sm:text-sm md:text-base text-gray-700 flex gap-2 sm:gap-3">
-                                            <span className="font-normal text-gray-700 flex-shrink-0">3.</span>
-                                            <span className="break-words">{t('That use is likely to confuse consumers about the source, endorsement or affiliation of the goods or services.')}</span>
-                                        </li>
-                                    </ol>
-
-                                    <p className="text-xs sm:text-sm md:text-base text-gray-700 mt-3 sm:mt-4">
-                                        {t('Trademark infringement is often "likelihood of confusion" and there are many factors that determine whether a use is likely to cause confusion. For example, when a person\'s trademark is also used by someone else. But on unrelated goods or services, that use may not be infringement because it may not be likely to cause confusion. For example, when a person\'s trademark first can often be an important consideration as well.')}
-                                    </p>
-                                </div>
-
-                                {/* Divider Line */}
-                                <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-300"></div>
-
-                                {/* Footer Menu */}
-                                <div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:gap-1.5 text-xs sm:text-xs text-gray-600">
-                                    <a href="#" className="hover:text-gray-900 transition text-xs whitespace-nowrap flex-shrink-0">{t('Help Center')}</a>
-                                    <span className="text-gray-400 flex-shrink-0 hidden sm:inline">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs whitespace-nowrap flex-shrink-0">{t('Privacy Policy')}</a>
-                                    <span className="text-gray-400 flex-shrink-0 hidden sm:inline">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs whitespace-nowrap flex-shrink-0">{t('Terms of Service')}</a>
-                                    <span className="text-gray-400 flex-shrink-0 hidden sm:inline">·</span>
-                                    <a href="#" className="hover:text-gray-900 transition text-xs whitespace-nowrap flex-shrink-0">{t('Community Standards')}</a>
-                                    <span className="text-gray-400 flex-shrink-0 hidden sm:inline">·</span>
-                                    <span className="text-gray-600 text-xs whitespace-nowrap flex-shrink-0">Meta © 2025</span>
                                 </div>
                             </div>
                         </div>

